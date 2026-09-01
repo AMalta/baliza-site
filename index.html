@@ -1,0 +1,675 @@
+<title>Baliza — Vistoria de Embarcação Pesqueira</title>
+<meta name="description" content="Aplicativo de vistoria de embarcação pesqueira para o PROPESC. Funciona offline no barco, gera o laudo do Anexo IV e mantém a decisão técnica com o vistoriador.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+
+<style>
+  :root {
+    --ground: #ffffff;
+    --ground-2: #f3f6f7;
+    --surface: #ffffff;
+    --tinta: #0b1b2b;
+    --tinta-2: #3e5568;
+    --tinta-3: #6a8091;
+    --linha: #d8dee2;
+    --linha-forte: #b6c2c9;
+
+    --sinal: #d9531e;
+    --sinal-suave: #fdeee7;
+    --sinal-escuro: #a83c12;
+
+    --conforme: #0f6b4f;
+
+    --sans: Archivo, ui-sans-serif, system-ui, sans-serif;
+    --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #07141d;
+      --ground-2: #0c1e29;
+      --surface: #0e2331;
+      --tinta: #e9f0f4;
+      --tinta-2: #a9bfcc;
+      --tinta-3: #7d95a3;
+      --linha: #1e3948;
+      --linha-forte: #2d4f61;
+
+      --sinal: #ff7a4d;
+      --sinal-suave: #341409;
+      --sinal-escuro: #ffa384;
+
+      --conforme: #55c79d;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground: #07141d;
+    --ground-2: #0c1e29;
+    --surface: #0e2331;
+    --tinta: #e9f0f4;
+    --tinta-2: #a9bfcc;
+    --tinta-3: #7d95a3;
+    --linha: #1e3948;
+    --linha-forte: #2d4f61;
+
+    --sinal: #ff7a4d;
+    --sinal-suave: #341409;
+    --sinal-escuro: #ffa384;
+
+    --conforme: #55c79d;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--tinta);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .faixa { padding: 0 24px; }
+  .interno { max-width: 940px; margin: 0 auto; }
+  .estreito { max-width: 660px; }
+
+  h1, h2, h3, .rotulo, nav, button, .num {
+    font-family: var(--sans);
+  }
+
+  .rotulo {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--sinal);
+    margin: 0 0 14px;
+  }
+
+  /* ---------- topo ---------- */
+
+  header {
+    border-bottom: 1px solid var(--linha);
+    background: var(--ground);
+  }
+
+  .barra {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    padding: 18px 0;
+  }
+
+  .marca {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 19px;
+    letter-spacing: -0.01em;
+  }
+
+  .marca em {
+    font-style: normal;
+    color: var(--sinal);
+  }
+
+  .barra span {
+    font-size: 14px;
+    color: var(--tinta-3);
+  }
+
+  /* ---------- abertura ---------- */
+
+  .abertura { padding: 72px 0 56px; }
+
+  h1 {
+    font-size: clamp(34px, 6vw, 56px);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
+    margin: 0 0 20px;
+    text-wrap: balance;
+    max-width: 16ch;
+  }
+
+  .chamada {
+    font-size: clamp(18px, 2.4vw, 21px);
+    color: var(--tinta-2);
+    max-width: 58ch;
+    margin: 0 0 28px;
+  }
+
+  .selo {
+    display: inline-block;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--tinta-2);
+    background: var(--ground-2);
+    border: 1px solid var(--linha);
+    border-radius: 999px;
+    padding: 6px 14px;
+  }
+
+  /* ---------- fluxo ---------- */
+
+  .fluxo {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 1px;
+    background: var(--linha);
+    border: 1px solid var(--linha);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 44px 0 0;
+  }
+
+  .etapa {
+    background: var(--surface);
+    padding: 22px 20px;
+  }
+
+  .num {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--sinal);
+    letter-spacing: 0.1em;
+  }
+
+  .etapa h3 {
+    font-size: 17px;
+    font-weight: 600;
+    margin: 8px 0 6px;
+  }
+
+  .etapa p {
+    margin: 0;
+    font-size: 15px;
+    color: var(--tinta-2);
+  }
+
+  /* ---------- seções ---------- */
+
+  section { padding: 64px 0; border-top: 1px solid var(--linha); }
+  section:first-of-type { border-top: none; }
+
+  h2 {
+    font-size: clamp(26px, 3.6vw, 34px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin: 0 0 18px;
+    text-wrap: balance;
+  }
+
+  h3 { font-size: 19px; font-weight: 600; margin: 0 0 8px; }
+
+  p { margin: 0 0 18px; }
+  p:last-child { margin-bottom: 0; }
+
+  .colunas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 32px;
+    margin-top: 36px;
+  }
+
+  .bloco h3 { display: flex; align-items: baseline; gap: 8px; }
+
+  .bloco p { font-size: 16px; color: var(--tinta-2); }
+
+  /* ---------- destaque da IA ---------- */
+
+  .contraste {
+    background: var(--ground-2);
+    border-radius: 14px;
+    padding: 36px;
+    margin-top: 32px;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 32px;
+  }
+
+  .contraste h3 { font-family: var(--sans); }
+
+  .faz h3 { color: var(--conforme); }
+  .naofaz h3 { color: var(--sinal); }
+
+  .contraste ul {
+    margin: 0;
+    padding-left: 20px;
+    font-size: 16px;
+    color: var(--tinta-2);
+  }
+
+  .contraste li { margin-bottom: 10px; }
+
+  /* ---------- lista de rastreabilidade ---------- */
+
+  .rastro {
+    border: 1px solid var(--linha);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-top: 28px;
+  }
+
+  .rastro div {
+    display: grid;
+    grid-template-columns: minmax(140px, 30%) 1fr;
+    gap: 16px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--linha);
+    background: var(--surface);
+    font-size: 16px;
+  }
+
+  .rastro div:last-child { border-bottom: none; }
+
+  .rastro dt {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 14px;
+    margin: 0;
+  }
+
+  .rastro dd { margin: 0; color: var(--tinta-2); }
+
+  /* ---------- perguntas ---------- */
+
+  details {
+    border-bottom: 1px solid var(--linha);
+    padding: 18px 0;
+  }
+
+  summary {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 17px;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  summary::-webkit-details-marker { display: none; }
+
+  summary::after {
+    content: "+";
+    color: var(--sinal);
+    font-weight: 700;
+  }
+
+  details[open] summary::after { content: "–"; }
+
+  details p {
+    margin: 14px 0 0;
+    color: var(--tinta-2);
+    font-size: 16px;
+    max-width: 62ch;
+  }
+
+  /* ---------- chamada final ---------- */
+
+  .contato {
+    background: var(--tinta);
+    color: var(--ground);
+    border-radius: 14px;
+    padding: 44px 36px;
+    margin: 64px 0;
+  }
+
+  :root[data-theme="dark"] .contato,
+  :root:not([data-theme="light"]) .contato {
+    border: 1px solid var(--linha-forte);
+  }
+
+  .contato h2 { color: var(--ground); margin-bottom: 12px; }
+  .contato p { color: var(--ground); opacity: 0.82; max-width: 52ch; }
+
+  .contato a {
+    display: inline-block;
+    margin-top: 18px;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 16px;
+    color: var(--ground);
+    background: var(--sinal);
+    text-decoration: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+  }
+
+  .contato a:hover { background: var(--sinal-escuro); }
+  .contato a:focus-visible,
+  summary:focus-visible { outline: 2px solid var(--sinal); outline-offset: 3px; }
+
+  footer {
+    border-top: 1px solid var(--linha);
+    padding: 32px 0 56px;
+    font-size: 14px;
+    color: var(--tinta-3);
+  }
+
+  footer p { max-width: 70ch; margin-bottom: 10px; }
+
+  a { color: var(--sinal); }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { transition: none !important; }
+  }
+</style>
+
+<header class="faixa">
+  <div class="interno barra">
+    <span class="marca">Bal<em>i</em>za</span>
+    <span>Vistoria de embarcação pesqueira · PROPESC</span>
+  </div>
+</header>
+
+<main class="faixa">
+  <div class="interno">
+
+    <div class="abertura">
+      <p class="rotulo">Portaria MPA nº 397/2024 — Anexo IV</p>
+      <h1>A vistoria não para porque o sinal acabou.</h1>
+      <p class="chamada">
+        Embarcação pesqueira raramente está onde há internet. O Baliza foi
+        feito para isso: no barco, o celular é a fonte de verdade — checklist,
+        fotos, medidas e parecer ficam gravados ali. A sincronização acontece
+        depois, sozinha, e o laudo do Anexo IV sai em PDF.
+      </p>
+      <span class="selo">Para vistoriadores credenciados no MPA</span>
+
+      <div class="fluxo">
+        <div class="etapa">
+          <span class="num">NO BARCO</span>
+          <h3>Capturar</h3>
+          <p>Checklist do Anexo IV e fotos com GPS, horário e hash. Sem rede.</p>
+        </div>
+        <div class="etapa">
+          <span class="num">AO PEGAR SINAL</span>
+          <h3>Sincronizar</h3>
+          <p>Sobe sozinho quando houver conexão. Ninguém precisa lembrar.</p>
+        </div>
+        <div class="etapa">
+          <span class="num">NO ESCRITÓRIO</span>
+          <h3>Revisar e emitir</h3>
+          <p>Você confirma as sugestões da IA e emite o laudo em PDF.</p>
+        </div>
+        <div class="etapa">
+          <span class="num">POR ÚLTIMO</span>
+          <h3>Assinar</h3>
+          <p>Com seu e-CPF gov.br ou certificado ICP-Brasil.</p>
+        </div>
+      </div>
+    </div>
+
+    <section>
+      <p class="rotulo">O problema</p>
+      <h2>O trabalho é no mar; o formulário é de escritório.</h2>
+      <div class="estreito">
+        <p>
+          Quem vistoria embarcação pesqueira conhece a rotina: anotar em papel
+          no cais, fotografar com o celular, e depois passar tudo a limpo —
+          conferindo qual foto era de qual barco, qual medida era de qual
+          casco. O laudo, que é peça técnica assinada sob ART, nasce dessa
+          transcrição.
+        </p>
+        <p>
+          Cada passagem a limpo é uma chance de erro, e nenhuma delas
+          acrescenta informação. O Baliza elimina a transcrição: o que se
+          registra no barco é exatamente o que entra no laudo.
+        </p>
+      </div>
+
+      <div class="colunas">
+        <div class="bloco">
+          <h3>Offline de verdade</h3>
+          <p>
+            Nenhuma tela de campo consulta a internet. Só o primeiro login
+            precisa de rede — uma vez. Depois disso o app abre e opera sem
+            sinal por tempo indeterminado.
+          </p>
+        </div>
+        <div class="bloco">
+          <h3>Nada é estimado</h3>
+          <p>
+            Medida não tomada fica em branco e sai como <strong>N.A.</strong>
+            no laudo — nunca como zero. Dimensões e arqueação vêm de medição
+            in loco ou do documento da Autoridade Marítima.
+          </p>
+        </div>
+        <div class="bloco">
+          <h3>Foto sem coordenada continua válida</h3>
+          <p>
+            Quando o GPS não fixa, a evidência é gravada assim mesmo, com o
+            motivo registrado. Posição nunca é inventada para preencher campo.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="rotulo">Inteligência artificial</p>
+      <h2>A IA olha a foto. Quem responde é você.</h2>
+      <div class="estreito">
+        <p>
+          O sistema analisa as fotos e sugere o que reconhece: a inscrição da
+          Capitania no casco, o material, os petrechos e os equipamentos a
+          bordo. Cada sugestão vem com o grau de confiança e o modelo que a
+          produziu.
+        </p>
+      </div>
+
+      <div class="contraste">
+        <div class="faz">
+          <h3>O que a IA faz</h3>
+          <ul>
+            <li>Lê a inscrição pintada no casco</li>
+            <li>Classifica o material: madeira, fibra ou aço</li>
+            <li>Aponta petrechos e equipamentos que reconhece na foto</li>
+            <li>Diz quando <strong>não</strong> conseguiu identificar</li>
+          </ul>
+        </div>
+        <div class="naofaz">
+          <h3>O que ela nunca faz</h3>
+          <ul>
+            <li>Aprovar ou reprovar uma embarcação</li>
+            <li>Preencher dimensões ou arqueação bruta</li>
+            <li>Marcar item do checklist sozinha</li>
+            <li>Entrar no laudo sem você confirmar</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="estreito" style="margin-top:28px">
+        <p>
+          Enquanto houver sugestão sem revisão humana, o sistema
+          <strong>recusa emitir o laudo</strong>. Não é uma trava de
+          conveniência: o parecer é seu, sob ART, e o software foi construído
+          para deixar isso registrado.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <p class="rotulo">Rastreabilidade</p>
+      <h2>Cada evidência carrega sua própria prova.</h2>
+      <div class="estreito">
+        <p>
+          Se um laudo for contestado meses depois, o que sustenta a resposta é
+          o registro. Toda foto guarda, desde o instante da captura:
+        </p>
+      </div>
+
+      <dl class="rastro">
+        <div>
+          <dt>Coordenada</dt>
+          <dd>Latitude e longitude do local, ou o motivo de não haver.</dd>
+        </div>
+        <div>
+          <dt>Data e hora</dt>
+          <dd>Carimbo do momento da captura, não do envio.</dd>
+        </div>
+        <div>
+          <dt>Hash SHA-256</dt>
+          <dd>
+            Impressão digital do arquivo, calculada no celular antes de
+            qualquer transmissão. Permite provar que a imagem não mudou.
+          </dd>
+        </div>
+        <div>
+          <dt>Análise da IA</dt>
+          <dd>
+            Qual modelo respondeu, com que confiança, e quem revisou a
+            sugestão.
+          </dd>
+        </div>
+        <div>
+          <dt>Autoria do parecer</dt>
+          <dd>
+            Quem concluiu, e quando. Só o responsável técnico designado na
+            vistoria conclui — nem o administrador da conta.
+          </dd>
+        </div>
+      </dl>
+    </section>
+
+    <section>
+      <p class="rotulo">Laudo e assinatura</p>
+      <h2>O laudo emitido não muda. Correção gera nova versão.</h2>
+      <div class="estreito">
+        <p>
+          O PDF sai no formato do Anexo IV, com as evidências e seus hashes
+          impressos. Uma vez emitido, ele é imutável: se algo precisa mudar,
+          nasce uma versão nova, e a anterior fica preservada. É assim que uma
+          peça técnica se comporta.
+        </p>
+        <p>
+          A assinatura é sua, feita com seu certificado — no assinador gov.br
+          ou com ICP-Brasil. O sistema não assina por você, e sua chave nunca
+          fica guardada nele. O que ele faz é conferir: se o arquivo assinado
+          corresponde ao laudo emitido, se nada foi alterado depois da
+          assinatura, e se quem assinou é o responsável técnico daquela
+          vistoria.
+        </p>
+        <p>
+          Vários laudos podem ser assinados de uma vez — e você não precisa
+          dizer qual arquivo é de qual: cada um encontra o seu.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <p class="rotulo">Gestão</p>
+      <h2>Os números da sua operação, sem planilha.</h2>
+      <div class="estreito">
+        <p>
+          Um painel reúne o que a operação produziu: taxa de aprovação por UF,
+          modalidade e material de casco; as não-conformidades mais frequentes;
+          distribuição da frota; e um mapa com as vistorias georreferenciadas
+          pelas próprias evidências.
+        </p>
+        <p>
+          As taxas são calculadas sobre as vistorias <em>concluídas</em>, com
+          as pendentes visíveis ao lado — um número que esconde o que ainda não
+          foi julgado parece mais firme do que é.
+        </p>
+      </div>
+    </section>
+
+    <section>
+      <p class="rotulo">Perguntas frequentes</p>
+      <h2>O que costumam perguntar.</h2>
+
+      <details>
+        <summary>Preciso de internet no barco?</summary>
+        <p>
+          Não, em momento nenhum da vistoria. Só o primeiro login precisa de
+          rede, uma única vez. Depois disso o app abre e funciona offline
+          indefinidamente — a sincronização acontece sozinha quando houver
+          sinal.
+        </p>
+      </details>
+
+      <details>
+        <summary>A IA pode aprovar ou reprovar uma embarcação?</summary>
+        <p>
+          Não. Ela sugere o que vê nas fotos, com grau de confiança, e a
+          sugestão fica pendente até você confirmar, corrigir ou descartar.
+          Enquanto houver sugestão sem revisão, o sistema recusa emitir o
+          laudo. O parecer é sempre do responsável técnico, sob ART.
+        </p>
+      </details>
+
+      <details>
+        <summary>E se a foto ficar sem GPS?</summary>
+        <p>
+          A evidência é gravada mesmo assim, com o motivo da ausência
+          registrado, e o laudo declara que aquela foto não tem coordenada.
+          Nenhuma posição é estimada para preencher o campo.
+        </p>
+      </details>
+
+      <details>
+        <summary>Quem enxerga meus dados?</summary>
+        <p>
+          Cada vistoriador credenciado enxerga apenas os próprios dados, e o
+          isolamento é aplicado no banco — não apenas na tela. O aplicativo de
+          campo nunca carrega chave de servidor: ele opera com credencial
+          restrita, sujeita às mesmas regras.
+        </p>
+      </details>
+
+      <details>
+        <summary>As fotos são usadas para treinar modelos de IA?</summary>
+        <p>
+          Há uma trava específica no sistema para que foto de vistoria real
+          não seja enviada a provedor de IA que use as imagens em treinamento.
+          A liberação depende de configuração explícita, e o padrão é recusar.
+        </p>
+      </details>
+
+      <details>
+        <summary>Posso corrigir um laudo já emitido?</summary>
+        <p>
+          O laudo emitido não é alterado — isso é proposital. A correção gera
+          uma nova versão, preservando a anterior e o registro de ambas.
+        </p>
+      </details>
+    </section>
+
+    <div class="contato">
+      <h2>Quer ver funcionando?</h2>
+      <p>
+        Posso mostrar o fluxo completo: captura offline no celular, o laudo
+        saindo em PDF e a assinatura sendo conferida.
+      </p>
+      <a href="https://wa.me/SEUNUMERO">Falar no WhatsApp</a>
+      <p style="margin-top:22px;font-size:15px">
+        <a href="manual.html" style="color:var(--ground);text-decoration:underline">Ler o manual completo</a>
+      </p>
+    </div>
+
+  </div>
+</main>
+
+<footer class="faixa">
+  <div class="interno">
+    <p>
+      <strong>Baliza</strong> — apoio à vistoria de embarcação pesqueira
+      conforme a Portaria MPA nº 397/2024 e o Anexo IV. O software organiza,
+      registra e documenta; a responsabilidade técnica pelo parecer e pelo
+      laudo é do vistoriador credenciado, sob ART/DHT.
+    </p>
+    <p>
+      A validade jurídica de um documento assinado eletronicamente pode ser
+      conferida no validador oficial do ITI, em
+      <a href="https://validar.iti.gov.br">validar.iti.gov.br</a>.
+    </p>
+  </div>
+</footer>

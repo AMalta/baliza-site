@@ -1,0 +1,949 @@
+<title>Manual do Baliza</title>
+<meta name="description" content="Manual completo do Baliza: app de campo, backoffice, laudo do Anexo IV, IA assistiva e assinatura eletrônica.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+
+<style>
+  :root {
+    --ground: #ffffff;
+    --ground-2: #f3f6f7;
+    --surface: #ffffff;
+    --tinta: #0b1b2b;
+    --tinta-2: #3e5568;
+    --tinta-3: #6a8091;
+    --linha: #d8dee2;
+    --sinal: #d9531e;
+    --sinal-suave: #fdeee7;
+    --conforme: #0f6b4f;
+    --alerta: #8a5a06;
+    --alerta-suave: #fbeed3;
+    --sans: Archivo, ui-sans-serif, system-ui, sans-serif;
+    --serif: "Source Serif 4", Georgia, "Times New Roman", serif;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #07141d;
+      --ground-2: #0c1e29;
+      --surface: #0e2331;
+      --tinta: #e9f0f4;
+      --tinta-2: #a9bfcc;
+      --tinta-3: #7d95a3;
+      --linha: #1e3948;
+      --sinal: #ff7a4d;
+      --sinal-suave: #341409;
+      --conforme: #55c79d;
+      --alerta: #e0aa4a;
+      --alerta-suave: #372709;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --ground: #07141d;
+    --ground-2: #0c1e29;
+    --surface: #0e2331;
+    --tinta: #e9f0f4;
+    --tinta-2: #a9bfcc;
+    --tinta-3: #7d95a3;
+    --linha: #1e3948;
+    --sinal: #ff7a4d;
+    --sinal-suave: #341409;
+    --conforme: #55c79d;
+    --alerta: #e0aa4a;
+    --alerta-suave: #372709;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--tinta);
+    font-family: var(--serif);
+    font-size: 17px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .pagina {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 0 24px 96px;
+    display: grid;
+    grid-template-columns: 230px 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+
+  h1, h2, h3, h4, nav, .rotulo, .aviso strong, th {
+    font-family: var(--sans);
+  }
+
+  /* ---------- cabeçalho ---------- */
+
+  header {
+    border-bottom: 1px solid var(--linha);
+    margin-bottom: 40px;
+  }
+
+  .topo {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 18px 24px;
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+
+  .marca {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 19px;
+  }
+
+  .marca em { font-style: normal; color: var(--sinal); }
+
+  .topo span { font-size: 14px; color: var(--tinta-3); }
+  .topo a { margin-left: auto; font-size: 14px; }
+
+  /* ---------- sumário ---------- */
+
+  nav {
+    position: sticky;
+    top: 24px;
+    font-size: 14px;
+  }
+
+  nav p {
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--tinta-3);
+    margin: 0 0 12px;
+  }
+
+  nav ol { list-style: none; margin: 0; padding: 0; }
+  nav li { margin-bottom: 9px; }
+
+  nav a {
+    color: var(--tinta-2);
+    text-decoration: none;
+    display: block;
+    border-left: 2px solid var(--linha);
+    padding-left: 12px;
+  }
+
+  nav a:hover { color: var(--sinal); border-left-color: var(--sinal); }
+
+  /* ---------- conteúdo ---------- */
+
+  h1 {
+    font-size: clamp(30px, 4.6vw, 42px);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin: 0 0 14px;
+    text-wrap: balance;
+  }
+
+  .subtitulo {
+    font-size: 19px;
+    color: var(--tinta-2);
+    margin: 0 0 8px;
+    max-width: 60ch;
+  }
+
+  section { padding-top: 44px; scroll-margin-top: 24px; }
+
+  h2 {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    margin: 0 0 16px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--linha);
+  }
+
+  h3 { font-size: 19px; font-weight: 600; margin: 30px 0 10px; }
+  h4 { font-size: 16px; font-weight: 600; margin: 22px 0 8px; }
+
+  p, li { max-width: 68ch; }
+  p { margin: 0 0 16px; }
+
+  ul, ol.passos { padding-left: 22px; margin: 0 0 18px; }
+  li { margin-bottom: 8px; }
+
+  code {
+    font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+    font-size: 0.88em;
+    background: var(--ground-2);
+    border: 1px solid var(--linha);
+    border-radius: 4px;
+    padding: 1px 5px;
+  }
+
+  /* ---------- caixas ---------- */
+
+  .aviso, .cuidado {
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin: 22px 0;
+    font-size: 16px;
+  }
+
+  .aviso {
+    background: var(--sinal-suave);
+    border-left: 4px solid var(--sinal);
+  }
+
+  .cuidado {
+    background: var(--alerta-suave);
+    border-left: 4px solid var(--alerta);
+  }
+
+  .aviso p, .cuidado p { margin: 0; }
+  .aviso p + p, .cuidado p + p { margin-top: 10px; }
+
+  /* ---------- tabelas ---------- */
+
+  .rolagem { overflow-x: auto; margin: 20px 0; }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 15px;
+    min-width: 520px;
+  }
+
+  th {
+    text-align: left;
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--tinta-3);
+    padding: 10px 12px;
+    border-bottom: 2px solid var(--linha);
+  }
+
+  td {
+    padding: 11px 12px;
+    border-bottom: 1px solid var(--linha);
+    vertical-align: top;
+  }
+
+  td:first-child { font-family: var(--sans); font-weight: 600; }
+
+  a { color: var(--sinal); }
+
+  footer {
+    border-top: 1px solid var(--linha);
+    margin-top: 56px;
+    padding-top: 24px;
+    font-size: 14px;
+    color: var(--tinta-3);
+  }
+
+  @media (max-width: 860px) {
+    .pagina { grid-template-columns: 1fr; gap: 24px; }
+    nav { position: static; border-bottom: 1px solid var(--linha); padding-bottom: 20px; }
+    nav ol { columns: 2; }
+  }
+</style>
+
+<header>
+  <div class="topo">
+    <span class="marca">Bal<em>i</em>za</span>
+    <span>Manual do usuário</span>
+    <a href="index.html">← página inicial</a>
+  </div>
+</header>
+
+<div class="pagina">
+
+  <nav>
+    <p>Sumário</p>
+    <ol>
+      <li><a href="#comecar">1. Antes de começar</a></li>
+      <li><a href="#perfis">2. Perfis e permissões</a></li>
+      <li><a href="#app">3. App de campo</a></li>
+      <li><a href="#checklist">4. Checklist do Anexo IV</a></li>
+      <li><a href="#fotos">5. Fotos e evidências</a></li>
+      <li><a href="#ia">6. Sugestões da IA</a></li>
+      <li><a href="#parecer">7. Parecer técnico</a></li>
+      <li><a href="#sync">8. Sincronização</a></li>
+      <li><a href="#cadastros">9. Corrigir cadastros</a></li>
+      <li><a href="#painel">10. Painel de gestão</a></li>
+      <li><a href="#laudo">11. Laudo</a></li>
+      <li><a href="#assinatura">12. Assinatura eletrônica</a></li>
+      <li><a href="#recusas">13. O que o sistema recusa</a></li>
+      <li><a href="#problemas">14. Problemas comuns</a></li>
+      <li><a href="#glossario">15. Glossário</a></li>
+    </ol>
+  </nav>
+
+  <main>
+    <h1>Manual do Baliza</h1>
+    <p class="subtitulo">
+      Como usar o sistema de ponta a ponta: da captura no barco, sem sinal, até
+      o laudo do Anexo IV assinado eletronicamente.
+    </p>
+
+    <section id="comecar">
+      <h2>1. Antes de começar</h2>
+
+      <p>
+        O Baliza tem duas partes. O <strong>aplicativo de campo</strong>, no
+        celular, é onde a vistoria acontece — e funciona sem internet. O
+        <strong>painel</strong>, no navegador, é onde se acompanham os números,
+        se baixam os laudos e se registra a assinatura.
+      </p>
+
+      <h3>O que você precisa ter</h3>
+      <ul>
+        <li>
+          Uma conta criada para você no sistema, vinculada ao vistoriador
+          credenciado (a empresa ou a pessoa física registrada no MPA).
+        </li>
+        <li>
+          Se você vai <strong>assinar laudos</strong>: estar cadastrado como
+          responsável técnico, com CPF e número de ART/DHT.
+        </li>
+        <li>
+          Para assinar eletronicamente: conta gov.br nível <strong>prata ou
+          ouro</strong>, ou um certificado ICP-Brasil (e-CPF).
+        </li>
+      </ul>
+
+      <div class="aviso">
+        <p>
+          <strong>O primeiro login precisa de internet.</strong> É a única vez.
+          Depois dele, o app abre e opera offline por tempo indeterminado —
+          inclusive se você ficar dias sem sinal.
+        </p>
+      </div>
+    </section>
+
+    <section id="perfis">
+      <h2>2. Perfis e permissões</h2>
+
+      <p>
+        Cada pessoa tem um perfil, e ele define o que ela pode fazer. Ninguém
+        enxerga dados de outro vistoriador credenciado — o isolamento é
+        aplicado no banco de dados, não apenas na tela.
+      </p>
+
+      <div class="rolagem">
+        <table>
+          <thead>
+            <tr>
+              <th>Perfil</th>
+              <th>Pode</th>
+              <th>Não pode</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>admin</td>
+              <td>
+                Tudo dentro do próprio vistoriador: gerir usuários, atribuir
+                técnicos, emitir laudo, revisar IA.
+              </td>
+              <td>
+                Ver ou alterar dados de outro vistoriador. Concluir parecer de
+                vistoria que não é sua, se não for o responsável designado.
+              </td>
+            </tr>
+            <tr>
+              <td>vistoriador</td>
+              <td>
+                Abrir e conduzir as vistorias em que é o responsável técnico;
+                concluir o parecer; emitir e assinar o laudo.
+              </td>
+              <td>Concluir parecer de vistoria de outro responsável.</td>
+            </tr>
+            <tr>
+              <td>tecnico</td>
+              <td>
+                Apoiar a captura das vistorias atribuídas a ele: checklist,
+                fotos, revisão das sugestões da IA.
+              </td>
+              <td>Concluir parecer. Emitir laudo.</td>
+            </tr>
+            <tr>
+              <td>analista</td>
+              <td>Ler as vistorias do vistoriador e revisar sugestões da IA.</td>
+              <td>
+                Alterar cadastro, capturar evidência, concluir parecer ou
+                emitir laudo.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="aviso">
+        <p>
+          <strong>Só o responsável técnico designado na vistoria conclui o
+          parecer.</strong> Nem o administrador da conta pode fazê-lo no lugar
+          dele. Quem assina sob ART é quem responde.
+        </p>
+      </div>
+    </section>
+
+    <section id="app">
+      <h2>3. App de campo</h2>
+
+      <h3>Entrar</h3>
+      <p>
+        Na primeira vez, com internet, informe e-mail e senha. O app guarda seu
+        perfil no aparelho e passa a abrir offline. Sair do app apaga esse
+        cache — e um novo login exigirá rede outra vez.
+      </p>
+
+      <h3>Tela inicial</h3>
+      <p>
+        Mostra suas vistorias, o estado da sincronização e dois botões:
+        <strong>Nova vistoria</strong> e o ícone de <strong>Cadastros</strong>,
+        onde se corrigem armadores e embarcações já registrados.
+      </p>
+
+      <h3>Abrir uma vistoria</h3>
+      <ol class="passos">
+        <li>
+          Toque em <strong>Nova vistoria</strong>.
+        </li>
+        <li>
+          Escolha um armador já cadastrado ou preencha os dados do
+          proprietário (Anexo IV, seção 2).
+        </li>
+        <li>
+          Preencha os dados da embarcação (seção 3). Deixe em branco o que não
+          mediu.
+        </li>
+        <li>
+          Informe município e UF da vistoria (seção 5) e confirme.
+        </li>
+      </ol>
+      <p>
+        O checklist do Anexo IV é criado junto, já pronto para preencher — e
+        tudo isso funciona sem nenhuma rede.
+      </p>
+
+      <div class="cuidado">
+        <p>
+          <strong>Dimensões e arqueação bruta não são estimadas.</strong> Elas
+          vêm de medição in loco ou do documento da Autoridade Marítima. O que
+          você não mediu deve ficar em branco: o laudo imprime
+          <code>N.A.</code>, que é a informação correta. Zero seria uma medida
+          que ninguém tomou.
+        </p>
+      </div>
+    </section>
+
+    <section id="checklist">
+      <h2>4. Checklist do Anexo IV</h2>
+
+      <p>Cada item tem três respostas:</p>
+      <ul>
+        <li><strong>C</strong> — conforme;</li>
+        <li><strong>NC</strong> — não conforme;</li>
+        <li><strong>N.A.</strong> — não se aplica.</li>
+      </ul>
+      <p>
+        Todo item nasce como <strong>N.A.</strong>. Nada é presumido conforme:
+        o que você não avaliou não vira aprovação por omissão.
+      </p>
+
+      <h3>Modalidade de pesca</h3>
+      <p>
+        É escolha única, como no formulário oficial: marcar uma desmarca as
+        demais.
+      </p>
+
+      <h3>Depois do parecer</h3>
+      <p>
+        Concluído o parecer, as marcações ficam travadas e passam a aparecer
+        por extenso — <em>Conforme</em>, <em>Não conforme</em>, <em>N.A.</em> —
+        em vez das siglas. Travado não quer dizer invisível: você continua
+        lendo o que registrou.
+      </p>
+    </section>
+
+    <section id="fotos">
+      <h2>5. Fotos e evidências</h2>
+
+      <h3>Duas formas de fotografar</h3>
+      <ul>
+        <li>
+          <strong>Câmera na linha do item</strong> — o ícone ao lado de cada
+          item do checklist. A foto fica amarrada àquele ponto.
+        </li>
+        <li>
+          <strong>Foto geral</strong> — o botão no rodapé. Serve para a
+          embarcação como um todo.
+        </li>
+      </ul>
+
+      <div class="aviso">
+        <p>
+          <strong>Fotografar pelo item muda o resultado da análise.</strong> A
+          IA pergunta coisas diferentes conforme o que a foto documenta: numa
+          foto do item "urna frigorífica" ela procura equipamentos; numa foto
+          geral, procura o casco e a inscrição. A mesma cena, fotografada
+          solta, costuma render sugestão inútil.
+        </p>
+      </div>
+
+      <h3>O que cada foto guarda</h3>
+      <p>
+        No instante da captura, ainda offline, o app grava a coordenada, a data
+        e hora, e calcula uma impressão digital do arquivo (hash SHA-256). É
+        isso que permite provar depois que a imagem não foi trocada.
+      </p>
+      <p>
+        Sem sinal de GPS, a foto é gravada assim mesmo, com o motivo
+        registrado. O laudo declara a ausência de coordenada — posição não é
+        inventada para preencher campo.
+      </p>
+
+      <h3>Descartar fotos</h3>
+      <p>
+        Em campo se fotografa demais de propósito: repetir a foto é barato,
+        voltar à embarcação não é. Na seção <strong>Evidências</strong>, marque
+        as caixas das fotos que não quer e toque em <strong>Descartar</strong>.
+      </p>
+      <p>
+        O arquivo é apagado do aparelho, liberando espaço, e o registro fica
+        marcado como descartado — com hash, posição e horário preservados. Se
+        você descartar antes de sincronizar, a foto nunca consome seus dados
+        móveis.
+      </p>
+      <div class="cuidado">
+        <p>
+          Vistoria com laudo já emitido não perde evidência: ali a foto
+          sustenta uma peça assinada.
+        </p>
+      </div>
+    </section>
+
+    <section id="ia">
+      <h2>6. Sugestões da IA</h2>
+
+      <p>
+        Depois que as fotos sincronizam, o sistema as analisa e devolve
+        sugestões: a inscrição lida no casco, o material, os petrechos e os
+        equipamentos reconhecidos. Elas aparecem no app, na seção
+        <strong>Sugestões da IA</strong> dentro da vistoria.
+      </p>
+
+      <h3>Cada cartão mostra</h3>
+      <ul>
+        <li>a foto que originou a sugestão;</li>
+        <li>o que a IA afirma — ou que não conseguiu identificar;</li>
+        <li>o grau de confiança e qual modelo respondeu;</li>
+        <li>três ações: <strong>Confirmar</strong>, <strong>Corrigir</strong> e
+        <strong>Descartar</strong>.</li>
+      </ul>
+
+      <p>
+        <strong>Corrigir</strong> pede que você escreva o que está certo — é
+        esse texto que fica registrado, não a resposta do modelo.
+        <strong>Descartar</strong> também é uma decisão válida e fica gravada.
+      </p>
+
+      <div class="aviso">
+        <p>
+          <strong>Enquanto houver sugestão sem revisão, o laudo não pode ser
+          emitido.</strong> Confirmar uma sugestão não marca item do checklist
+          nem influencia o parecer: quem preenche o checklist é você.
+        </p>
+      </div>
+
+      <p>
+        Se não houver sugestão alguma, a seção nem aparece — em campo, antes de
+        sincronizar, não existe análise, e a tela não inventa pendência.
+      </p>
+    </section>
+
+    <section id="parecer">
+      <h2>7. Parecer técnico</h2>
+
+      <p>
+        No fim da tela da vistoria estão <strong>Aprovar</strong> e
+        <strong>Reprovar</strong>. Só o responsável técnico designado naquela
+        vistoria vê os botões ativos; para os demais, a tela explica por quê.
+      </p>
+      <p>
+        O sistema registra quem concluiu e quando. Depois disso, as marcações
+        do checklist ficam travadas.
+      </p>
+    </section>
+
+    <section id="sync">
+      <h2>8. Sincronização</h2>
+
+      <p>
+        Acontece sozinha, sempre que houver rede. São duas filas independentes:
+        os dados do formulário sobem primeiro; as fotos vão por outra fila, para
+        que um arquivo grande não trave o resto.
+      </p>
+
+      <h3>O painel de sincronização</h3>
+      <p>
+        Na tela inicial, ele diz quantas fotos ainda não subiram e se há
+        alguma falha. Duas situações diferentes:
+      </p>
+      <ul>
+        <li>
+          <strong>Aguardando rede</strong> — normal. Some quando houver sinal.
+        </li>
+        <li>
+          <strong>Fila travada</strong> — o servidor recusou alguma operação
+          por violação de regra. Não se resolve esperando; o motivo aparece na
+          tela.
+        </li>
+      </ul>
+    </section>
+
+    <section id="cadastros">
+      <h2>9. Corrigir cadastros</h2>
+
+      <p>
+        No ícone <strong>Cadastros</strong> da tela inicial estão as
+        embarcações e os armadores já registrados. Toque em um para corrigir.
+      </p>
+      <p>
+        Apagar um campo numérico o deixa <em>não informado</em> — nunca zero.
+        Se a embarcação já teve laudo emitido, a tela avisa: corrigir o
+        cadastro não altera o PDF assinado, que continua dizendo o que dizia
+        quando foi emitido.
+      </p>
+      <p>
+        O perfil <strong>analista</strong> não altera cadastro.
+      </p>
+    </section>
+
+    <section id="painel">
+      <h2>10. Painel de gestão</h2>
+
+      <p>
+        No navegador, entre com a mesma conta do app. Você verá apenas os dados
+        do seu vistoriador.
+      </p>
+
+      <h3>Como ler os números</h3>
+      <ul>
+        <li>
+          <strong>Taxa de aprovação</strong> — calculada sobre as vistorias
+          <em>concluídas</em>, não sobre o total. Vistorias pendentes aparecem
+          ao lado, na mesma barra: um número que esconde o que ainda não foi
+          julgado parece mais firme do que é.
+        </li>
+        <li>
+          <strong>Sem nenhuma vistoria concluída</strong>, a taxa aparece como
+          <code>—</code> e não como 0%. Zero significaria que ninguém foi
+          aprovado, que é outra coisa.
+        </li>
+        <li>
+          <strong>Distribuição da frota</strong> — embarcação sem medida fica
+          fora do gráfico. Contá-la como zero criaria barcos de zero metro.
+        </li>
+        <li>
+          <strong>Mapa</strong> — cada ponto é a média das coordenadas das
+          evidências daquela vistoria. Vistoria sem foto georreferenciada não
+          aparece: ponto inventado num mapa é pior que ponto ausente.
+        </li>
+      </ul>
+
+      <h3>Gestão de usuários (só admin)</h3>
+      <p>
+        Permite alterar perfil e situação, vincular uma conta já existente ao
+        vistoriador, e atribuir um técnico a uma vistoria. O sistema recusa
+        rebaixar ou desativar o <strong>último admin ativo</strong> — sem isso,
+        um clique distraído deixaria a conta sem quem a administre.
+      </p>
+    </section>
+
+    <section id="laudo">
+      <h2>11. Laudo</h2>
+
+      <h3>O que impede a emissão</h3>
+      <p>
+        Antes de emitir, o sistema confere e lista o que falta. Os motivos mais
+        comuns:
+      </p>
+      <ul>
+        <li>parecer ainda pendente;</li>
+        <li>vistoria sem responsável técnico, ou responsável sem ART/DHT;</li>
+        <li>falta município, UF ou data;</li>
+        <li>armador ou embarcação sem nome;</li>
+        <li>sugestão da IA sem revisão humana.</li>
+      </ul>
+
+      <h3>Versões</h3>
+      <p>
+        Laudo emitido é imutável. Se algo precisa mudar, emita de novo: nasce
+        uma <strong>nova versão</strong>, com novo número e novo PDF, e a
+        anterior fica preservada. Nenhuma correção apaga o que foi emitido.
+      </p>
+
+      <h3>Onde encontrar</h3>
+      <p>
+        No painel, seção <strong>Laudos emitidos</strong>: a lista mostra
+        protocolo, embarcação, versão e o estado da assinatura. Dali se baixa o
+        PDF.
+      </p>
+    </section>
+
+    <section id="assinatura">
+      <h2>12. Assinatura eletrônica</h2>
+
+      <p>
+        O sistema <strong>não assina por você</strong>, e sua chave nunca fica
+        guardada nele. Você assina com seu certificado, e o Baliza confere e
+        registra.
+      </p>
+
+      <h3>Passo a passo</h3>
+      <ol class="passos">
+        <li>
+          No painel, em <strong>Laudos emitidos</strong>, escolha o laudo e
+          clique em <strong>Baixar PDF</strong>.
+        </li>
+        <li>
+          Assine o arquivo — no
+          <a href="https://assinador.iti.br">assinador gov.br</a> (conta prata
+          ou ouro) ou com seu certificado ICP-Brasil.
+        </li>
+        <li>
+          Volte ao painel, escolha o arquivo assinado em <strong>Enviar
+          assinados</strong> e clique em registrar.
+        </li>
+      </ol>
+
+      <div class="cuidado">
+        <p>
+          <strong>Não reimprima nem converta o PDF.</strong> Assine exatamente
+          o arquivo baixado. Reimprimir gera outro documento, que deixa de
+          corresponder ao laudo emitido — e o sistema vai recusá-lo, com razão.
+        </p>
+      </div>
+
+      <h3>Vários de uma vez</h3>
+      <p>
+        Você pode enviar uma pilha de PDFs assinados sem dizer qual é de qual
+        laudo: cada arquivo encontra o seu pelo conteúdo. Se um for recusado,
+        os outros entram normalmente, e a tela diz o motivo de cada recusa.
+      </p>
+
+      <h3>O que é conferido</h3>
+      <ul>
+        <li>o arquivo tem assinatura embutida;</li>
+        <li>corresponde a um laudo emitido por você;</li>
+        <li>nada foi alterado depois de assinado;</li>
+        <li>
+          o CPF do certificado é o do responsável técnico daquela vistoria.
+        </li>
+      </ul>
+      <p>
+        A validade jurídica plena pode ser conferida no validador oficial, em
+        <a href="https://validar.iti.gov.br">validar.iti.gov.br</a>.
+      </p>
+    </section>
+
+    <section id="recusas">
+      <h2>13. O que o sistema recusa</h2>
+
+      <p>
+        Estas recusas não são limitação: cada uma existe para que o laudo
+        continue defensável.
+      </p>
+
+      <div class="rolagem">
+        <table>
+          <thead>
+            <tr><th>O sistema recusa</th><th>Por quê</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Emitir laudo com IA não revisada</td>
+              <td>Sugestão que ninguém julgou não acompanha peça assinada.</td>
+            </tr>
+            <tr>
+              <td>Parecer de quem não é o responsável</td>
+              <td>A ART é pessoal. Nem o admin conclui no lugar dele.</td>
+            </tr>
+            <tr>
+              <td>Alterar laudo emitido</td>
+              <td>Correção gera nova versão; a anterior é preservada.</td>
+            </tr>
+            <tr>
+              <td>PDF assinado que não corresponde ao laudo</td>
+              <td>
+                Inclui documento alterado e assinado depois — vira documento
+                válido de outra coisa.
+              </td>
+            </tr>
+            <tr>
+              <td>Assinatura de outra pessoa</td>
+              <td>O certificado tem de ser do responsável daquela vistoria.</td>
+            </tr>
+            <tr>
+              <td>Conteúdo anexado depois da assinatura</td>
+              <td>
+                É o modo clássico de fraudar PDF: mudar o que a página mostra
+                sem tocar no que foi assinado.
+              </td>
+            </tr>
+            <tr>
+              <td>IA preencher dimensões ou arqueação</td>
+              <td>Vêm de medição ou do documento oficial. Nunca de estimativa.</td>
+            </tr>
+            <tr>
+              <td>Enviar foto real a IA que treina com os dados</td>
+              <td>Proteção de dado pessoal; a liberação é explícita.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="problemas">
+      <h2>14. Problemas comuns</h2>
+
+      <div class="rolagem">
+        <table>
+          <thead>
+            <tr><th>Situação</th><th>O que fazer</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Não consigo entrar pela primeira vez</td>
+              <td>
+                O primeiro login exige internet. Se a mensagem falar em perfil
+                não liberado, peça ao admin do seu vistoriador para ativar seu
+                acesso.
+              </td>
+            </tr>
+            <tr>
+              <td>Marquei C/NC e parece que sumiu</td>
+              <td>
+                Depois do parecer concluído as marcações ficam travadas e
+                aparecem por extenso, não como botões. Nada se perdeu.
+              </td>
+            </tr>
+            <tr>
+              <td>A câmera do item não abre</td>
+              <td>
+                Verifique se a vistoria ainda tem itens carregados e se o app
+                tem permissão de câmera no aparelho.
+              </td>
+            </tr>
+            <tr>
+              <td>As fotos não sobem</td>
+              <td>
+                Sem rede, é o esperado. Se o painel indicar fila travada, o
+                motivo aparece ali — é violação de regra, não falta de sinal.
+              </td>
+            </tr>
+            <tr>
+              <td>Não aparece sugestão da IA</td>
+              <td>
+                A análise só ocorre depois que a foto sincroniza. Sem rede,
+                não há análise — e isso não impede a vistoria.
+              </td>
+            </tr>
+            <tr>
+              <td>Meu PDF assinado foi recusado</td>
+              <td>
+                Confira se assinou o arquivo baixado do sistema, sem
+                reimprimir, e se o certificado é o do responsável técnico
+                daquela vistoria.
+              </td>
+            </tr>
+            <tr>
+              <td>Não consigo emitir o laudo</td>
+              <td>
+                A tela de prontidão lista exatamente o que falta. Resolva os
+                itens e emita de novo.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="glossario">
+      <h2>15. Glossário</h2>
+
+      <div class="rolagem">
+        <table>
+          <tbody>
+            <tr>
+              <td>Anexo IV</td>
+              <td>
+                Relatório de Vistoria de Embarcação de Pesca, formulário da
+                Portaria MPA nº 397/2024. É o que o laudo reproduz.
+              </td>
+            </tr>
+            <tr>
+              <td>PROPESC</td>
+              <td>Programa a que a vistoria se refere.</td>
+            </tr>
+            <tr>
+              <td>ART / DHT</td>
+              <td>
+                Registro de responsabilidade técnica do profissional que assina
+                o laudo.
+              </td>
+            </tr>
+            <tr>
+              <td>Armador</td>
+              <td>
+                Proprietário da embarcação. É dado cadastral: não acessa o
+                sistema.
+              </td>
+            </tr>
+            <tr>
+              <td>Evidência</td>
+              <td>
+                Foto capturada na vistoria, com coordenada, horário e hash.
+              </td>
+            </tr>
+            <tr>
+              <td>Hash SHA-256</td>
+              <td>
+                Impressão digital de um arquivo. Se um único byte mudar, o
+                hash muda — é o que prova que a foto é a mesma.
+              </td>
+            </tr>
+            <tr>
+              <td>Veredito humano</td>
+              <td>
+                Sua decisão sobre a sugestão da IA: confirmar, corrigir ou
+                descartar.
+              </td>
+            </tr>
+            <tr>
+              <td>Protocolo</td>
+              <td>
+                Identificador do laudo emitido, com a versão. Muda a cada nova
+                versão.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer>
+      <p>
+        O Baliza organiza, registra e documenta a vistoria. A responsabilidade
+        técnica pelo parecer e pelo laudo é do vistoriador credenciado, sob
+        ART/DHT.
+      </p>
+    </footer>
+  </main>
+</div>
