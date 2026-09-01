@@ -223,11 +223,17 @@
 
   .rastro dd { margin: 0; color: var(--tinta-2); }
 
+  /* Duas colunas fixas: os quatro paineis se leem aos pares, e o auto-fit
+     deixava um sozinho na ultima linha. */
   .telas {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 26px;
     margin-top: 32px;
+  }
+
+  @media (max-width: 620px) {
+    .telas { grid-template-columns: 1fr; }
   }
 
   .tela {
@@ -375,10 +381,11 @@
       <span class="selo">Para vistoriadores credenciados no MPA</span>
 
       <figure class="cena">
-        <svg viewBox="0 0 880 280" role="img"
-             aria-label="No barco, sem internet, o celular grava a vistoria e
-                         as fotos. Quando aparece sinal, tudo sobe para a
-                         nuvem. Depois, o relatório é gerado em PDF.">
+        <svg viewBox="0 0 880 374" role="img"
+             aria-label="No barco, sem internet, o celular grava a vistoria e as
+                         fotos. Quando aparece sinal, tudo sobe para a nuvem, e
+                         de lá saem duas coisas: o relatório em PDF e o painel
+                         no navegador.">
           <defs>
             <marker id="h-seta" viewBox="0 0 10 10" refX="9" refY="5"
                     markerWidth="7" markerHeight="7" orient="auto-start-reverse">
@@ -386,119 +393,154 @@
             </marker>
           </defs>
 
-          <rect x="10" y="34" width="396" height="212" rx="12" fill="none"
+          <rect x="10" y="40" width="396" height="216" rx="12" fill="none"
                 stroke="var(--sinal)" stroke-width="2" stroke-dasharray="8 6"/>
-          <text x="28" y="24" font-size="12" font-weight="700"
+          <text x="28" y="30" font-size="12" font-weight="700"
                 fill="var(--sinal)" font-family="Archivo, sans-serif">
             NO BARCO — SEM INTERNET
           </text>
 
-          <path d="M0 210 H392 V246 H0 Z" fill="var(--mar)"/>
-          <path d="M0 210 q20 -6 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0
+          <path d="M0 224 H392 V256 H0 Z" fill="var(--mar)"/>
+          <path d="M0 224 q20 -6 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0
                    t40 0 t32 0" fill="none" stroke="var(--linha-forte)"
                 stroke-width="2"/>
 
-          <path d="M56 210 L78 184 H214 L236 210 Z" fill="none"
+          <path d="M52 224 L74 198 H210 L232 224 Z" fill="none"
                 stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
-          <rect x="130" y="146" width="60" height="38" rx="3" fill="none"
+          <rect x="126" y="160" width="60" height="38" rx="3" fill="none"
                 stroke="currentColor" stroke-width="2.5"/>
-          <line x1="106" y1="184" x2="106" y2="118"
+          <line x1="102" y1="198" x2="102" y2="132"
                 stroke="currentColor" stroke-width="2.5"/>
-          <line x1="106" y1="124" x2="148" y2="146"
+          <line x1="102" y1="138" x2="144" y2="160"
                 stroke="currentColor" stroke-width="2"/>
-          <circle cx="106" cy="112" r="5" fill="var(--sinal)"/>
+          <circle cx="102" cy="126" r="5" fill="var(--sinal)"/>
 
-          <rect x="266" y="96" width="118" height="122" rx="10"
+          <rect x="286" y="104" width="90" height="138" rx="13"
                 fill="var(--surface)" stroke="currentColor" stroke-width="2.5"/>
-          <rect x="278" y="110" width="94" height="14" rx="3"
-                fill="var(--sinal)" opacity="0.25"/>
-          <line x1="278" y1="140" x2="336" y2="140"
+          <rect x="316" y="112" width="30" height="4" rx="2"
+                fill="currentColor" opacity="0.45"/>
+          <rect x="294" y="124" width="74" height="11" rx="2"
+                fill="var(--sinal)" opacity="0.3"/>
+          <line x1="302" y1="152" x2="336" y2="152"
                 stroke="currentColor" stroke-width="2" opacity="0.4"/>
-          <path d="M348 136 l6 6 l12 -14" fill="none" stroke="var(--conforme)"
-                stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-          <line x1="278" y1="164" x2="336" y2="164"
+          <path d="M342 152 l5 5 l10 -12" fill="none" stroke="var(--conforme)"
+                stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="302" y1="176" x2="336" y2="176"
                 stroke="currentColor" stroke-width="2" opacity="0.4"/>
-          <path d="M348 160 l6 6 l12 -14" fill="none" stroke="var(--conforme)"
-                stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-          <line x1="278" y1="188" x2="320" y2="188"
+          <path d="M342 176 l5 5 l10 -12" fill="none" stroke="var(--conforme)"
+                stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+          <line x1="302" y1="200" x2="326" y2="200"
                 stroke="currentColor" stroke-width="2" opacity="0.4"/>
+          <rect x="316" y="230" width="30" height="4" rx="2"
+                fill="currentColor" opacity="0.45"/>
 
-          <circle cx="266" cy="96" r="13" fill="var(--sinal)"/>
-          <text x="266" y="101" text-anchor="middle" font-size="14"
+          <circle cx="286" cy="104" r="13" fill="var(--sinal)"/>
+          <text x="286" y="109" text-anchor="middle" font-size="14"
                 font-weight="700" fill="#ffffff"
                 font-family="Archivo, sans-serif">1</text>
-          <text x="325" y="240" text-anchor="middle" font-size="13"
+          <text x="331" y="286" text-anchor="middle" font-size="13"
                 font-weight="600" fill="currentColor"
                 font-family="Archivo, sans-serif">
             checklist e fotos
           </text>
-          <text x="325" y="260" text-anchor="middle" font-size="13"
+          <text x="331" y="306" text-anchor="middle" font-size="13"
                 fill="currentColor" opacity="0.7"
                 font-family="Archivo, sans-serif">
             gravados no aparelho
           </text>
 
-          <line x1="418" y1="150" x2="556" y2="150" stroke="var(--sinal)"
+          <line x1="418" y1="172" x2="502" y2="172" stroke="var(--sinal)"
                 stroke-width="2.5" stroke-dasharray="7 6"
                 marker-end="url(#h-seta)"/>
-          <text x="487" y="140" text-anchor="middle" font-size="13"
+          <text x="460" y="160" text-anchor="middle" font-size="13"
                 fill="var(--sinal)" font-family="Archivo, sans-serif">
             quando houver sinal
           </text>
 
-          <path d="M580 158 a24 24 0 0 1 24 -24 a30 30 0 0 1 56 6
+          <path d="M520 196 a24 24 0 0 1 24 -24 a30 30 0 0 1 56 6
                    a20 20 0 0 1 -4 40 h-62 a22 22 0 0 1 -14 -22 z"
                 fill="var(--surface)" stroke="currentColor" stroke-width="2.5"
                 stroke-linejoin="round"/>
-          <circle cx="578" cy="130" r="13" fill="var(--sinal)"/>
-          <text x="578" y="135" text-anchor="middle" font-size="14"
+          <circle cx="518" cy="168" r="13" fill="var(--sinal)"/>
+          <text x="518" y="173" text-anchor="middle" font-size="14"
                 font-weight="700" fill="#ffffff"
                 font-family="Archivo, sans-serif">2</text>
-          <text x="622" y="240" text-anchor="middle" font-size="13"
+          <text x="562" y="286" text-anchor="middle" font-size="13"
                 font-weight="600" fill="currentColor"
                 font-family="Archivo, sans-serif">
             sobem sozinhos
           </text>
-          <text x="622" y="260" text-anchor="middle" font-size="13"
+          <text x="562" y="306" text-anchor="middle" font-size="13"
                 fill="currentColor" opacity="0.7"
                 font-family="Archivo, sans-serif">
             e a IA analisa as fotos
           </text>
 
-          <line x1="694" y1="150" x2="752" y2="150" stroke="var(--sinal)"
+          <path d="M614 178 q48 -6 78 -40" fill="none" stroke="var(--sinal)"
+                stroke-width="2.5" marker-end="url(#h-seta)"/>
+          <path d="M614 202 q48 6 78 40" fill="none" stroke="var(--sinal)"
                 stroke-width="2.5" marker-end="url(#h-seta)"/>
 
-          <path d="M772 96 h84 v122 h-84 z" fill="var(--surface)"
+          <path d="M706 44 h74 v104 h-74 z" fill="var(--surface)"
                 stroke="currentColor" stroke-width="2.5"/>
-          <line x1="788" y1="120" x2="840" y2="120"
+          <line x1="720" y1="66" x2="766" y2="66"
                 stroke="var(--sinal)" stroke-width="3"/>
-          <line x1="788" y1="140" x2="840" y2="140"
+          <line x1="720" y1="84" x2="766" y2="84"
                 stroke="currentColor" stroke-width="2" opacity="0.4"/>
-          <line x1="788" y1="156" x2="840" y2="156"
+          <line x1="720" y1="100" x2="766" y2="100"
                 stroke="currentColor" stroke-width="2" opacity="0.4"/>
-          <line x1="788" y1="172" x2="822" y2="172"
-                stroke="currentColor" stroke-width="2" opacity="0.4"/>
-          <line x1="788" y1="198" x2="828" y2="198"
+          <line x1="720" y1="130" x2="754" y2="130"
                 stroke="currentColor" stroke-width="2.5"/>
-          <circle cx="772" cy="96" r="13" fill="var(--sinal)"/>
-          <text x="772" y="101" text-anchor="middle" font-size="14"
+          <circle cx="706" cy="44" r="13" fill="var(--sinal)"/>
+          <text x="706" y="49" text-anchor="middle" font-size="14"
                 font-weight="700" fill="#ffffff"
                 font-family="Archivo, sans-serif">3</text>
-          <text x="814" y="240" text-anchor="middle" font-size="13"
+          <text x="812" y="86" font-size="13" font-weight="600"
+                fill="currentColor" font-family="Archivo, sans-serif">
+            relatório
+          </text>
+          <text x="812" y="106" font-size="13" fill="currentColor"
+                opacity="0.7" font-family="Archivo, sans-serif">
+            em PDF
+          </text>
+
+          <rect x="706" y="216" width="152" height="106" rx="8"
+                fill="var(--surface)" stroke="currentColor" stroke-width="2.5"/>
+          <line x1="706" y1="238" x2="858" y2="238"
+                stroke="currentColor" stroke-width="2"/>
+          <circle cx="719" cy="227" r="3.4" fill="currentColor" opacity="0.5"/>
+          <circle cx="731" cy="227" r="3.4" fill="currentColor" opacity="0.5"/>
+          <circle cx="743" cy="227" r="3.4" fill="currentColor" opacity="0.5"/>
+          <rect x="722" y="288" width="16" height="22" fill="var(--conforme)"
+                opacity="0.85"/>
+          <rect x="746" y="270" width="16" height="40" fill="var(--sinal)"
+                opacity="0.85"/>
+          <rect x="770" y="282" width="16" height="28" fill="var(--conforme)"
+                opacity="0.85"/>
+          <path d="M806 306 q10 -30 22 -22 q10 6 20 -14" fill="none"
+                stroke="var(--sinal)" stroke-width="2.2"
+                stroke-linecap="round"/>
+          <circle cx="806" cy="306" r="3" fill="var(--sinal)"/>
+          <circle cx="848" cy="270" r="3" fill="var(--sinal)"/>
+          <circle cx="706" cy="216" r="13" fill="var(--sinal)"/>
+          <text x="706" y="221" text-anchor="middle" font-size="14"
+                font-weight="700" fill="#ffffff"
+                font-family="Archivo, sans-serif">4</text>
+          <text x="782" y="344" text-anchor="middle" font-size="13"
                 font-weight="600" fill="currentColor"
                 font-family="Archivo, sans-serif">
-            relatório em PDF
+            painel no navegador
           </text>
-          <text x="814" y="260" text-anchor="middle" font-size="13"
+          <text x="782" y="362" text-anchor="middle" font-size="13"
                 fill="currentColor" opacity="0.7"
                 font-family="Archivo, sans-serif">
-            pronto para assinar
+            números, mapa e laudos
           </text>
         </svg>
         <figcaption>
           Só a etapa 1 acontece no barco — e é a única que não pode falhar por
-          falta de rede. As outras duas esperam o sinal, sem segurar o seu
-          trabalho.
+          falta de rede. Da nuvem saem duas coisas: o documento que você assina
+          e o painel onde acompanha a operação.
         </figcaption>
       </figure>
     </div>
