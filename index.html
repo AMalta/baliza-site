@@ -128,6 +128,17 @@
     padding: 6px 14px;
   }
 
+  .secundario-claro {
+    display: inline-block;
+    margin-left: 16px;
+    font-family: var(--sans);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .secundario-claro:hover { text-decoration: underline; }
+
   figure { margin: 0; }
 
   .cena {
@@ -285,6 +296,65 @@
     max-width: 66ch;
   }
 
+  /* ---------- demonstração ---------- */
+
+  .demo {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 26px;
+    margin-top: 32px;
+    align-items: start;
+  }
+
+  .demo-acao {
+    background: var(--ground-2);
+    border: 1px solid var(--linha);
+    border-radius: 12px;
+    padding: 26px 22px;
+    text-align: center;
+  }
+
+  .demo-acao .botao { margin-top: 0; }
+
+  .demo-meta {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--tinta-3);
+    margin: 14px 0 0;
+  }
+
+  .demo-nota h3 { font-size: 17px; margin-bottom: 12px; }
+
+  .demo-nota ul {
+    margin: 0;
+    padding-left: 20px;
+    font-size: 15px;
+    color: var(--tinta-2);
+  }
+
+  .demo-nota li { margin-bottom: 8px; }
+
+  .demo-rodape {
+    font-size: 14px;
+    color: var(--tinta-3);
+    margin: 14px 0 0;
+  }
+
+  .demo-avisos {
+    border: 1px solid var(--linha);
+    border-radius: 12px;
+    padding: 24px 26px;
+    margin-top: 32px;
+  }
+
+  .demo-avisos p {
+    font-size: 15px;
+    color: var(--tinta-2);
+    max-width: 68ch;
+  }
+
+  .demo-avisos p:last-child { margin-bottom: 0; }
+
   details { border-bottom: 1px solid var(--linha); padding: 18px 0; }
 
   summary {
@@ -379,6 +449,7 @@
         Quando aparecer sinal, sobe sozinho — e o relatório sai pronto em PDF.
       </p>
       <span class="selo">Para vistoriadores credenciados no MPA</span>
+      <a class="secundario-claro" href="#demonstracao">Experimentar no meu celular →</a>
 
       <figure class="cena">
         <svg viewBox="0 0 880 374" role="img"
@@ -1036,6 +1107,80 @@
         as pendentes aparecem ao lado — número que esconde o que falta julgar
         parece mais firme do que é.
       </p>
+    </section>
+
+    <section id="demonstracao">
+      <p class="rotulo">Experimente</p>
+      <h2>Instale e faça uma vistoria agora, no seu celular.</h2>
+      <div class="estreito">
+        <p>
+          A demonstração é o aplicativo de campo de verdade, não um vídeo nem
+          uma simulação: você abre uma vistoria, preenche o checklist,
+          fotografa e vê cada foto ser registrada com posição, horário e
+          impressão digital. <strong>Ponha o telefone em modo avião antes, se
+          quiser</strong> — é assim que ele foi feito para trabalhar.
+        </p>
+      </div>
+
+      <div class="demo">
+        <div class="demo-acao">
+          <a class="botao" href="baliza-demonstracao.apk" download>
+            Baixar para Android
+          </a>
+          <p class="demo-meta">
+            21 MB · Android 6 ou superior
+          </p>
+        </div>
+        <div class="demo-nota">
+          <h3>O que a demonstração faz</h3>
+          <ul>
+            <li>Abre vistoria, armador e embarcação</li>
+            <li>Checklist completo, com C, NC e N.A.</li>
+            <li>Câmera por item, com posição e horário</li>
+            <li>Funciona sem nenhum sinal</li>
+          </ul>
+        </div>
+        <div class="demo-nota">
+          <h3>O que fica de fora</h3>
+          <ul>
+            <li>Sincronização — nada sai do aparelho</li>
+            <li>Análise das fotos pela IA</li>
+            <li>Emissão do laudo em PDF</li>
+            <li>Painel de gestão</li>
+          </ul>
+          <p class="demo-rodape">
+            Essas etapas dependem de servidor. O laudo e o painel você vê
+            acima, nesta página.
+          </p>
+        </div>
+      </div>
+
+      <div class="demo-avisos">
+        <p>
+          <strong>Nenhum dado seu sai do telefone.</strong> A demonstração não
+          tem login, não conversa com servidor nenhum e não envia foto a lugar
+          algum. Para removê-la, desinstale como qualquer aplicativo — ela sai
+          inteira, com o que você tiver criado.
+        </p>
+        <p>
+          O Android vai avisar que o arquivo veio de fora da Play Store e pedir
+          sua autorização. Isso é esperado num aplicativo distribuído
+          diretamente; a demonstração ainda não está publicada na loja.
+        </p>
+        <p>
+          Na lista de permissões você verá <strong>acesso à internet</strong>,
+          além de câmera e localização. Ela vem das bibliotecas que o
+          aplicativo completo usa para sincronizar e fica no pacote mesmo sem
+          uso — a demonstração não abre conexão alguma. Se preferir não
+          confiar na nossa palavra, use o modo avião: tudo funciona igual.
+        </p>
+        <p>
+          Ela se instala <strong>ao lado</strong> do aplicativo real, sem
+          conflito — se depois você virar cliente, recebe o aplicativo completo
+          sem precisar desinstalar nada. O que você criou na demonstração fica
+          nela: seus registros de verdade começam limpos, como devem começar.
+        </p>
+      </div>
     </section>
 
     <section>
