@@ -312,6 +312,38 @@
     max-width: 62ch;
   }
 
+  /* ---------- amostra do laudo ---------- */
+
+  .amostra {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+    margin: 32px 0 0;
+  }
+
+  .folha {
+    display: block;
+    border: 1px solid var(--linha);
+    border-radius: 6px;
+    overflow: hidden;
+    background: #ffffff;
+    box-shadow: 0 2px 14px rgba(11, 27, 43, 0.09);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+
+  .folha:hover {
+    box-shadow: 0 6px 24px rgba(11, 27, 43, 0.16);
+    transform: translateY(-2px);
+  }
+
+  .folha img { display: block; width: 100%; height: auto; }
+
+  .legenda {
+    font-size: 14px;
+    color: var(--tinta-3);
+    margin-top: 14px;
+  }
+
   /* ---------- chamada final ---------- */
 
   .contato {
@@ -565,11 +597,34 @@
           Vários laudos podem ser assinados de uma vez — e você não precisa
           dizer qual arquivo é de qual: cada um encontra o seu.
         </p>
-        <p>
-          <a href="laudo-demonstracao.pdf">Veja um laudo de exemplo</a>, gerado
-          pelo sistema com dados fictícios.
-        </p>
       </div>
+
+      <div class="amostra">
+        <a class="folha" href="laudo-demonstracao.pdf">
+          <img
+            src="laudo-pagina-1.png"
+            width="1191" height="1684" loading="lazy"
+            alt="Primeira página do laudo: identificação do vistoriador e do
+                 armador, dados técnicos da embarcação, operação e métodos de
+                 pesca, e o parecer técnico conclusivo."
+          >
+        </a>
+        <a class="folha" href="laudo-demonstracao.pdf">
+          <img
+            src="laudo-pagina-2.png"
+            width="1191" height="1684" loading="lazy"
+            alt="Segunda página do laudo: registro fotográfico, com coordenada,
+                 horário e hash de cada evidência."
+          >
+        </a>
+      </div>
+
+      <p class="legenda">
+        Laudo gerado pelo sistema, com dados fictícios. Clique para abrir o
+        <a href="laudo-demonstracao.pdf">PDF completo</a> — repare que uma das
+        evidências está sem coordenada, e o documento declara a ausência em vez
+        de escondê-la.
+      </p>
     </section>
 
     <section>
