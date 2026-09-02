@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel de demonstração — Baliza</title>
+<meta name="description" content="Painel de gestão do Baliza, com dados fictícios. Veja como a operação aparece depois das vistorias sincronizadas.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<script src="https://cdn.plot.ly/plotly-2.35.2.min.js" charset="utf-8"></script>
+<style>
+  :root {
+    --ground: #ffffff; --ground-2: #f3f6f7; --surface: #ffffff;
+    --tinta: #0b1b2b; --tinta-2: #3e5568; --tinta-3: #6a8091;
+    --linha: #d8dee2; --sinal: #d9531e; --conforme: #0f6b4f;
+    --reprova: #b3402a; --pendente: #d9a441;
+    --sans: Archivo, ui-sans-serif, system-ui, sans-serif;
+    --serif: "Source Serif 4", Georgia, serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #07141d; --ground-2: #0c1e29; --surface: #0e2331;
+      --tinta: #e9f0f4; --tinta-2: #a9bfcc; --tinta-3: #7d95a3;
+      --linha: #1e3948; --sinal: #ff7a4d; --conforme: #55c79d;
+      --reprova: #e8765c; --pendente: #e0aa4a;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--ground); color: var(--tinta);
+    font-family: var(--serif); font-size: 16px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  header { border-bottom: 1px solid var(--linha); }
+  .barra {
+    max-width: 1080px; margin: 0 auto; padding: 16px 24px;
+    display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+  }
+  .marca { font-family: var(--sans); font-weight: 700; font-size: 18px; }
+  .marca em { font-style: normal; color: var(--sinal); }
+  .barra span { font-size: 14px; color: var(--tinta-3); }
+  .barra a { margin-left: auto; font-size: 14px; color: var(--sinal); }
+  main { max-width: 1080px; margin: 0 auto; padding: 28px 24px 72px; }
+  h1 {
+    font-family: var(--sans); font-size: clamp(24px, 4vw, 32px);
+    font-weight: 700; letter-spacing: -0.02em; margin: 0 0 10px;
+  }
+  .chamada { color: var(--tinta-2); max-width: 62ch; margin: 0 0 8px; }
+  .ficticio {
+    display: inline-block; font-family: var(--sans); font-size: 13px;
+    font-weight: 600; color: var(--sinal); background: rgba(217, 83, 30, 0.1);
+    border: 1px solid var(--sinal); border-radius: 999px;
+    padding: 5px 14px; margin: 14px 0 0;
+  }
+  .indicadores {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 16px; margin: 28px 0;
+  }
+  .caixa {
+    background: var(--ground-2); border: 1px solid var(--linha);
+    border-radius: 12px; padding: 18px 20px;
+  }
+  .caixa .rotulo {
+    font-family: var(--sans); font-size: 12px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--tinta-3);
+  }
+  .caixa .numero {
+    font-family: var(--sans); font-size: 30px; font-weight: 700;
+    line-height: 1.1; margin-top: 6px; font-variant-numeric: tabular-nums;
+  }
+  .caixa .nota { font-size: 13px; color: var(--tinta-3); margin-top: 4px; }
+  .filtro {
+    display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+    font-family: var(--sans); font-size: 14px; margin-bottom: 20px;
+  }
+  .filtro select {
+    font: inherit; padding: 7px 10px; border-radius: 8px;
+    border: 1px solid var(--linha); background: var(--surface);
+    color: var(--tinta);
+  }
+  .graficos {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 20px;
+  }
+  .grafico {
+    background: var(--surface); border: 1px solid var(--linha);
+    border-radius: 12px; padding: 16px; overflow: hidden;
+  }
+  .grafico h2 {
+    font-family: var(--sans); font-size: 15px; font-weight: 600;
+    margin: 0 0 4px;
+  }
+  .grafico p { font-size: 13px; color: var(--tinta-3); margin: 0 0 10px; }
+  .largo { grid-column: 1 / -1; }
+  footer {
+    max-width: 1080px; margin: 0 auto; padding: 24px;
+    border-top: 1px solid var(--linha); font-size: 14px; color: var(--tinta-3);
+  }
+  footer p { max-width: 70ch; }
+  a { color: var(--sinal); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="barra">
+    <span class="marca">Bal<em>i</em>za</span>
+    <span>Painel de gestão</span>
+    <a href="index.html">← voltar ao site</a>
+  </div>
+</header>
+
+<main>
+  <h1>O painel, com dados de exemplo</h1>
+  <p class="chamada">
+    É o que o vistoriador vê depois que as vistorias sincronizam: onde aprova,
+    onde reprova, o que mais aparece como não conforme e onde a frota está.
+    Explore à vontade — passe o mouse, dê zoom, filtre por estado.
+  </p>
+  <span class="ficticio">Todos os números aqui são inventados</span>
+
+  <div class="indicadores" id="indicadores"></div>
+
+  <div class="filtro">
+    <label for="uf">Estado</label>
+    <select id="uf"><option value="">todos</option></select>
+    <span id="contagem" style="color:var(--tinta-3)"></span>
+  </div>
+
+  <div class="graficos">
+    <div class="grafico">
+      <h2>Parecer por estado</h2>
+      <p>As pendentes aparecem na mesma barra: número que esconde o que falta julgar parece mais firme do que é.</p>
+      <div id="g-parecer"></div>
+    </div>
+    <div class="grafico">
+      <h2>Não conformidades mais frequentes</h2>
+      <p>O que mais reprova.</p>
+      <div id="g-nc"></div>
+    </div>
+    <div class="grafico">
+      <h2>Frota por comprimento</h2>
+      <p>Embarcação sem medida fica fora — contá-la como zero criaria barco de zero metro.</p>
+      <div id="g-comp"></div>
+    </div>
+    <div class="grafico">
+      <h2>Material do casco</h2>
+      <p>A composição da frota vistoriada.</p>
+      <div id="g-mat"></div>
+    </div>
+    <div class="grafico largo">
+      <h2>Onde as vistorias aconteceram</h2>
+      <p>Cada ponto é a média das coordenadas das fotos daquela vistoria. Vistoria sem foto georreferenciada não aparece: ponto inventado num mapa é pior que ponto ausente.</p>
+      <div id="g-mapa"></div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>
+    Painel de demonstração do <strong>Baliza</strong>, sistema de apoio à
+    vistoria de embarcação pesqueira conforme a Portaria MPA nº 397/2024.
+    Nenhum dado aqui é real: não há foto, laudo nem nome de pessoa — só
+    números agregados, gerados para exemplo.
+  </p>
+  <p>
+    <a href="index.html">Conhecer o Baliza</a> ·
+    <a href="manual.html">Manual completo</a> ·
+    <a href="https://wa.me/5573991051624">Falar no WhatsApp</a>
+  </p>
+</footer>
+
+<script>
+const DADOS = {"parecer": [{"uf": "BA", "aprovadas": 2, "reprovadas": 2, "pendentes": 0}, {"uf": "CE", "aprovadas": 2, "reprovadas": 1, "pendentes": 0}, {"uf": "PA", "aprovadas": 0, "reprovadas": 1, "pendentes": 0}, {"uf": "PB", "aprovadas": 1, "reprovadas": 0, "pendentes": 2}, {"uf": "PR", "aprovadas": 1, "reprovadas": 2, "pendentes": 0}, {"uf": "RS", "aprovadas": 2, "reprovadas": 0, "pendentes": 1}, {"uf": "SC", "aprovadas": 0, "reprovadas": 1, "pendentes": 1}, {"uf": "SP", "aprovadas": 3, "reprovadas": 3, "pendentes": 0}], "material": [{"material": "madeira", "n": 15}, {"material": "fibra", "n": 5}, {"material": "aco", "n": 4}], "comprimentos": [15.0, 14.2, 20.0, 15.3, 7.5, 22.1, 8.9, 17.3, 11.7, 12.5, 10.0, 15.0, 19.0, 9.8, 10.1, 13.6, 11.6, 11.4, 9.4, 23.6, 20.4, 23.5, 23.2], "nao_conformidades": [{"item": "Urna Frigorifica com Gelo", "n": 14}, {"item": "Inscricao da Capitania no casco", "n": 11}, {"item": "Guincho", "n": 3}, {"item": "Petrecho: arrasto", "n": 3}, {"item": "Petrecho: linha / anzol", "n": 2}, {"item": "Petrecho: rede de emalhar", "n": 2}, {"item": "GPS / Sonda", "n": 2}], "mapa": [{"uf": "SP", "lat": -23.9076731152989, "lon": -46.3567594755657, "parecer": "aprovado"}, {"uf": "BA", "lat": -14.8202874998648, "lon": -39.029992291414, "parecer": "reprovado"}, {"uf": "RS", "lat": -32.1278228787766, "lon": -52.0307700207867, "parecer": "aprovado"}, {"uf": "CE", "lat": -3.53591687692839, "lon": -38.4973496790327, "parecer": "reprovado"}, {"uf": "RS", "lat": -32.0215808039927, "lon": -52.0888510964721, "parecer": "aprovado"}, {"uf": "SP", "lat": -24.0531682284194, "lon": -46.4375014235238, "parecer": "reprovado"}, {"uf": "PB", "lat": -6.88894721193227, "lon": -34.745976761323, "parecer": "pendente"}, {"uf": "PA", "lat": -1.5557016705262, "lon": -48.452854603305, "parecer": "reprovado"}, {"uf": "CE", "lat": -3.92995381231283, "lon": -38.6119831255288, "parecer": "aprovado"}, {"uf": "SC", "lat": -26.8133872223844, "lon": -48.5749770683835, "parecer": "pendente"}, {"uf": "SP", "lat": -24.0253916720592, "lon": -46.1519449146867, "parecer": "aprovado"}, {"uf": "BA", "lat": -20.28489815, "lon": -40.29827355, "parecer": "aprovado"}, {"uf": "PB", "lat": -6.87593894389799, "lon": -34.7973474826641, "parecer": "pendente"}, {"uf": "CE", "lat": -3.71887293353826, "lon": -38.602949016148, "parecer": "aprovado"}, {"uf": "BA", "lat": -14.8581894561581, "lon": -39.0451041493246, "parecer": "reprovado"}, {"uf": "PR", "lat": -25.650798771204, "lon": -48.5762309482106, "parecer": "aprovado"}, {"uf": "PR", "lat": -25.3719907259018, "lon": -48.6113068395778, "parecer": "reprovado"}, {"uf": "SP", "lat": -23.9778982697429, "lon": -46.2966115251268, "parecer": "reprovado"}, {"uf": "PB", "lat": -6.80317911306812, "lon": -34.5925530674713, "parecer": "aprovado"}], "resumo": {"vistorias": 25, "concluidas": 21, "taxa": 52, "embarcacoes": 27}};
+
+const escuro = window.matchMedia("(prefers-color-scheme: dark)").matches
+  && document.documentElement.dataset.theme !== "light";
+const COR = {
+  tinta: escuro ? "#e9f0f4" : "#0b1b2b",
+  fraca: escuro ? "#7d95a3" : "#6a8091",
+  linha: escuro ? "#1e3948" : "#d8dee2",
+  conforme: escuro ? "#55c79d" : "#0f6b4f",
+  reprova: escuro ? "#e8765c" : "#b3402a",
+  pendente: escuro ? "#e0aa4a" : "#d9a441",
+  sinal: escuro ? "#ff7a4d" : "#d9531e",
+};
+
+const BASE = {
+  paper_bgcolor: "rgba(0,0,0,0)",
+  plot_bgcolor: "rgba(0,0,0,0)",
+  font: { family: "Archivo, sans-serif", color: COR.tinta, size: 12 },
+  margin: { l: 50, r: 16, t: 10, b: 40 },
+  xaxis: { gridcolor: COR.linha, zerolinecolor: COR.linha },
+  yaxis: { gridcolor: COR.linha, zerolinecolor: COR.linha },
+  legend: { orientation: "h", y: -0.2 },
+  height: 300,
+};
+const OPCOES = { displayModeBar: false, responsive: true };
+
+function indicadores(r, n) {
+  const taxa = r.taxa === null ? "—" : r.taxa + "%";
+  const notaTaxa = r.taxa === null
+    ? "nenhuma vistoria concluída ainda"
+    : "sobre " + r.concluidas + " concluída(s)";
+  document.getElementById("indicadores").innerHTML = `
+    <div class="caixa"><div class="rotulo">Vistorias</div>
+      <div class="numero">${n}</div>
+      <div class="nota">${r.concluidas} concluída(s)</div></div>
+    <div class="caixa"><div class="rotulo">Taxa de aprovação</div>
+      <div class="numero">${taxa}</div>
+      <div class="nota">${notaTaxa}</div></div>
+    <div class="caixa"><div class="rotulo">Embarcações</div>
+      <div class="numero">${r.embarcacoes}</div>
+      <div class="nota">na frota vistoriada</div></div>`;
+}
+
+function desenhar(uf) {
+  const parecer = uf ? DADOS.parecer.filter(p => p.uf === uf) : DADOS.parecer;
+  const mapa = uf ? DADOS.mapa.filter(m => m.uf === uf) : DADOS.mapa;
+  const n = parecer.reduce((s, p) => s + p.aprovadas + p.reprovadas + p.pendentes, 0);
+
+  document.getElementById("contagem").textContent =
+    uf ? `${n} vistoria(s) em ${uf}` : "";
+
+  Plotly.newPlot("g-parecer", [
+    { x: parecer.map(p => p.uf), y: parecer.map(p => p.aprovadas),
+      name: "aprovadas", type: "bar", marker: { color: COR.conforme } },
+    { x: parecer.map(p => p.uf), y: parecer.map(p => p.reprovadas),
+      name: "reprovadas", type: "bar", marker: { color: COR.reprova } },
+    { x: parecer.map(p => p.uf), y: parecer.map(p => p.pendentes),
+      name: "sem parecer", type: "bar", marker: { color: COR.pendente } },
+  ], Object.assign({}, BASE, { barmode: "stack" }), OPCOES);
+
+  const nc = DADOS.nao_conformidades.slice().reverse();
+  Plotly.newPlot("g-nc", [{
+    x: nc.map(i => i.n), y: nc.map(i => i.item), type: "bar",
+    orientation: "h", marker: { color: COR.sinal },
+  }], Object.assign({}, BASE, { margin: { l: 170, r: 16, t: 10, b: 40 } }), OPCOES);
+
+  Plotly.newPlot("g-comp", [{
+    x: DADOS.comprimentos, type: "histogram",
+    marker: { color: COR.sinal }, nbinsx: 12,
+  }], Object.assign({}, BASE, {
+    xaxis: Object.assign({}, BASE.xaxis, { title: "comprimento total (m)" }),
+  }), OPCOES);
+
+  Plotly.newPlot("g-mat", [{
+    labels: DADOS.material.map(m => m.material),
+    values: DADOS.material.map(m => m.n),
+    type: "pie", hole: 0.55,
+    marker: { colors: [COR.sinal, COR.conforme, COR.pendente, COR.fraca] },
+  }], Object.assign({}, BASE, { showlegend: true }), OPCOES);
+
+  const cor = { aprovado: COR.conforme, reprovado: COR.reprova, pendente: COR.pendente };
+  Plotly.newPlot("g-mapa", [{
+    type: "scattergeo", mode: "markers",
+    lat: mapa.map(m => m.lat), lon: mapa.map(m => m.lon),
+    text: mapa.map(m => `${m.uf} — ${m.parecer}`),
+    marker: { size: 9, color: mapa.map(m => cor[m.parecer] || COR.fraca) },
+  }], Object.assign({}, BASE, {
+    height: 460,
+    geo: {
+      scope: "south america", resolution: 50,
+      showland: true, landcolor: escuro ? "#0e2331" : "#eef3f5",
+      showcountries: true, countrycolor: COR.linha,
+      subunitcolor: COR.linha, showsubunits: true,
+      lataxis: { range: [-34, 6] }, lonaxis: { range: [-56, -32] },
+      bgcolor: "rgba(0,0,0,0)",
+    },
+  }), OPCOES);
+}
+
+const seletor = document.getElementById("uf");
+[...new Set(DADOS.parecer.map(p => p.uf))].sort().forEach(uf => {
+  const o = document.createElement("option");
+  o.value = o.textContent = uf;
+  seletor.appendChild(o);
+});
+seletor.addEventListener("change", e => desenhar(e.target.value));
+
+indicadores(DADOS.resumo, DADOS.resumo.vistorias);
+desenhar("");
+</script>
+</body>
+</html>
