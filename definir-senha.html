@@ -124,10 +124,16 @@ import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 // A chave publicavel e publica por desenho: ela so alcanca o que as politicas
 // de RLS permitirem ao usuario autenticado. A chave de servidor nunca sai do
 // nucleo — ver CLAUDE.md, guardrail 6.
+// `detectSessionInUrl: false` e a sessao aberta a mao, logo abaixo.
+//
+// O link que chega por e-mail passa por /auth/v1/verify e volta com os
+// tokens no FRAGMENTO (#access_token=...). Isso e o fluxo implicito. Com
+// `flowType: "pkce"` o cliente procura um `?code=` que nunca existe — e a
+// pagina dizia "link nao vale mais" para um link perfeitamente valido.
 const supabase = createClient(
   "https://islciifjkloskojyuzcq.supabase.co",
   "sb_publishable_r1i9Ae6wM5U4BLLxQArGGg_VHbXNRnI",
-  { auth: { detectSessionInUrl: true, flowType: "pkce" } },
+  { auth: { detectSessionInUrl: false, persistSession: false } },
 );
 
 const $ = (id) => document.getElementById(id);
@@ -156,15 +162,45 @@ async function iniciar() {
     return;
   }
 
-  // `detectSessionInUrl` consome o token do endereco e abre a sessao. Sem
-  // sessao nao ha o que definir: o link nao veio, ja foi usado ou expirou.
-  const { data } = await supabase.auth.getSession();
-  if (!data.session) {
+  // Abre a sessao a partir do que veio no endereco. Tratar os dois formatos
+  // explicitamente e mais longo que deixar a biblioteca adivinhar, mas quando
+  // falha da para ver ONDE falhou.
+  const frag = new URLSearchParams(location.hash.slice(1));
+  const busca = new URLSearchParams(location.search);
+
+  let sessao = null;
+
+  if (frag.get("access_token") && frag.get("refresh_token")) {
+    // Fluxo implicito: e o que os links de convite e recuperacao usam.
+    const { data, error } = await supabase.auth.setSession({
+      access_token: frag.get("access_token"),
+      refresh_token: frag.get("refresh_token"),
+    });
+    if (error) {
+      $("motivo").textContent = `O link nao foi aceito: ${error.message}`;
+      mostrar("invalido");
+      return;
+    }
+    sessao = data.session;
+  } else if (busca.get("code")) {
+    // Fluxo PKCE, caso um dia o convite passe a usa-lo.
+    const { data, error } = await supabase.auth.exchangeCodeForSession(busca.get("code"));
+    if (error) {
+      $("motivo").textContent = `O link nao foi aceito: ${error.message}`;
+      mostrar("invalido");
+      return;
+    }
+    sessao = data.session;
+  }
+
+  if (!sessao) {
+    // Chegou sem token nenhum: alguem digitou o endereco, ou o link ja foi
+    // usado antes de chegar aqui.
     mostrar("invalido");
     return;
   }
 
-  const email = data.session.user?.email;
+  const email = sessao.user?.email;
   $("quem").textContent = email
     ? `Você está definindo a senha de ${email}.`
     : "Escolha a senha da sua conta.";
