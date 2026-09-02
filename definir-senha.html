@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Definir senha — Baliza</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400&display=swap">
+<style>
+  :root {
+    --ground: #ffffff; --ground-2: #f3f6f7; --tinta: #0b1b2b;
+    --tinta-2: #3e5568; --tinta-3: #6a8091; --linha: #d8dee2;
+    --sinal: #d9531e; --sinal-escuro: #a83c12; --conforme: #0f6b4f;
+    --erro: #b3402a;
+    --sans: Archivo, ui-sans-serif, system-ui, sans-serif;
+    --serif: "Source Serif 4", Georgia, serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #07141d; --ground-2: #0c1e29; --tinta: #e9f0f4;
+      --tinta-2: #a9bfcc; --tinta-3: #7d95a3; --linha: #1e3948;
+      --sinal: #ff7a4d; --sinal-escuro: #ffa384; --conforme: #55c79d;
+      --erro: #e8765c;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; min-height: 100vh; display: flex; align-items: center;
+    justify-content: center; padding: 24px;
+    background: var(--ground); color: var(--tinta);
+    font-family: var(--serif); font-size: 16px; line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .cartao {
+    width: 100%; max-width: 420px;
+    background: var(--ground-2); border: 1px solid var(--linha);
+    border-radius: 14px; padding: 32px;
+  }
+  .marca {
+    font-family: var(--sans); font-weight: 700; font-size: 20px;
+    text-align: center; margin-bottom: 4px;
+  }
+  .marca em { font-style: normal; color: var(--sinal); }
+  h1 { font-family: var(--sans); font-size: 20px; margin: 18px 0 6px; }
+  p { color: var(--tinta-2); font-size: 15px; margin: 0 0 16px; }
+  label {
+    display: block; font-family: var(--sans); font-size: 13px;
+    font-weight: 600; margin-bottom: 6px;
+  }
+  input {
+    width: 100%; font: inherit; font-size: 16px; padding: 11px 12px;
+    border: 1px solid var(--linha); border-radius: 8px;
+    background: var(--ground); color: var(--tinta); margin-bottom: 14px;
+  }
+  input:focus { outline: 2px solid var(--sinal); outline-offset: 1px; }
+  button {
+    width: 100%; font-family: var(--sans); font-weight: 600; font-size: 16px;
+    color: #ffffff; background: var(--sinal); border: none;
+    padding: 12px; border-radius: 8px; cursor: pointer;
+  }
+  button:hover { background: var(--sinal-escuro); }
+  button[disabled] { opacity: 0.6; cursor: default; }
+  .aviso { font-size: 14px; margin-top: 14px; }
+  .erro { color: var(--erro); }
+  .certo { color: var(--conforme); }
+  .dica {
+    font-size: 13px; color: var(--tinta-3); margin-top: 18px;
+    border-top: 1px solid var(--linha); padding-top: 16px;
+  }
+  a { color: var(--sinal); }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+
+<main class="cartao">
+  <div class="marca">Bal<em>i</em>za</div>
+
+  <div id="carregando">
+    <p style="text-align:center;margin-top:20px">Verificando o link…</p>
+  </div>
+
+  <div id="formulario" hidden>
+    <h1>Defina a sua senha</h1>
+    <p id="quem"></p>
+    <form id="form">
+      <label for="senha">Nova senha</label>
+      <input id="senha" type="password" minlength="12" required
+             autocomplete="new-password" placeholder="pelo menos 12 caracteres">
+      <label for="repete">Repita a senha</label>
+      <input id="repete" type="password" minlength="12" required
+             autocomplete="new-password">
+      <button type="submit">Definir senha</button>
+    </form>
+    <p class="aviso" id="aviso" role="status"></p>
+    <p class="dica">
+      Esta senha dá acesso ao aplicativo de campo e ao painel. Ela assina, sob
+      a sua responsabilidade técnica, os laudos que você emitir — escolha uma
+      que você não use em nenhum outro lugar.
+    </p>
+  </div>
+
+  <div id="invalido" hidden>
+    <h1>Este link não vale mais</h1>
+    <p id="motivo">
+      Links de convite e de recuperação expiram, e cada um serve uma vez só.
+    </p>
+    <p>
+      Peça um novo a quem criou o seu acesso, ou fale pelo
+      <a href="https://wa.me/5573991051624">WhatsApp</a>.
+    </p>
+    <p class="dica">
+      Se você chegou aqui digitando o endereço, é esperado: esta página só
+      funciona a partir do link que chega por e-mail.
+    </p>
+  </div>
+</main>
+
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+// A chave publicavel e publica por desenho: ela so alcanca o que as politicas
+// de RLS permitirem ao usuario autenticado. A chave de servidor nunca sai do
+// nucleo — ver CLAUDE.md, guardrail 6.
+const supabase = createClient(
+  "https://islciifjkloskojyuzcq.supabase.co",
+  "sb_publishable_r1i9Ae6wM5U4BLLxQArGGg_VHbXNRnI",
+  { auth: { detectSessionInUrl: true, flowType: "pkce" } },
+);
+
+const $ = (id) => document.getElementById(id);
+const mostrar = (qual) => {
+  for (const secao of ["carregando", "formulario", "invalido"]) {
+    $(secao).hidden = secao !== qual;
+  }
+};
+
+function motivoDoErro() {
+  // O Supabase devolve o erro no fragmento da URL, nao no corpo.
+  const frag = new URLSearchParams(location.hash.slice(1));
+  const busca = new URLSearchParams(location.search);
+  const codigo = frag.get("error_code") || busca.get("error_code");
+  const desc = frag.get("error_description") || busca.get("error_description");
+  if (codigo === "otp_expired") return "O prazo deste link terminou.";
+  if (desc) return decodeURIComponent(desc.replace(/\\+/g, " "));
+  return null;
+}
+
+async function iniciar() {
+  const erro = motivoDoErro();
+  if (erro) {
+    $("motivo").textContent = erro;
+    mostrar("invalido");
+    return;
+  }
+
+  // `detectSessionInUrl` consome o token do endereco e abre a sessao. Sem
+  // sessao nao ha o que definir: o link nao veio, ja foi usado ou expirou.
+  const { data } = await supabase.auth.getSession();
+  if (!data.session) {
+    mostrar("invalido");
+    return;
+  }
+
+  const email = data.session.user?.email;
+  $("quem").textContent = email
+    ? `Você está definindo a senha de ${email}.`
+    : "Escolha a senha da sua conta.";
+
+  // Limpa o token do endereco: ele nao precisa ficar no historico do
+  // navegador nem ser copiado junto se a pessoa compartilhar a URL.
+  history.replaceState(null, "", location.pathname);
+  mostrar("formulario");
+}
+
+$("form").addEventListener("submit", async (evento) => {
+  evento.preventDefault();
+  const aviso = $("aviso");
+  const botao = evento.target.querySelector("button");
+  const senha = $("senha").value;
+
+  if (senha !== $("repete").value) {
+    aviso.className = "aviso erro";
+    aviso.textContent = "As duas senhas não são iguais.";
+    return;
+  }
+
+  botao.disabled = true;
+  aviso.className = "aviso";
+  aviso.textContent = "Definindo…";
+
+  const { error } = await supabase.auth.updateUser({ password: senha });
+  if (error) {
+    aviso.className = "aviso erro";
+    aviso.textContent = `Não deu certo: ${error.message}`;
+    botao.disabled = false;
+    return;
+  }
+
+  aviso.className = "aviso certo";
+  aviso.textContent =
+    "Senha definida. Você já pode entrar no aplicativo e no painel.";
+  botao.disabled = true;
+});
+
+iniciar();
+</script>
+</body>
+</html>
