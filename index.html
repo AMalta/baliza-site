@@ -412,6 +412,76 @@
     font-size: 15px;
   }
 
+  .interesse {
+    margin-top: 28px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .interesse-titulo {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--ground);
+    opacity: 0.9;
+    margin: 0 0 14px;
+  }
+
+  .interesse-campos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 12px;
+  }
+
+  .interesse label {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--ground);
+    opacity: 0.85;
+  }
+
+  .interesse input {
+    font: inherit;
+    font-size: 15px;
+    padding: 9px 11px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 7px;
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--ground);
+  }
+
+  .interesse input:focus {
+    outline: 2px solid var(--sinal);
+    outline-offset: 1px;
+  }
+
+  .interesse button {
+    margin-top: 14px;
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--ground);
+    background: var(--sinal);
+    border: none;
+    padding: 11px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+
+  .interesse button:hover { background: var(--sinal-escuro); }
+  .interesse button[disabled] { opacity: 0.6; cursor: default; }
+
+  .interesse-aviso {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--ground);
+    margin: 12px 0 0;
+    min-height: 1.2em;
+  }
+
   footer {
     border-top: 1px solid var(--linha);
     padding: 30px 0 56px;
@@ -1124,7 +1194,7 @@
 
       <div class="demo">
         <div class="demo-acao">
-          <a class="botao" href="baliza-demonstracao.apk" download>
+          <a class="botao" href="https://baliza-production-5559.up.railway.app/demo/apk">
             Baixar para Android
           </a>
           <p class="demo-meta">
@@ -1260,6 +1330,18 @@
       </p>
       <a class="botao" href="https://wa.me/5573991051624">Falar no WhatsApp</a>
       <a class="secundario" href="manual.html">Ver o manual completo</a>
+
+      <form class="interesse" id="interesse">
+        <p class="interesse-titulo">Ou deixe seu contato que eu procuro você</p>
+        <div class="interesse-campos">
+          <label>Nome<input name="nome" required autocomplete="name"></label>
+          <label>E-mail<input name="email" type="email" required autocomplete="email"></label>
+          <label>Telefone<input name="telefone" autocomplete="tel"></label>
+          <label>Organização<input name="organizacao" autocomplete="organization"></label>
+        </div>
+        <button type="submit">Enviar</button>
+        <p class="interesse-aviso" id="interesse-aviso" role="status"></p>
+      </form>
     </div>
 
   </div>
@@ -1279,3 +1361,31 @@
     </p>
   </div>
 </footer>
+
+<script>
+  // Envia o contato ao núcleo. Se falhar, a pessoa não fica sem caminho: o
+  // WhatsApp continua ali em cima, e a mensagem diz isso.
+  document.getElementById("interesse").addEventListener("submit", async function (evento) {
+    evento.preventDefault();
+    var form = evento.target;
+    var aviso = document.getElementById("interesse-aviso");
+    var botao = form.querySelector("button");
+    var dados = Object.fromEntries(new FormData(form).entries());
+
+    botao.disabled = true;
+    aviso.textContent = "Enviando…";
+    try {
+      var r = await fetch("https://baliza-production-5559.up.railway.app/interesse", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(dados),
+      });
+      if (!r.ok) throw new Error(r.status);
+      form.reset();
+      aviso.textContent = "Recebido. Entro em contato em breve.";
+    } catch (erro) {
+      aviso.textContent = "Não consegui enviar agora. Chame no WhatsApp, acima.";
+      botao.disabled = false;
+    }
+  });
+</script>
