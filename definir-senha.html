@@ -82,6 +82,13 @@
     <p style="text-align:center;margin-top:20px">Verificando o link…</p>
   </div>
 
+  <!-- Marca de versao: se a tela mostrar uma data antiga, o navegador esta
+       servindo copia em cache e nao a pagina publicada. Sem isto, "corrigi e
+       continua errado" e indistinguivel de "o navegador nao pegou a
+       correcao". -->
+  <p id="versao" style="text-align:center;font-size:11px;color:var(--tinta-3);
+     margin-top:20px;font-family:var(--sans)">versão de 02/09 12:05</p>
+
   <div id="formulario" hidden>
     <h1>Defina a sua senha</h1>
     <p id="quem"></p>
@@ -195,7 +202,12 @@ async function iniciar() {
 
   if (!sessao) {
     // Chegou sem token nenhum: alguem digitou o endereco, ou o link ja foi
-    // usado antes de chegar aqui.
+    // usado antes de chegar aqui. Dizer O QUE chegou evita a rodada de
+    // diagnostico as cegas que esta pagina ja custou.
+    const veio = [...frag.keys(), ...busca.keys()];
+    $("motivo").textContent = veio.length
+      ? `O endereço trouxe ${veio.join(", ")}, mas não um token de acesso.`
+      : "O endereço não trouxe token nenhum.";
     mostrar("invalido");
     return;
   }
