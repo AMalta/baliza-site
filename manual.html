@@ -1,5 +1,10 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Manual do Baliza</title>
-<meta name="description" content="Manual completo do Baliza: app de campo, backoffice, laudo do Anexo IV, IA assistiva e assinatura eletrônica.">
+<meta name="description" content="Manual completo do Baliza: aplicativo de campo, painel, relatorio do PROPESC, IA assistiva e assinatura eletrônica.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
@@ -348,6 +353,9 @@
     }
   }
 </style>
+</head>
+<body>
+
 
 <header>
   <div class="topo">
@@ -365,9 +373,9 @@
       <li><a href="#comecar">1. Antes de começar</a></li>
       <li><a href="#perfis">2. Perfis e permissões</a></li>
       <li><a href="#app">3. App de campo</a></li>
-      <li><a href="#checklist">4. Checklist do Anexo IV</a></li>
+      <li><a href="#checklist">4. O checklist da vistoria</a></li>
       <li><a href="#fotos">5. Fotos e evidências</a></li>
-      <li><a href="#ia">6. Sugestões da IA</a></li>
+      <li><a href="#ia">6. O que a IA lê nas fotos</a></li>
       <li><a href="#parecer">7. Parecer técnico</a></li>
       <li><a href="#sync">8. Sincronização</a></li>
       <li><a href="#cadastros">9. Corrigir cadastros</a></li>
@@ -384,7 +392,7 @@
     <h1>Manual do Baliza</h1>
     <p class="subtitulo">
       Como usar o sistema de ponta a ponta: da captura no barco, sem sinal, até
-      o laudo do Anexo IV assinado eletronicamente.
+      o relatório do PROPESC assinado eletronicamente.
     </p>
 
     <div class="atalho">
@@ -608,7 +616,7 @@
         </li>
         <li>
           Escolha um armador já cadastrado ou preencha os dados do
-          proprietário (Anexo IV, seção 2).
+          proprietário.
         </li>
         <li>
           Preencha os dados da embarcação (seção 3). Deixe em branco o que não
@@ -619,7 +627,7 @@
         </li>
       </ol>
       <p>
-        O checklist do Anexo IV é criado junto, já pronto para preencher — e
+        O checklist é criado junto, já pronto para preencher — e
         tudo isso funciona sem nenhuma rede.
       </p>
 
@@ -635,7 +643,7 @@
     </section>
 
     <section id="checklist">
-      <h2>4. Checklist do Anexo IV</h2>
+      <h2>4. O checklist da vistoria</h2>
 
       <p>Cada item tem três respostas:</p>
       <ul>
@@ -809,116 +817,48 @@
     </section>
 
     <section id="ia">
-      <h2>6. Sugestões da IA</h2>
+      <h2>6. O que a IA lê nas fotos</h2>
 
       <p>
-        Depois que as fotos sincronizam, o sistema as analisa e devolve
-        sugestões: a inscrição lida no casco, o material, os petrechos e os
-        equipamentos reconhecidos. Elas aparecem no app, na seção
-        <strong>Sugestões da IA</strong> dentro da vistoria.
+        Depois que as fotos sincronizam, o sistema as analisa e guarda o que
+        conseguiu reconhecer: a inscrição no casco, o material, os petrechos e
+        os equipamentos que aparecem na imagem. Isso não é um veredito a
+        ratificar — é <strong>fonte de informação</strong> para quem vai
+        escrever a descrição da foto, ao lado do que você ditou em campo.
       </p>
-
-      <h3>Cada cartão mostra</h3>
-      <ul>
-        <li>a foto que originou a sugestão;</li>
-        <li>o que a IA afirma — ou que não conseguiu identificar;</li>
-        <li>o grau de confiança e qual modelo respondeu;</li>
-        <li>três ações: <strong>Confirmar</strong>, <strong>Corrigir</strong> e
-        <strong>Descartar</strong>.</li>
-      </ul>
 
       <p>
-        <strong>Corrigir</strong> pede que você escreva o que está certo — é
-        esse texto que fica registrado, não a resposta do modelo.
-        <strong>Descartar</strong> também é uma decisão válida e fica gravada.
+        As duas fontes aparecem juntas no painel, acima da caixa de descrição:
+        <em>Ditado em campo</em> e <em>Leitura da IA</em>. Quando a foto ainda
+        não tem descrição escrita, o texto já vem redigido a partir delas —
+        você lê, corrige o que quiser e salva. <strong>O que vai impresso no
+        relatório é o que você salvou</strong>, nunca o que a IA produziu
+        sozinha.
       </p>
 
-      <div class="aviso">
+      <div class="atencao">
         <p>
-          <strong>Enquanto houver sugestão sem revisão, o laudo não pode ser
-          emitido.</strong> Confirmar uma sugestão não marca item do checklist
-          nem influencia o parecer: quem preenche o checklist é você.
+          <strong>Nada disso entra no checklist nem no parecer.</strong> A IA
+          não marca item, não preenche medida e não decide aprovação. E ela não
+          aparece no relatório: nenhum dos dois modelos de documento mostra o
+          que ela leu — o que sai impresso é a descrição escrita por você e as
+          marcações feitas por você.
         </p>
       </div>
 
-      <figure class="diagrama">
-        <svg viewBox="0 0 880 220" role="img"
-             aria-label="A foto sincronizada gera uma sugestão da IA, que fica
-                         pendente até você confirmar, corrigir ou descartar. A
-                         emissão do laudo fica bloqueada enquanto restar
-                         sugestão pendente.">
-          <defs>
-            <marker id="m-ia" viewBox="0 0 10 10" refX="9" refY="5"
-                    markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-              <path d="M0 0 L10 5 L0 10 z" fill="currentColor"/>
-            </marker>
-          </defs>
-
-          <g font-family="Archivo, sans-serif">
-            <rect x="14" y="70" width="150" height="66" rx="8"
-                  fill="var(--surface)" stroke="currentColor" stroke-width="2"/>
-            <text x="89" y="98" text-anchor="middle" font-size="14"
-                  fill="currentColor">foto</text>
-            <text x="89" y="118" text-anchor="middle" font-size="14"
-                  fill="currentColor">sincronizada</text>
-
-            <line x1="164" y1="103" x2="206" y2="103" stroke="currentColor"
-                  stroke-width="2" marker-end="url(#m-ia)"/>
-
-            <rect x="212" y="70" width="164" height="66" rx="8"
-                  fill="var(--surface)" stroke="currentColor" stroke-width="2"/>
-            <text x="294" y="96" text-anchor="middle" font-size="14"
-                  fill="currentColor">sugestão da IA</text>
-            <text x="294" y="118" text-anchor="middle" font-size="13"
-                  fill="currentColor" opacity="0.7">com grau de confiança</text>
-
-            <line x1="376" y1="103" x2="418" y2="103" stroke="currentColor"
-                  stroke-width="2" marker-end="url(#m-ia)"/>
-
-            <rect x="424" y="52" width="176" height="102" rx="8"
-                  fill="var(--surface)" stroke="var(--sinal)" stroke-width="2.5"/>
-            <text x="512" y="42" text-anchor="middle" font-size="13"
-                  font-weight="700" fill="var(--sinal)">VOCÊ DECIDE</text>
-            <text x="512" y="82" text-anchor="middle" font-size="14"
-                  fill="currentColor">confirmar</text>
-            <text x="512" y="108" text-anchor="middle" font-size="14"
-                  fill="currentColor">corrigir</text>
-            <text x="512" y="134" text-anchor="middle" font-size="14"
-                  fill="currentColor">descartar</text>
-
-            <line x1="600" y1="103" x2="656" y2="103" stroke="currentColor"
-                  stroke-width="2" marker-end="url(#m-ia)"/>
-
-            <line x1="668" y1="34" x2="668" y2="172" stroke="var(--sinal)"
-                  stroke-width="4"/>
-            <text x="668" y="196" text-anchor="middle" font-size="13"
-                  font-weight="600" fill="var(--sinal)">trava</text>
-
-            <rect x="700" y="70" width="166" height="66" rx="8"
-                  fill="var(--surface)" stroke="currentColor" stroke-width="2"/>
-            <text x="783" y="98" text-anchor="middle" font-size="14"
-                  fill="currentColor">laudo pode</text>
-            <text x="783" y="118" text-anchor="middle" font-size="14"
-                  fill="currentColor">ser emitido</text>
-
-            <text x="440" y="200" text-anchor="middle" font-size="13"
-                  fill="currentColor" opacity="0.7">
-              sobrou sugestão sem revisão? a trava não abre
-            </text>
-          </g>
-        </svg>
-        <figcaption>
-          A trava não julga o conteúdo da sua decisão — confirmar, corrigir e
-          descartar valem igual. Ela só impede que uma sugestão que ninguém olhou
-          siga junto com uma peça assinada.
-        </figcaption>
-      </figure>
+      <p>
+        Se a IA não reconhecer nada de útil e você também não tiver ditado
+        nada, o sistema diz isso e deixa a descrição para você escrever à mão —
+        que é como sempre se pode fazer.
+      </p>
 
       <p>
-        Se não houver sugestão alguma, a seção nem aparece — em campo, antes de
-        sincronizar, não existe análise, e a tela não inventa pendência.
+        A análise só roda com a sua autorização expressa, respondida no painel,
+        em Gestão. Sem ela, foto de vistoria real não é enviada para lugar
+        nenhum.
       </p>
     </section>
+
 
     <section id="parecer">
       <h2>7. Parecer técnico</h2>
@@ -1105,7 +1045,7 @@
       <h2>11. Laudo</h2>
 
       <p>
-        O PDF reproduz o Anexo IV e traz, ao final, o registro fotográfico com a
+        O PDF reproduz o formulário oficial e traz, ao final, as fotos com a
         coordenada, o horário e o hash de cada evidência.
       </p>
 
@@ -1353,10 +1293,6 @@
           </thead>
           <tbody>
             <tr>
-              <td>Emitir laudo com IA não revisada</td>
-              <td>Sugestão que ninguém julgou não acompanha peça assinada.</td>
-            </tr>
-            <tr>
               <td>Parecer de quem não é o responsável</td>
               <td>A ART é pessoal. Nem o admin conclui no lugar dele.</td>
             </tr>
@@ -1385,6 +1321,20 @@
             <tr>
               <td>IA preencher dimensões ou arqueação</td>
               <td>Vêm de medição ou do documento oficial. Nunca de estimativa.</td>
+            </tr>
+            <tr>
+              <td>Emitir sem o que o formulário exige</td>
+              <td>
+                Campo em branco, medida não tomada, assinatura que não subiu: a
+                lista aparece durante o trabalho, não no documento pronto.
+              </td>
+            </tr>
+            <tr>
+              <td>Trocar evidência de relatório já emitido</td>
+              <td>
+                Mudaria o que o documento assinado mostra. A correção passa por
+                uma versão nova.
+              </td>
             </tr>
             <tr>
               <td>Enviar foto real a IA que treina com os dados</td>
@@ -1467,7 +1417,7 @@
         <table>
           <tbody>
             <tr>
-              <td>Anexo IV</td>
+              <td>relatório do PROPESC</td>
               <td>
                 Relatório de Vistoria de Embarcação de Pesca, formulário da
                 Portaria MPA nº 397/2024. É o que o laudo reproduz.
@@ -1568,3 +1518,6 @@
     alvos.forEach(function (s) { observador.observe(s); });
   })();
 </script>
+
+</body>
+</html>

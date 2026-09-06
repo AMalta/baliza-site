@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Painel de demonstração — Baliza</title>
-<meta name="description" content="Painel de gestão do Baliza, com dados fictícios. Veja como a operação aparece depois das vistorias sincronizadas.">
+<title>Backoffice de demonstração — Baliza</title>
+<meta name="description" content="Backoffice do Baliza, com dados fictícios. Veja como a operação aparece depois das vistorias sincronizadas.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
@@ -99,6 +99,69 @@
   }
   footer p { max-width: 70ch; }
   a { color: var(--sinal); }
+
+  /* ---------- o que chegou do celular ---------- */
+  .chegada {
+    border: 1px solid var(--linha);
+    border-radius: 14px;
+    padding: 26px 24px;
+    margin: 30px 0 40px;
+    background: var(--surface);
+  }
+  .chegada h2 { margin-top: 0; }
+  .chegada .par {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 26px;
+    margin-top: 20px;
+  }
+  .lista-itens { border: 1px solid var(--linha); border-radius: 10px; overflow: hidden; }
+  .lista-itens .linha {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    gap: 12px;
+    align-items: center;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--linha);
+    font-size: 15px;
+  }
+  .lista-itens .linha:last-child { border-bottom: none; }
+  .lista-itens .secao {
+    background: var(--ground-2);
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--tinta-3);
+    display: block;
+  }
+  .marca-sim { color: var(--conforme); font-weight: 600; font-family: var(--sans); font-size: 14px; }
+  .marca-nao { color: var(--tinta-3); font-family: var(--sans); font-size: 14px; }
+  .marca-ruim { color: var(--reprova); font-weight: 700; font-family: var(--sans); font-size: 14px; }
+  .conta-foto {
+    font-family: var(--sans); font-size: 12px; color: var(--tinta-3);
+    border: 1px solid var(--linha); border-radius: 999px; padding: 1px 9px;
+  }
+  .cartao-foto { border: 1px solid var(--linha); border-radius: 10px; overflow: hidden; }
+  .cartao-foto .moldura {
+    background: var(--ground-2); height: 132px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--tinta-3); font-family: var(--sans); font-size: 13px;
+    border-bottom: 1px solid var(--linha);
+  }
+  .cartao-foto .dados { padding: 12px 14px; font-size: 14px; color: var(--tinta-2); }
+  .cartao-foto .dados strong { color: var(--tinta); }
+  .cartao-foto .selo-dado {
+    font-family: var(--sans); font-size: 12px; color: var(--tinta-3);
+    display: block; margin-top: 6px;
+  }
+  .falta {
+    border: 1px solid var(--pendente); border-radius: 10px;
+    padding: 14px 16px; margin-top: 20px; font-size: 15px;
+  }
+  .falta strong { font-family: var(--sans); font-size: 14px; }
+  .falta ul { margin: 8px 0 0; padding-left: 20px; color: var(--tinta-2); }
 </style>
 </head>
 <body>
@@ -106,19 +169,76 @@
 <header>
   <div class="barra">
     <span class="marca">Bal<em>i</em>za</span>
-    <span>Painel de gestão</span>
+    <span>Backoffice</span>
     <a href="index.html">← voltar ao site</a>
   </div>
 </header>
 
 <main>
-  <h1>O painel, com dados de exemplo</h1>
+  <h1>O outro lado do mesmo trabalho</h1>
   <p class="chamada">
-    É o que o vistoriador vê depois que as vistorias sincronizam: onde aprova,
-    onde reprova, o que mais aparece como não conforme e onde a frota está.
-    Explore à vontade — passe o mouse, dê zoom, filtre por estado.
+    Se você fez a vistoria de teste no celular, é assim que ela chega aqui: o
+    que foi marcado no píer aparece marcado na tela grande, cada foto vem com a
+    hora e o lugar, e uma lista diz o que ainda falta antes de o relatório
+    poder sair. Abaixo, os gráficos do período.
   </p>
-  <span class="ficticio">Todos os números aqui são inventados</span>
+  <span class="ficticio">Exemplo com dados inventados</span>
+
+  <section class="chegada">
+    <h2>Uma vistoria, vista do computador</h2>
+    <p style="color:var(--tinta-2);font-size:15px">
+      Embarcação <strong>Sereia</strong> · 04/09/2026 · Ilhéus / BA ·
+      responsável técnico: Ana Ribeiro
+    </p>
+
+    <div class="par">
+      <div class="lista-itens">
+        <div class="linha"><span class="secao">Petrechos</span></div>
+        <div class="linha"><span>Rede de emalhar</span>
+          <span class="marca-sim">Tem</span><span class="conta-foto">2 fotos</span></div>
+        <div class="linha"><span>Linha e anzol</span>
+          <span class="marca-sim">Tem</span><span class="conta-foto">1 foto</span></div>
+        <div class="linha"><span>Arrasto</span>
+          <span class="marca-nao">Não tem</span><span class="conta-foto">—</span></div>
+        <div class="linha"><span class="secao">Equipamentos</span></div>
+        <div class="linha"><span>GPS / sonda</span>
+          <span class="marca-sim">Tem</span><span class="conta-foto">1 foto</span></div>
+        <div class="linha"><span>Urna com gelo</span>
+          <span class="marca-nao">Não tem</span><span class="conta-foto">—</span></div>
+        <div class="linha"><span class="secao">Documentação</span></div>
+        <div class="linha"><span>Inscrição no casco</span>
+          <span class="marca-ruim">Não conforme</span><span class="conta-foto">1 foto</span></div>
+      </div>
+
+      <div>
+        <div class="cartao-foto">
+          <div class="moldura">foto da inscrição no casco</div>
+          <div class="dados">
+            <strong>Inscrição parcialmente ilegível na proa, tinta descascada
+            sobre os dois últimos dígitos.</strong>
+            <span class="selo-dado">04/09/2026 09:12 · −14,7891 / −39,0324</span>
+            <span class="selo-dado">impressão digital do arquivo conferida</span>
+          </div>
+        </div>
+        <div class="falta">
+          <strong>O que ainda falta para emitir</strong>
+          <ul>
+            <li>concluir o parecer</li>
+            <li>descrever duas fotos</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <p style="color:var(--tinta-3);font-size:14px;margin-bottom:0;margin-top:20px">
+      A descrição da foto foi escrita a partir do que o vistoriador ditou em
+      campo e do que o computador reconheceu na imagem — e revisada por ele
+      antes de salvar. É esse texto que sai impresso ao lado da foto no
+      relatório.
+    </p>
+  </section>
+
+  <h2 style="margin-top:44px">Os números do período</h2>
 
   <div class="indicadores" id="indicadores"></div>
 
@@ -159,7 +279,7 @@
 
 <footer>
   <p>
-    Painel de demonstração do <strong>Baliza</strong>, sistema de apoio à
+    Backoffice de demonstração do <strong>Baliza</strong>, sistema de apoio à
     vistoria de embarcação pesqueira conforme a Portaria MPA nº 397/2024.
     Nenhum dado aqui é real: não há foto, laudo nem nome de pessoa — só
     números agregados, gerados para exemplo.

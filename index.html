@@ -1,5 +1,10 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Baliza — Vistoria de Embarcação Pesqueira</title>
-<meta name="description" content="Aplicativo de vistoria de embarcação pesqueira. Funciona sem internet no barco, monta o relatório de vistoria em PDF e deixa a decisão técnica com o vistoriador.">
+<meta name="description" content="Da vistoria no píer até o laudo assinado, o caminho pode ser um acúmulo de anotações, fotos mal identificadas e horas de trabalho no computador. Com o Baliza você coleta os dados com o aplicativo de campo e gera o laudo final no backoffice.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
@@ -340,20 +345,6 @@
     margin: 14px 0 0;
   }
 
-  .demo-avisos {
-    border: 1px solid var(--linha);
-    border-radius: 12px;
-    padding: 24px 26px;
-    margin-top: 32px;
-  }
-
-  .demo-avisos p {
-    font-size: 15px;
-    color: var(--tinta-2);
-    max-width: 68ch;
-  }
-
-  .demo-avisos p:last-child { margin-bottom: 0; }
 
   details { border-bottom: 1px solid var(--linha); padding: 18px 0; }
 
@@ -498,8 +489,169 @@
   }
 
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
-</style>
+  /* ---------- as duas metades ---------- */
 
+  .metades {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+    gap: 26px;
+    margin-top: 34px;
+  }
+
+  .metade {
+    background: var(--surface);
+    border: 1px solid var(--linha);
+    border-radius: 14px;
+    padding: 28px 26px;
+  }
+
+  .metade-onde {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--sinal);
+    margin: 0 0 6px;
+  }
+
+  .metade h3 { font-size: 21px; margin-bottom: 14px; }
+
+  .metade ul {
+    margin: 0;
+    padding-left: 20px;
+    font-size: 16px;
+    color: var(--tinta-2);
+  }
+
+  .metade li { margin-bottom: 10px; }
+  .metade li:last-child { margin-bottom: 0; }
+
+  /* ---------- os passos da demonstracao ---------- */
+
+  .passos {
+    list-style: none;
+    margin: 34px 0 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(268px, 1fr));
+    gap: 26px;
+    align-items: start;
+  }
+
+  .passo {
+    background: var(--ground-2);
+    border: 1px solid var(--linha);
+    border-radius: 14px;
+    padding: 26px 24px;
+  }
+
+  .passo-numero {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--ground);
+    background: var(--sinal);
+    width: 30px;
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    border-radius: 50%;
+    margin: 0 0 12px;
+  }
+
+  .passo h3 { margin-bottom: 10px; }
+  .passo p { font-size: 16px; color: var(--tinta-2); }
+  .passo .botao { margin-top: 8px; font-size: 15px; padding: 11px 20px; }
+  .passo .demo-meta { margin-top: 10px; }
+
+  .abertura .botao { margin-top: 8px; }
+
+
+  .chamada.resposta {
+    border-left: 3px solid var(--sinal);
+    padding-left: 18px;
+    color: var(--tinta);
+  }
+  /* ---------- o mesmo percurso, os dois jeitos ---------- */
+
+  .etapas {
+    border: 1px solid var(--linha);
+    border-radius: 14px;
+    overflow: hidden;
+    margin-top: 18px;
+  }
+
+  .etapas .cabeca,
+  .etapas .etapa {
+    display: grid;
+    grid-template-columns: minmax(110px, 17%) 1fr 1fr;
+    gap: 18px;
+    padding: 15px 20px;
+    border-bottom: 1px solid var(--linha);
+  }
+
+  .etapas .etapa:last-child { border-bottom: none; }
+
+  .etapas .cabeca {
+    background: var(--ground-2);
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .titulo-hoje { color: var(--tinta-3); }
+  .titulo-com { color: var(--conforme); }
+
+  .etapas .quando {
+    font-family: var(--sans);
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .etapas .hoje { color: var(--tinta-3); font-size: 15px; }
+  .etapas .com { color: var(--tinta-2); font-size: 15px; }
+
+  /* No celular a grade de tres colunas espreme o texto ate uma palavra por
+     linha. Empilha, e cada lado se anuncia. */
+  @media (max-width: 700px) {
+    .etapas .cabeca { display: none; }
+    .etapas .etapa { grid-template-columns: 1fr; gap: 6px; padding: 16px 18px; }
+    .etapas .quando {
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sinal);
+    }
+    .etapas .hoje::before {
+      content: "Hoje: ";
+      font-family: var(--sans);
+      font-weight: 600;
+    }
+    .etapas .com::before {
+      content: "Com o Baliza: ";
+      font-family: var(--sans);
+      font-weight: 600;
+      color: var(--conforme);
+    }
+  }
+
+  .antes-titulo {
+    font-family: var(--sans);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--tinta-3);
+    margin: 40px 0 0;
+  }
+
+  .antes-titulo + .rastro { margin-top: 12px; }
+</style>
+</head>
+<body>
 <header class="faixa">
   <div class="interno barra">
     <span class="marca">Bal<em>i</em>za</span>
@@ -511,752 +663,545 @@
   <div class="interno">
 
     <div class="abertura">
-      <p class="rotulo">Feito para quem vistoria barco de pesca</p>
-      <h1>A vistoria não para porque o sinal acabou.</h1>
+      <p class="rotulo">Para quem vistoria barco de pesca</p>
+      <h1>O caminho da vistoria ao laudo, sem desvio.</h1>
       <p class="chamada">
-        Barco de pesca quase nunca está onde tem internet. No Baliza, quem manda
-        é o celular: você preenche a vistoria, fotografa e guarda tudo ali mesmo.
-        Quando aparecer sinal, sobe sozinho — e o relatório sai pronto em PDF.
+        Da vistoria no píer até o laudo assinado, o caminho pode ser um acúmulo
+        de anotações, fotos mal identificadas e horas de trabalho estressante no
+        computador.
       </p>
-      <span class="selo">Para vistoriadores credenciados no MPA</span>
-      <a class="secundario-claro" href="#demonstracao">Experimentar no meu celular →</a>
+      <p class="chamada resposta">
+        <strong>Com o Baliza</strong> você coleta todos os dados — características
+        e fotos — com o aplicativo de campo, e gera o relatório final com o
+        backoffice, no seu computador.
+      </p>
+      <a class="botao" href="#experimentar">Experimentar de graça</a>
+      <a class="secundario-claro" href="#o-caminho">Ver o caminho inteiro →</a>
+    </div>
+
+    <section id="o-caminho">
+      <p class="rotulo">O problema — sem o Baliza</p>
+      <h2>O trabalho não acaba quando você sai do barco.</h2>
+      <p class="estreito">
+        Depois da vistoria começa a segunda parte. Você passa as anotações para o
+        formulário, procura na galeria quais fotos são daquela embarcação,
+        lembra de qual item cada foto documenta e monta o documento. Isso leva
+        horas, e é onde o erro entra.
+      </p>
+      <p class="estreito">
+        Duas coisas custam mais caro que o tempo. A primeira é descobrir tarde
+        que faltou uma medida, quando o barco já saiu e o armador já foi embora.
+        A segunda é não conseguir provar depois: meses adiante, se alguém
+        questionar o laudo, mostrar que aquela foto é daquela embarcação, naquele
+        dia, depende da sua memória e de um arquivo numa pasta.
+      </p>
+
+      <p class="legenda">O mesmo trabalho, dos dois jeitos:</p>
+
+      <div class="etapas">
+        <div class="cabeca">
+          <span></span>
+          <span class="titulo-hoje">Como é hoje</span>
+          <span class="titulo-com">Com o Baliza</span>
+        </div>
+        <div class="etapa">
+          <span class="quando">No barco</span>
+          <span class="hoje">Você anota na prancheta e fotografa com a câmera
+            do celular.</span>
+          <span class="com">Você marca cada item no aplicativo e fotografa por
+            ali mesmo.</span>
+        </div>
+        <div class="etapa">
+          <span class="quando">Ao voltar</span>
+          <span class="hoje">Você digita no formulário o que já tinha
+            escrito.</span>
+          <span class="com">Os dados já estão no backoffice quando você
+            abre.</span>
+        </div>
+        <div class="etapa">
+          <span class="quando">Montando o laudo</span>
+          <span class="hoje">Você procura na galeria qual foto é de qual
+            embarcação e de qual item.</span>
+          <span class="com">Cada foto já está ligada ao item que ela
+            documenta.</span>
+        </div>
+        <div class="etapa">
+          <span class="quando">Antes de emitir</span>
+          <span class="hoje">Você descobre que faltou uma medida, e o barco já
+            foi embora.</span>
+          <span class="com">Uma lista mostra o que falta enquanto ainda dá
+            tempo de resolver.</span>
+        </div>
+        <div class="etapa">
+          <span class="quando">Meses depois</span>
+          <span class="hoje">Provar que a foto é daquele dia depende da sua
+            memória.</span>
+          <span class="com">Cada foto guarda a hora, o lugar e a garantia de
+            que não foi trocada.</span>
+        </div>
+      </div>
+    </section>
+
+    <section id="as-duas-partes">
+      <p class="rotulo">Como funciona</p>
+      <h2>Duas ferramentas: o aplicativo de campo e o backoffice.</h2>
+      <p class="estreito">
+        O <strong>aplicativo de campo</strong> vai com você ao barco, no celular,
+        e funciona sem internet. O <strong>backoffice</strong> é o seu ambiente
+        virtual de geração de laudos de vistoria: você abre no navegador do
+        computador para conferir o que foi coletado, escrever as descrições,
+        concluir o parecer e emitir o documento.
+      </p>
+      <p class="estreito">
+        O que você registra no aplicativo aparece no backoffice sem você digitar
+        nada de novo. É essa ligação entre os dois que encurta o caminho.
+      </p>
 
       <figure class="cena">
-        <svg viewBox="0 0 880 374" role="img"
-             aria-label="No barco, sem internet, o celular grava a vistoria e as
-                         fotos. Quando aparece sinal, tudo sobe para a nuvem, e
-                         de lá saem duas coisas: o relatório em PDF e o painel
-                         no navegador.">
+        <svg viewBox="0 0 880 330" role="img"
+             aria-label="À esquerda, no barco, o celular com o checklist e as
+                         fotos. À direita, no escritório, o computador com o
+                         relatório e os gráficos. Do celular para o computador
+                         vai o que foi marcado e fotografado; do computador para
+                         o celular volta o que ainda falta.">
           <defs>
-            <marker id="h-seta" viewBox="0 0 10 10" refX="9" refY="5"
+            <marker id="m-vai" viewBox="0 0 10 10" refX="9" refY="5"
                     markerWidth="7" markerHeight="7" orient="auto-start-reverse">
               <path d="M0 0 L10 5 L0 10 z" fill="var(--sinal)"/>
             </marker>
-          </defs>
-
-          <rect x="10" y="40" width="396" height="216" rx="12" fill="none"
-                stroke="var(--sinal)" stroke-width="2" stroke-dasharray="8 6"/>
-          <text x="28" y="30" font-size="12" font-weight="700"
-                fill="var(--sinal)" font-family="Archivo, sans-serif">
-            NO BARCO — SEM INTERNET
-          </text>
-
-          <path d="M0 224 H392 V256 H0 Z" fill="var(--mar)"/>
-          <path d="M0 224 q20 -6 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0
-                   t40 0 t32 0" fill="none" stroke="var(--linha-forte)"
-                stroke-width="2"/>
-
-          <path d="M52 224 L74 198 H210 L232 224 Z" fill="none"
-                stroke="currentColor" stroke-width="2.5" stroke-linejoin="round"/>
-          <rect x="126" y="160" width="60" height="38" rx="3" fill="none"
-                stroke="currentColor" stroke-width="2.5"/>
-          <line x1="102" y1="198" x2="102" y2="132"
-                stroke="currentColor" stroke-width="2.5"/>
-          <line x1="102" y1="138" x2="144" y2="160"
-                stroke="currentColor" stroke-width="2"/>
-          <circle cx="102" cy="126" r="5" fill="var(--sinal)"/>
-
-          <rect x="286" y="104" width="90" height="138" rx="13"
-                fill="var(--surface)" stroke="currentColor" stroke-width="2.5"/>
-          <rect x="316" y="112" width="30" height="4" rx="2"
-                fill="currentColor" opacity="0.45"/>
-          <rect x="294" y="124" width="74" height="11" rx="2"
-                fill="var(--sinal)" opacity="0.3"/>
-          <line x1="302" y1="152" x2="336" y2="152"
-                stroke="currentColor" stroke-width="2" opacity="0.4"/>
-          <path d="M342 152 l5 5 l10 -12" fill="none" stroke="var(--conforme)"
-                stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-          <line x1="302" y1="176" x2="336" y2="176"
-                stroke="currentColor" stroke-width="2" opacity="0.4"/>
-          <path d="M342 176 l5 5 l10 -12" fill="none" stroke="var(--conforme)"
-                stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
-          <line x1="302" y1="200" x2="326" y2="200"
-                stroke="currentColor" stroke-width="2" opacity="0.4"/>
-          <rect x="316" y="230" width="30" height="4" rx="2"
-                fill="currentColor" opacity="0.45"/>
-
-          <circle cx="286" cy="104" r="13" fill="var(--sinal)"/>
-          <text x="286" y="109" text-anchor="middle" font-size="14"
-                font-weight="700" fill="#ffffff"
-                font-family="Archivo, sans-serif">1</text>
-          <text x="331" y="286" text-anchor="middle" font-size="13"
-                font-weight="600" fill="currentColor"
-                font-family="Archivo, sans-serif">
-            checklist e fotos
-          </text>
-          <text x="331" y="306" text-anchor="middle" font-size="13"
-                fill="currentColor" opacity="0.7"
-                font-family="Archivo, sans-serif">
-            gravados no aparelho
-          </text>
-
-          <line x1="418" y1="172" x2="502" y2="172" stroke="var(--sinal)"
-                stroke-width="2.5" stroke-dasharray="7 6"
-                marker-end="url(#h-seta)"/>
-          <text x="460" y="160" text-anchor="middle" font-size="13"
-                fill="var(--sinal)" font-family="Archivo, sans-serif">
-            quando houver sinal
-          </text>
-
-          <path d="M520 196 a24 24 0 0 1 24 -24 a30 30 0 0 1 56 6
-                   a20 20 0 0 1 -4 40 h-62 a22 22 0 0 1 -14 -22 z"
-                fill="var(--surface)" stroke="currentColor" stroke-width="2.5"
-                stroke-linejoin="round"/>
-          <circle cx="518" cy="168" r="13" fill="var(--sinal)"/>
-          <text x="518" y="173" text-anchor="middle" font-size="14"
-                font-weight="700" fill="#ffffff"
-                font-family="Archivo, sans-serif">2</text>
-          <text x="562" y="286" text-anchor="middle" font-size="13"
-                font-weight="600" fill="currentColor"
-                font-family="Archivo, sans-serif">
-            sobem sozinhos
-          </text>
-          <text x="562" y="306" text-anchor="middle" font-size="13"
-                fill="currentColor" opacity="0.7"
-                font-family="Archivo, sans-serif">
-            e a IA analisa as fotos
-          </text>
-
-          <path d="M614 178 q48 -6 78 -40" fill="none" stroke="var(--sinal)"
-                stroke-width="2.5" marker-end="url(#h-seta)"/>
-          <path d="M614 202 q48 6 78 40" fill="none" stroke="var(--sinal)"
-                stroke-width="2.5" marker-end="url(#h-seta)"/>
-
-          <path d="M706 44 h74 v104 h-74 z" fill="var(--surface)"
-                stroke="currentColor" stroke-width="2.5"/>
-          <line x1="720" y1="66" x2="766" y2="66"
-                stroke="var(--sinal)" stroke-width="3"/>
-          <line x1="720" y1="84" x2="766" y2="84"
-                stroke="currentColor" stroke-width="2" opacity="0.4"/>
-          <line x1="720" y1="100" x2="766" y2="100"
-                stroke="currentColor" stroke-width="2" opacity="0.4"/>
-          <line x1="720" y1="130" x2="754" y2="130"
-                stroke="currentColor" stroke-width="2.5"/>
-          <circle cx="706" cy="44" r="13" fill="var(--sinal)"/>
-          <text x="706" y="49" text-anchor="middle" font-size="14"
-                font-weight="700" fill="#ffffff"
-                font-family="Archivo, sans-serif">3</text>
-          <text x="812" y="86" font-size="13" font-weight="600"
-                fill="currentColor" font-family="Archivo, sans-serif">
-            relatório
-          </text>
-          <text x="812" y="106" font-size="13" fill="currentColor"
-                opacity="0.7" font-family="Archivo, sans-serif">
-            em PDF
-          </text>
-
-          <rect x="706" y="216" width="152" height="106" rx="8"
-                fill="var(--surface)" stroke="currentColor" stroke-width="2.5"/>
-          <line x1="706" y1="238" x2="858" y2="238"
-                stroke="currentColor" stroke-width="2"/>
-          <circle cx="719" cy="227" r="3.4" fill="currentColor" opacity="0.5"/>
-          <circle cx="731" cy="227" r="3.4" fill="currentColor" opacity="0.5"/>
-          <circle cx="743" cy="227" r="3.4" fill="currentColor" opacity="0.5"/>
-          <rect x="722" y="288" width="16" height="22" fill="var(--conforme)"
-                opacity="0.85"/>
-          <rect x="746" y="270" width="16" height="40" fill="var(--sinal)"
-                opacity="0.85"/>
-          <rect x="770" y="282" width="16" height="28" fill="var(--conforme)"
-                opacity="0.85"/>
-          <path d="M806 306 q10 -30 22 -22 q10 6 20 -14" fill="none"
-                stroke="var(--sinal)" stroke-width="2.2"
-                stroke-linecap="round"/>
-          <circle cx="806" cy="306" r="3" fill="var(--sinal)"/>
-          <circle cx="848" cy="270" r="3" fill="var(--sinal)"/>
-          <circle cx="706" cy="216" r="13" fill="var(--sinal)"/>
-          <text x="706" y="221" text-anchor="middle" font-size="14"
-                font-weight="700" fill="#ffffff"
-                font-family="Archivo, sans-serif">4</text>
-          <text x="782" y="344" text-anchor="middle" font-size="13"
-                font-weight="600" fill="currentColor"
-                font-family="Archivo, sans-serif">
-            painel no navegador
-          </text>
-          <text x="782" y="362" text-anchor="middle" font-size="13"
-                fill="currentColor" opacity="0.7"
-                font-family="Archivo, sans-serif">
-            números, mapa e laudos
-          </text>
-        </svg>
-        <figcaption>
-          Só a etapa 1 acontece no barco — e é a única que não pode falhar por
-          falta de rede. Da nuvem saem duas coisas: o documento que você assina
-          e o painel onde acompanha a operação.
-        </figcaption>
-      </figure>
-    </div>
-
-    <section>
-      <p class="rotulo">O problema</p>
-      <h2>O trabalho é no mar; o formulário é de escritório.</h2>
-      <div class="estreito">
-        <p>
-          A rotina é conhecida: anotar no papel em cima do cais, fotografar com o
-          celular e, à noite, passar tudo a limpo — tentando lembrar qual foto
-          era de qual barco e qual medida era de qual casco.
-        </p>
-        <p>
-          Essa passagem a limpo não acrescenta nada ao relatório. Só acrescenta
-          chance de erro, e ela acontece justamente quando você já está cansado.
-          O Baliza tira essa etapa: o que você registra no barco é o que entra no
-          relatório.
-        </p>
-      </div>
-
-      <figure class="cena">
-        <svg viewBox="0 0 880 470" role="img"
-             aria-label="Tela do checklist no aplicativo de campo: faixa de
-                         sincronização dizendo quantas fotos ainda estão no
-                         aparelho, modalidade de pesca por escolha única, itens
-                         com as opções conforme, não conforme e não se aplica,
-                         câmera em cada linha e botão de foto geral.">
-          <defs>
-            <marker id="a-ponta" viewBox="0 0 10 10" refX="5" refY="5"
-                    markerWidth="5" markerHeight="5">
-              <circle cx="5" cy="5" r="4" fill="var(--sinal)"/>
+            <marker id="m-volta" viewBox="0 0 10 10" refX="9" refY="5"
+                    markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 0 L10 5 L0 10 z" fill="var(--conforme)"/>
             </marker>
           </defs>
 
-          <rect x="30" y="14" width="300" height="444" rx="26"
+          <!-- lado do barco -->
+          <rect x="8" y="42" width="316" height="250" rx="12" fill="none"
+                stroke="var(--sinal)" stroke-width="2" stroke-dasharray="8 6"/>
+          <text x="24" y="32" font-size="12" font-weight="700"
+                fill="var(--sinal)" font-family="Archivo, sans-serif">
+            NO BARCO — FUNCIONA SEM SINAL
+          </text>
+
+          <path d="M8 258 H324 V292 H8 Z" fill="var(--mar)"/>
+          <path d="M8 258 q20 -6 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t36 0"
+                fill="none" stroke="var(--linha-forte)" stroke-width="2"/>
+
+          <rect x="106" y="72" width="120" height="196" rx="15"
                 fill="var(--surface)" stroke="currentColor" stroke-width="2.5"/>
+          <rect x="118" y="88" width="96" height="164" rx="4"
+                fill="var(--ground-2)" stroke="var(--linha)"/>
 
-          <rect x="44" y="42" width="272" height="392" fill="var(--ground-2)"/>
+          <rect x="128" y="100" width="13" height="13" rx="2" fill="none"
+                stroke="var(--conforme)" stroke-width="2"/>
+          <path d="M130.5 106.5 L134 110 L139 102" fill="none"
+                stroke="var(--conforme)" stroke-width="2"/>
+          <line x1="150" y1="107" x2="204" y2="107" stroke="var(--linha-forte)"
+                stroke-width="3" stroke-linecap="round"/>
 
-          <rect x="44" y="42" width="272" height="38" fill="currentColor"/>
-          <text x="60" y="66" font-size="13" font-weight="600"
-                fill="var(--ground)" font-family="Archivo, sans-serif">
-            Checklist — Anexo IV
-          </text>
+          <rect x="128" y="124" width="13" height="13" rx="2" fill="none"
+                stroke="var(--conforme)" stroke-width="2"/>
+          <path d="M130.5 130.5 L134 134 L139 126" fill="none"
+                stroke="var(--conforme)" stroke-width="2"/>
+          <line x1="150" y1="131" x2="192" y2="131" stroke="var(--linha-forte)"
+                stroke-width="3" stroke-linecap="round"/>
 
-          <rect x="44" y="84" width="272" height="32" fill="var(--sinal)"
-                opacity="0.14"/>
-          <circle cx="62" cy="100" r="6" fill="none" stroke="var(--sinal)"
-                  stroke-width="1.8"/>
-          <text x="78" y="105" font-size="12" fill="var(--sinal)"
-                font-family="Archivo, sans-serif">
-            3 foto(s) ainda no aparelho.
-          </text>
+          <rect x="128" y="148" width="13" height="13" rx="2" fill="none"
+                stroke="var(--linha-forte)" stroke-width="2"/>
+          <line x1="150" y1="155" x2="200" y2="155" stroke="var(--linha)"
+                stroke-width="3" stroke-linecap="round"/>
 
-          <text x="58" y="140" font-size="10" font-weight="700"
-                letter-spacing="1.4" fill="currentColor" opacity="0.55"
-                font-family="Archivo, sans-serif">MODALIDADE</text>
-
-          <circle cx="64" cy="160" r="7" fill="none" stroke="var(--sinal)"
+          <rect x="128" y="176" width="76" height="60" rx="4"
+                fill="var(--surface)" stroke="currentColor" stroke-width="2"/>
+          <path d="M132 226 L152 202 L166 216 L178 206 L200 226 Z"
+                fill="var(--mar)" stroke="none"/>
+          <circle cx="188" cy="192" r="7" fill="none" stroke="var(--sinal)"
                   stroke-width="2"/>
-          <circle cx="64" cy="160" r="3.4" fill="var(--sinal)"/>
-          <text x="80" y="165" font-size="12.5" fill="currentColor"
-                font-family="Archivo, sans-serif">Rede de Emalhar</text>
+          <circle cx="150" cy="76" r="4" fill="var(--sinal)"/>
 
-          <circle cx="64" cy="184" r="7" fill="none" stroke="currentColor"
-                  stroke-width="1.6" opacity="0.45"/>
-          <text x="80" y="189" font-size="12.5" fill="currentColor"
-                opacity="0.55" font-family="Archivo, sans-serif">Arrasto</text>
+          <!-- o que atravessa -->
+          <line x1="332" y1="132" x2="540" y2="132" stroke="var(--sinal)"
+                stroke-width="2.5" marker-end="url(#m-vai)"/>
+          <text x="436" y="120" text-anchor="middle" font-size="13"
+                font-weight="600" fill="var(--sinal)"
+                font-family="Archivo, sans-serif">
+            marcações, fotos, assinatura
+          </text>
 
-          <text x="58" y="220" font-size="10" font-weight="700"
-                letter-spacing="1.4" fill="currentColor" opacity="0.55"
-                font-family="Archivo, sans-serif">EQUIPAMENTO</text>
+          <line x1="540" y1="196" x2="332" y2="196" stroke="var(--conforme)"
+                stroke-width="2.5" marker-end="url(#m-volta)"/>
+          <text x="436" y="216" text-anchor="middle" font-size="13"
+                font-weight="600" fill="var(--conforme)"
+                font-family="Archivo, sans-serif">
+            o que ainda falta
+          </text>
 
-          <g font-family="Archivo, sans-serif">
-            <text x="58" y="242" font-size="12.5" fill="currentColor">Guincho</text>
-            <rect x="58" y="250" width="126" height="24" rx="12" fill="none"
-                  stroke="currentColor" stroke-width="1.4" opacity="0.6"/>
-            <path d="M58 262 a12 12 0 0 1 12 -12 h30 v24 h-30 a12 12 0 0 1 -12 -12 z"
-                  fill="var(--conforme)" opacity="0.85"/>
-            <text x="85" y="266" text-anchor="middle" font-size="11"
-                  font-weight="700" fill="#ffffff">C</text>
-            <line x1="100" y1="250" x2="100" y2="274" stroke="currentColor"
-                  stroke-width="1.4" opacity="0.6"/>
-            <text x="121" y="266" text-anchor="middle" font-size="11"
-                  fill="currentColor" opacity="0.75">NC</text>
-            <line x1="142" y1="250" x2="142" y2="274" stroke="currentColor"
-                  stroke-width="1.4" opacity="0.6"/>
-            <text x="163" y="266" text-anchor="middle" font-size="11"
-                  fill="currentColor" opacity="0.75">N.A.</text>
-            <rect x="272" y="250" width="34" height="24" rx="12"
-                  fill="var(--sinal)" opacity="0.16"/>
-            <rect x="281" y="257" width="12" height="9" rx="2" fill="none"
-                  stroke="var(--sinal)" stroke-width="1.5"/>
-            <text x="299" y="266" font-size="10" font-weight="700"
-                  fill="var(--sinal)">2</text>
+          <!-- lado do escritório -->
+          <rect x="548" y="42" width="324" height="250" rx="12" fill="none"
+                stroke="var(--linha-forte)" stroke-width="2"/>
+          <text x="564" y="32" font-size="12" font-weight="700"
+                fill="var(--tinta-3)" font-family="Archivo, sans-serif">
+            NO ESCRITÓRIO — O PAINEL
+          </text>
 
-            <text x="58" y="302" font-size="12.5" fill="currentColor">GPS / Sonda</text>
-            <rect x="58" y="310" width="126" height="24" rx="12" fill="none"
-                  stroke="currentColor" stroke-width="1.4" opacity="0.6"/>
-            <text x="79" y="326" text-anchor="middle" font-size="11"
-                  fill="currentColor" opacity="0.75">C</text>
-            <line x1="100" y1="310" x2="100" y2="334" stroke="currentColor"
-                  stroke-width="1.4" opacity="0.6"/>
-            <rect x="100" y="310" width="42" height="24" fill="var(--sinal)"
-                  opacity="0.85"/>
-            <text x="121" y="326" text-anchor="middle" font-size="11"
-                  font-weight="700" fill="#ffffff">NC</text>
-            <line x1="142" y1="310" x2="142" y2="334" stroke="currentColor"
-                  stroke-width="1.4" opacity="0.6"/>
-            <text x="163" y="326" text-anchor="middle" font-size="11"
-                  fill="currentColor" opacity="0.75">N.A.</text>
-            <rect x="272" y="310" width="34" height="24" rx="12"
-                  fill="var(--sinal)" opacity="0.16"/>
-            <rect x="281" y="317" width="12" height="9" rx="2" fill="none"
-                  stroke="var(--sinal)" stroke-width="1.5"/>
-            <text x="299" y="326" font-size="10" font-weight="700"
-                  fill="var(--sinal)">1</text>
+          <rect x="588" y="76" width="244" height="152" rx="8"
+                fill="var(--surface)" stroke="currentColor" stroke-width="2.5"/>
+          <rect x="694" y="228" width="32" height="18" fill="none"
+                stroke="currentColor" stroke-width="2.5"/>
+          <line x1="662" y1="248" x2="758" y2="248" stroke="currentColor"
+                stroke-width="2.5" stroke-linecap="round"/>
 
-            <text x="58" y="362" font-size="12.5" fill="currentColor">
-              Urna Frigorifica com Gelo
-            </text>
-            <rect x="58" y="370" width="126" height="24" rx="12" fill="none"
-                  stroke="currentColor" stroke-width="1.4" opacity="0.6"/>
-            <text x="79" y="386" text-anchor="middle" font-size="11"
-                  fill="currentColor" opacity="0.75">C</text>
-            <line x1="100" y1="370" x2="100" y2="394" stroke="currentColor"
-                  stroke-width="1.4" opacity="0.6"/>
-            <text x="121" y="386" text-anchor="middle" font-size="11"
-                  fill="currentColor" opacity="0.75">NC</text>
-            <line x1="142" y1="370" x2="142" y2="394" stroke="currentColor"
-                  stroke-width="1.4" opacity="0.6"/>
-            <path d="M142 370 h30 a12 12 0 0 1 12 12 a12 12 0 0 1 -12 12 h-30 z"
-                  fill="currentColor" opacity="0.28"/>
-            <text x="163" y="386" text-anchor="middle" font-size="11"
-                  font-weight="700" fill="currentColor">N.A.</text>
-            <rect x="272" y="370" width="34" height="24" rx="12" fill="none"
-                  stroke="currentColor" stroke-width="1.3" opacity="0.45"/>
-            <rect x="281" y="377" width="12" height="9" rx="2" fill="none"
-                  stroke="currentColor" stroke-width="1.4" opacity="0.6"/>
-          </g>
+          <rect x="604" y="92" width="82" height="120" rx="3"
+                fill="var(--ground-2)" stroke="var(--linha-forte)"/>
+          <line x1="614" y1="108" x2="676" y2="108" stroke="var(--linha-forte)"
+                stroke-width="3" stroke-linecap="round"/>
+          <line x1="614" y1="122" x2="662" y2="122" stroke="var(--linha)"
+                stroke-width="3" stroke-linecap="round"/>
+          <line x1="614" y1="136" x2="676" y2="136" stroke="var(--linha)"
+                stroke-width="3" stroke-linecap="round"/>
+          <line x1="614" y1="150" x2="652" y2="150" stroke="var(--linha)"
+                stroke-width="3" stroke-linecap="round"/>
+          <path d="M614 186 q16 -10 32 0" fill="none" stroke="var(--sinal)"
+                stroke-width="2.5" stroke-linecap="round"/>
+          <text x="645" y="204" text-anchor="middle" font-size="10"
+                fill="var(--tinta-3)" font-family="Archivo, sans-serif">
+            relatório
+          </text>
 
-          <rect x="176" y="404" width="126" height="30" rx="15"
-                fill="var(--sinal)"/>
-          <rect x="192" y="414" width="13" height="10" rx="2" fill="none"
-                stroke="#ffffff" stroke-width="1.6"/>
-          <text x="213" y="423" font-size="12" font-weight="600" fill="#ffffff"
-                font-family="Archivo, sans-serif">Foto geral</text>
-
-          <g font-family="Archivo, sans-serif">
-            <polyline points="330,100 358,100 358,86 396,86" fill="none"
-                      stroke="var(--sinal)" stroke-width="2"
-                      marker-start="url(#a-ponta)"/>
-            <text x="406" y="80" font-size="14" font-weight="600"
-                  fill="currentColor">Nada some por falta de sinal</text>
-            <text x="406" y="102" font-size="13" fill="currentColor"
-                  opacity="0.75">
-              a faixa diz o que ainda está guardado no aparelho
-            </text>
-
-            <polyline points="330,262 358,262 358,188 396,188" fill="none"
-                      stroke="var(--sinal)" stroke-width="2"
-                      marker-start="url(#a-ponta)"/>
-            <text x="406" y="182" font-size="14" font-weight="600"
-                  fill="currentColor">Conforme, não conforme ou não se aplica</text>
-            <text x="406" y="204" font-size="13" fill="currentColor"
-                  opacity="0.75">
-              todo item começa em “não se aplica”: nada é dado como
-            </text>
-            <text x="406" y="224" font-size="13" fill="currentColor"
-                  opacity="0.75">
-              aprovado por esquecimento
-            </text>
-
-            <polyline points="330,262 366,262 366,290 396,290" fill="none"
-                      stroke="var(--sinal)" stroke-width="2"/>
-            <text x="406" y="284" font-size="14" font-weight="600"
-                  fill="currentColor">A câmera fica na linha do item</text>
-            <text x="406" y="306" font-size="13" fill="currentColor"
-                  opacity="0.75">
-              a foto já nasce amarrada àquele ponto — e o número
-            </text>
-            <text x="406" y="326" font-size="13" fill="currentColor"
-                  opacity="0.75">
-              mostra quantas você já tirou
-            </text>
-
-            <polyline points="308,419 358,419 358,392 396,392" fill="none"
-                      stroke="var(--sinal)" stroke-width="2"
-                      marker-start="url(#a-ponta)"/>
-            <text x="406" y="386" font-size="14" font-weight="600"
-                  fill="currentColor">Foto geral</text>
-            <text x="406" y="408" font-size="13" fill="currentColor"
-                  opacity="0.75">
-              para a embarcação como um todo, fora do checklist
-            </text>
-          </g>
+          <line x1="706" y1="212" x2="818" y2="212" stroke="var(--linha-forte)"
+                stroke-width="2"/>
+          <rect x="712" y="168" width="22" height="44" fill="var(--conforme)"/>
+          <rect x="744" y="140" width="22" height="72" fill="var(--sinal)"/>
+          <rect x="776" y="184" width="22" height="28" fill="var(--linha-forte)"/>
         </svg>
         <figcaption>
-          A tela do checklist como ela é no aparelho. Cada foto sai daqui já com
-          coordenada, horário e impressão digital — nada disso depende de rede.
+          O celular resolve o barco; o computador resolve o documento. O que
+          atravessa entre os dois é o trabalho — e nada disso é digitado duas
+          vezes.
         </figcaption>
       </figure>
 
+      <div class="metades">
+        <div class="metade">
+          <p class="metade-onde">No barco</p>
+          <h3>O aplicativo de campo</h3>
+          <ul>
+            <li>Você cadastra o armador e a embarcação e abre a vistoria.</li>
+            <li>Marca cada item do checklist conforme vai verificando.</li>
+            <li>Fotografa por item: a foto já fica ligada ao ponto que ela
+              documenta.</li>
+            <li>Cada foto registra sozinha a hora e o lugar em que foi
+              tirada.</li>
+            <li>Você pode ditar a descrição em vez de digitar.</li>
+            <li>O proprietário assina na tela do próprio aparelho.</li>
+            <li>Tudo funciona sem internet. Quando aparece sinal, os dados sobem
+              sozinhos.</li>
+          </ul>
+        </div>
+
+        <div class="metade">
+          <p class="metade-onde">No computador</p>
+          <h3>O backoffice</h3>
+          <ul>
+            <li>Você abre a vistoria e vê o que foi coletado em campo.</li>
+            <li>Vê as fotos em tamanho grande e confere a descrição de cada
+              uma.</li>
+            <li>Consulta a lista do que ainda falta para o laudo poder ser
+              emitido.</li>
+            <li>Conclui o parecer técnico e emite o laudo em PDF.</li>
+            <li>Registra a assinatura eletrônica, e o sistema confere se ela
+              corresponde ao documento.</li>
+            <li>Acompanha os números da sua operação em gráficos e mapa.</li>
+            <li>Gera uma cópia de segurança dos seus dados quando quiser.</li>
+          </ul>
+        </div>
+      </div>
+
+      <p class="legenda">
+        Você não fica preso a nenhuma das duas. Se o celular falhar em campo e
+        você anotar no papel, dá para lançar a vistoria inteira pelo backoffice.
+        Se ficar uma semana sem sinal, o aplicativo guarda tudo e sincroniza
+        quando a rede voltar.
+      </p>
+    </section>
+
+    <section id="experimentar">
+      <p class="rotulo">Experimente</p>
+      <h2>Teste as duas ferramentas em dez minutos.</h2>
+      <p class="estreito">
+        As duas só fazem sentido juntas, então a demonstração é dos dois lados.
+        Não pede cadastro e não custa nada.
+      </p>
+
+      <ol class="passos">
+        <li class="passo">
+          <p class="passo-numero">1</p>
+          <h3>Faça uma vistoria no celular</h3>
+          <p>
+            É o aplicativo de campo de verdade, não um vídeo. Você abre uma
+            vistoria, marca os itens, fotografa e vê cada foto ser registrada com
+            a posição e o horário. Se quiser, ponha o telefone em modo avião
+            antes: é assim que ele foi feito para trabalhar.
+          </p>
+          <a class="botao" href="https://baliza-production-5559.up.railway.app/demo/apk">
+            Baixar para Android
+          </a>
+          <p class="demo-meta">21 MB · Android 6 ou superior</p>
+        </li>
+
+        <li class="passo">
+          <p class="passo-numero">2</p>
+          <h3>Abra o backoffice de teste</h3>
+          <p>
+            É a mesma tela que você usaria no computador, com uma vistoria já
+            preenchida. Você vê o que foi marcado, as fotos que documentam cada
+            item, o que ainda falta para emitir e os números do período.
+          </p>
+          <a class="botao" href="painel-demonstracao.html">Abrir o backoffice de teste</a>
+          <p class="demo-meta">Abre no navegador, sem instalar nada</p>
+        </li>
+
+        <li class="passo">
+          <p class="passo-numero">3</p>
+          <h3>Veja o laudo que sai disso</h3>
+          <p>
+            O laudo completo em PDF, do jeito que o vistoriador assina e entrega.
+            As fotos vão anexadas ao final, cada uma com a hora e o lugar da
+            captura.
+          </p>
+          <a class="botao" href="laudo-demonstracao.pdf">Abrir o laudo</a>
+          <p class="demo-meta">PDF de exemplo, com dados fictícios</p>
+        </li>
+      </ol>
+
+      <h3 class="antes-titulo">Antes de instalar</h3>
+      <div class="rastro">
+        <div>
+          <dt>Nada sai do seu telefone</dt>
+          <dd>O aplicativo de teste guarda tudo no aparelho e não envia nada
+            para lugar nenhum, nem para nós. Por isso a vistoria que você fizer
+            não aparece no backoffice de teste, que mostra um exemplo já
+            pronto.</dd>
+        </div>
+        <div>
+          <dt>O Android vai avisar</dt>
+          <dd>Ele diz que o arquivo veio de fora da Play Store e pede a sua
+            autorização. Isso é normal em aplicativo entregue direto; a
+            demonstração ainda não está na loja.</dd>
+        </div>
+        <div>
+          <dt>Não atrapalha o aplicativo real</dt>
+          <dd>A demonstração se instala ao lado dele, sem conflito. Se depois
+            você virar cliente, recebe o aplicativo completo sem desinstalar
+            nada.</dd>
+        </div>
+        <div>
+          <dt>O que você criar fica no teste</dt>
+          <dd>Os seus registros de verdade começam limpos, sem nada da
+            demonstração dentro.</dd>
+        </div>
+        <div>
+          <dt>Para remover</dt>
+          <dd>Desinstale como qualquer aplicativo. Ela sai inteira, com tudo o
+            que você tiver criado.</dd>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="rotulo">O laudo</p>
+      <h2>O laudo sai pronto, no formato que o MPA pede.</h2>
+      <p class="estreito">
+        Você não monta o documento: ele é gerado com o que já foi marcado e
+        fotografado na vistoria. As fotos vão anexadas ao final, cada uma com a
+        hora e o lugar em que foi tirada.
+      </p>
+
+      <div class="amostra">
+        <a class="folha" href="laudo-demonstracao.pdf">
+          <img src="laudo-pagina-1.png" alt="Primeira página do laudo de
+               vistoria, com os dados da embarcação e o parecer." loading="lazy">
+        </a>
+        <a class="folha" href="laudo-demonstracao.pdf">
+          <img src="laudo-pagina-2.png" alt="Segunda página do laudo, com as
+               fotos anexadas e os dados de cada captura." loading="lazy">
+        </a>
+      </div>
+      <p class="legenda">
+        <a href="laudo-demonstracao.pdf">PDF completo</a> — repare que uma das
+        fotos declara não ter coordenada. Ela ficou sem sinal de GPS, e o laudo
+        informa isso em vez de inventar um ponto.
+      </p>
+
       <div class="colunas">
         <div class="bloco">
-          <h3>Sem internet, sem problema</h3>
+          <h3>Dois laudos, uma ida ao barco</h3>
           <p>
-            Nenhuma tela do aplicativo precisa de sinal. Só o primeiro login pede
-            internet, uma vez. Depois disso ele abre e funciona no mar, por
-            quanto tempo for.
+            O sistema emite o laudo do PROPESC e também o relatório completo da
+            vistoria do RGP. Você coleta os dados uma vez; qual documento emitir
+            você decide depois, no backoffice.
           </p>
         </div>
         <div class="bloco">
-          <h3>O que não foi medido fica em branco</h3>
+          <h3>Assinatura conferida</h3>
           <p>
-            Nada é chutado. Medida que você não tomou aparece como
-            <strong>N.A.</strong> no relatório — nunca como zero, que seria
-            afirmar uma medida que ninguém fez.
+            Você baixa o PDF, assina com a sua conta gov.br ou com certificado
+            digital e devolve o arquivo. O sistema confere se a assinatura cobre
+            o documento inteiro e se é do responsável técnico daquela vistoria.
           </p>
         </div>
         <div class="bloco">
-          <h3>Foto sem GPS continua valendo</h3>
+          <h3>Laudo emitido não muda</h3>
           <p>
-            Quando o GPS não pega, a foto é guardada do mesmo jeito e o relatório
-            diz que aquela não tem coordenada. Melhor do que inventar uma posição
-            para preencher campo.
+            Se precisar corrigir, o sistema gera uma versão nova e guarda a
+            anterior. As duas ficam registradas, com o motivo da correção.
           </p>
         </div>
+      </div>
+    </section>
+
+    <section>
+      <p class="rotulo">No computador</p>
+      <h2>O que você faz no backoffice.</h2>
+
+      <div class="colunas">
+        <div class="bloco">
+          <h3>Vê o que falta para emitir</h3>
+          <p>
+            Uma lista mostra o que ainda impede o laudo de sair: um campo em
+            branco, uma medida que não foi tomada, uma assinatura que não subiu.
+            Você resolve enquanto ainda dá tempo.
+          </p>
+        </div>
+        <div class="bloco">
+          <h3>Descreve as fotos com ajuda</h3>
+          <p>
+            A partir do que você ditou no barco e do que o sistema reconheceu na
+            imagem, a descrição já vem escrita. Você lê, corrige o que quiser e
+            salva. O que sai impresso no laudo é o que você salvou.
+          </p>
+        </div>
+        <div class="bloco">
+          <h3>Acompanha a sua operação</h3>
+          <p>
+            Quantas vistorias, quantas aprovadas, quais itens mais aparecem como
+            não conformes, como está distribuída a frota e onde as vistorias
+            aconteceram no mapa.
+          </p>
+        </div>
+        <div class="bloco">
+          <h3>Trabalha com a sua equipe</h3>
+          <p>
+            Você distribui vistorias para quem captura em campo, e cada pessoa vê
+            apenas o que é dela. O parecer técnico continua sendo só do
+            responsável técnico, sob ART.
+          </p>
+        </div>
+        <div class="bloco">
+          <h3>Guarda uma cópia dos seus dados</h3>
+          <p>
+            O backoffice gera um arquivo com os seus dados para você guardar no
+            seu próprio computador, e confere a integridade do que copiou.
+          </p>
+        </div>
+        <div class="bloco">
+          <h3>Lança vistoria feita no papel</h3>
+          <p>
+            Se o celular falhou em campo e você anotou à mão, dá para lançar a
+            vistoria inteira pelo backoffice, sem depender do aparelho.
+          </p>
+        </div>
+      </div>
+
+      <div class="telas">
+        <figure class="tela">
+          <img src="painel-parecer.png" alt="Gráfico de barras com aprovações e
+               reprovações por estado." loading="lazy">
+          <p>Aprovado e reprovado, por estado</p>
+        </figure>
+        <figure class="tela">
+          <img src="painel-nao-conformidades.png" alt="Gráfico com os itens que
+               mais aparecem como não conformes." loading="lazy">
+          <p>Os itens que mais reprovam</p>
+        </figure>
+        <figure class="tela">
+          <img src="painel-material.png" alt="Distribuição da frota por material
+               do casco." loading="lazy">
+          <p>A frota que você atende</p>
+        </figure>
+        <figure class="tela">
+          <img src="painel-mapa.png" alt="Mapa com os pontos onde as vistorias
+               aconteceram." loading="lazy">
+          <p>Onde as vistorias aconteceram</p>
+        </figure>
       </div>
     </section>
 
     <section>
       <p class="rotulo">Inteligência artificial</p>
-      <h2>A IA olha a foto. Quem responde é você.</h2>
-      <div class="estreito">
-        <p>
-          Depois que as fotos sobem, o sistema analisa cada uma e sugere o que
-          reconheceu: a inscrição pintada no casco, o material, os petrechos e os
-          equipamentos de bordo. Cada palpite vem com o grau de confiança.
-        </p>
-      </div>
+      <h2>A IA ajuda a escrever. Quem decide é você.</h2>
+      <p class="estreito">
+        O sistema analisa as fotos e reconhece o que consegue: a inscrição no
+        casco, o material, os petrechos e os equipamentos que aparecem. Isso
+        serve para poupar a sua digitação na hora de descrever as fotos. A
+        decisão técnica não passa por ali.
+      </p>
 
       <div class="contraste">
         <div class="faz">
           <h3>O que ela faz</h3>
           <ul>
-            <li>Lê a inscrição da Capitania no casco</li>
-            <li>Diz se o casco parece de madeira, fibra ou aço</li>
-            <li>Aponta petrechos e equipamentos que reconhece</li>
-            <li>Avisa quando <strong>não</strong> conseguiu identificar</li>
+            <li>Lê o que dá para ler na foto e mostra ao seu lado.</li>
+            <li>Escreve a descrição juntando o que você ditou com o que ela
+              reconheceu.</li>
+            <li>Deixa o texto pronto para você ler, corrigir e salvar.</li>
           </ul>
         </div>
         <div class="naofaz">
           <h3>O que ela nunca faz</h3>
           <ul>
-            <li>Aprovar ou reprovar um barco</li>
-            <li>Preencher medidas ou arqueação</li>
-            <li>Marcar item do checklist sozinha</li>
-            <li>Entrar no relatório sem você confirmar</li>
+            <li>Aprovar ou reprovar uma embarcação.</li>
+            <li>Marcar item do checklist no seu lugar.</li>
+            <li>Preencher medida ou dimensão, que são medidas em campo.</li>
+            <li>Aparecer no laudo. O que sai impresso é o que você escreveu.</li>
           </ul>
         </div>
       </div>
 
-      <figure class="cena">
-        <svg viewBox="0 0 880 300" role="img"
-             aria-label="Cartão de sugestão da IA no aplicativo: a foto que a
-                         originou, o que a IA afirma, a confiança e o modelo, e
-                         os três botões — confirmar, corrigir e descartar.">
-          <defs>
-            <marker id="i-ponta" viewBox="0 0 10 10" refX="5" refY="5"
-                    markerWidth="5" markerHeight="5">
-              <circle cx="5" cy="5" r="4" fill="var(--sinal)"/>
-            </marker>
-          </defs>
-
-          <rect x="24" y="26" width="452" height="248" rx="12"
-                fill="var(--surface)" stroke="currentColor" stroke-width="2"/>
-
-          <rect x="46" y="50" width="104" height="94" rx="6"
-                fill="var(--ground-2)" stroke="currentColor" stroke-width="1.6"/>
-          <path d="M56 130 L84 100 L102 118 L118 106 L140 130 Z"
-                fill="currentColor" opacity="0.25"/>
-          <circle cx="122" cy="74" r="9" fill="currentColor" opacity="0.3"/>
-
-          <g font-family="Archivo, sans-serif">
-            <text x="168" y="72" font-size="15" font-weight="600"
-                  fill="currentColor">Urna frigorífica com gelo</text>
-            <text x="168" y="96" font-size="13" fill="currentColor"
-                  opacity="0.75">identificada na imagem</text>
-            <text x="168" y="130" font-size="13" fill="var(--sinal)"
-                  font-weight="600">confiança alta (85%)</text>
-            <text x="168" y="150" font-size="12" fill="currentColor"
-                  opacity="0.6">modelo gemini-3.5-flash-lite</text>
-
-            <rect x="46" y="196" width="122" height="34" rx="17" fill="none"
-                  stroke="var(--conforme)" stroke-width="2"/>
-            <path d="M66 213 l7 7 l13 -15" fill="none" stroke="var(--conforme)"
-                  stroke-width="2.4" stroke-linecap="round"
-                  stroke-linejoin="round"/>
-            <text x="115" y="218" text-anchor="middle" font-size="13"
-                  font-weight="600" fill="var(--conforme)">Confirmar</text>
-
-            <rect x="180" y="196" width="112" height="34" rx="17" fill="none"
-                  stroke="currentColor" stroke-width="1.8" opacity="0.75"/>
-            <text x="236" y="218" text-anchor="middle" font-size="13"
-                  font-weight="600" fill="currentColor">Corrigir</text>
-
-            <rect x="304" y="196" width="122" height="34" rx="17" fill="none"
-                  stroke="currentColor" stroke-width="1.8" opacity="0.75"/>
-            <text x="365" y="218" text-anchor="middle" font-size="13"
-                  font-weight="600" fill="currentColor">Descartar</text>
-
-            <text x="46" y="256" font-size="12" fill="currentColor"
-                  opacity="0.6">
-              nenhuma das três marca item do checklist
-            </text>
-
-            <polyline points="480,88 512,88 512,64 546,64" fill="none"
-                      stroke="var(--sinal)" stroke-width="2"
-                      marker-start="url(#i-ponta)"/>
-            <text x="556" y="58" font-size="14" font-weight="600"
-                  fill="currentColor">Sempre com a foto ao lado</text>
-            <text x="556" y="80" font-size="13" fill="currentColor"
-                  opacity="0.75">
-              você julga olhando a imagem, não a frase
-            </text>
-
-            <polyline points="480,132 512,132 512,146 546,146" fill="none"
-                      stroke="var(--sinal)" stroke-width="2"
-                      marker-start="url(#i-ponta)"/>
-            <text x="556" y="140" font-size="14" font-weight="600"
-                  fill="currentColor">Diz o quanto confia — e quem respondeu</text>
-            <text x="556" y="162" font-size="13" fill="currentColor"
-                  opacity="0.75">
-              o modelo fica registrado junto do resultado
-            </text>
-
-            <polyline points="480,213 512,213 512,232 546,232" fill="none"
-                      stroke="var(--sinal)" stroke-width="2"
-                      marker-start="url(#i-ponta)"/>
-            <text x="556" y="226" font-size="14" font-weight="600"
-                  fill="currentColor">Corrigir também é resposta</text>
-            <text x="556" y="248" font-size="13" fill="currentColor"
-                  opacity="0.75">
-              o que fica gravado é o seu texto, não o do modelo
-            </text>
-            <text x="556" y="268" font-size="13" fill="currentColor"
-                  opacity="0.75">
-              — e descartar vale igual
-            </text>
-          </g>
-        </svg>
-        <figcaption>
-          Enquanto sobrar um cartão sem resposta, o relatório não sai. É a única
-          coisa que a IA decide neste sistema: que você ainda precisa olhar.
-        </figcaption>
-      </figure>
-
-      <div class="estreito" style="margin-top:26px">
-        <p>
-          Enquanto houver palpite que você não olhou, o sistema
-          <strong>não deixa emitir o relatório</strong>. O parecer é seu, sob ART
-          — e o aplicativo foi feito para deixar isso registrado, não para tomar
-          o seu lugar.
-        </p>
-      </div>
+      <p class="legenda">
+        Nenhuma foto de vistoria real é enviada para análise sem a sua
+        autorização expressa. O padrão do sistema é não enviar.
+      </p>
     </section>
 
     <section>
-      <p class="rotulo">Cada foto vira prova</p>
-      <h2>Se cobrarem de você daqui a um ano, o registro responde.</h2>
-      <div class="estreito">
-        <p>
-          No momento em que a foto é tirada, ainda sem internet, o aplicativo
-          guarda junto dela:
-        </p>
-      </div>
+      <p class="rotulo">Rastreabilidade</p>
+      <h2>O que fica registrado em cada foto.</h2>
+      <p class="estreito">
+        Um laudo pode ser contestado meses ou anos depois, quando ninguém lembra
+        do dia. Por isso cada foto guarda, desde o momento da captura, quatro
+        informações — e elas vão impressas no laudo, ao lado da imagem.
+      </p>
 
-      <dl class="rastro">
+      <div class="rastro">
         <div>
           <dt>Onde</dt>
-          <dd>A coordenada do local — ou o motivo de o GPS não ter pegado.</dd>
+          <dd>a coordenada do lugar em que a foto foi tirada, ou o aviso de que
+            não havia sinal de GPS. Nenhuma posição é inventada.</dd>
         </div>
         <div>
           <dt>Quando</dt>
-          <dd>A hora em que a foto foi tirada, não a do envio.</dd>
+          <dd>a hora exata da captura, marcada pelo próprio aparelho.</dd>
         </div>
         <div>
-          <dt>Qual arquivo</dt>
-          <dd>
-            Uma impressão digital da imagem, calculada no celular. Se alguém
-            trocar a foto depois, ela não confere mais.
-          </dd>
+          <dt>Que é a mesma</dt>
+          <dd>uma impressão digital do arquivo, calculada no celular antes de
+            ele sair de lá. Se a foto for trocada, ela não corresponde mais.</dd>
         </div>
         <div>
-          <dt>Quem olhou</dt>
-          <dd>O palpite da IA, com que confiança, e quem confirmou ou corrigiu.</dd>
+          <dt>Quem</dt>
+          <dd>quem capturou, quem descreveu e quem concluiu o parecer.</dd>
         </div>
-        <div>
-          <dt>Quem concluiu</dt>
-          <dd>
-            O responsável técnico que deu o parecer, e quando. Só ele pode — nem
-            o dono da conta faz isso no lugar dele.
-          </dd>
-        </div>
-      </dl>
-    </section>
-
-    <section>
-      <p class="rotulo">O relatório</p>
-      <h2>Sai pronto, no formato que o MPA pede.</h2>
-      <div class="estreito">
-        <p>
-          O PDF segue o formulário oficial de vistoria da Portaria MPA nº
-          397/2024, com as fotos anexadas e a impressão digital de cada uma.
-        </p>
-        <p>
-          Uma vez emitido, ele não muda mais. Precisou corrigir? Sai uma versão
-          nova, e a anterior fica guardada. É assim que documento técnico se
-          comporta.
-        </p>
-        <p>
-          A assinatura é sua, feita com o seu certificado — no gov.br ou com
-          ICP-Brasil. O sistema não assina no seu lugar, e a sua chave nunca fica
-          guardada nele. Ele confere se o arquivo assinado é mesmo aquele
-          relatório, se nada mudou depois da assinatura e se quem assinou é o
-          responsável daquela vistoria.
-        </p>
-      </div>
-
-      <div class="amostra">
-        <a class="folha" href="laudo-demonstracao.pdf">
-          <img src="laudo-pagina-1.png?v=3" loading="lazy"
-               alt="Primeira página do relatório: identificação, dados da
-                    embarcação, operação e parecer técnico.">
-        </a>
-        <a class="folha" href="laudo-demonstracao.pdf">
-          <img src="laudo-pagina-2.png?v=3" loading="lazy"
-               alt="Segunda página do relatório: registro fotográfico, com
-                    coordenada, horário e impressão digital de cada foto.">
-        </a>
-      </div>
-
-      <p class="legenda">
-        Relatório gerado pelo sistema, com dados de exemplo. Clique para abrir o
-        <a href="laudo-demonstracao.pdf">PDF completo</a> — repare que uma das
-        fotos está sem coordenada, e o documento avisa isso em vez de esconder.
-      </p>
-    </section>
-
-    <section>
-      <p class="rotulo">Seus números</p>
-      <h2>No fim do mês, você sabe o que a operação produziu.</h2>
-      <div class="estreito">
-        <p>
-          O painel reúne o que as suas vistorias mostram: onde aprova mais, onde
-          reprova, o que mais aparece como não conforme e onde os barcos estão.
-          Sem planilha e sem digitar nada duas vezes.
-        </p>
-      </div>
-
-      <div class="telas">
-        <figure class="tela">
-          <img src="painel-parecer.png" loading="lazy"
-               alt="Gráfico de barras com vistorias aprovadas, reprovadas e sem
-                    parecer, separadas por estado.">
-          <p>Aprovadas, reprovadas — e as que ainda não têm parecer.</p>
-        </figure>
-        <figure class="tela">
-          <img src="painel-mapa.png" loading="lazy"
-               alt="Mapa do litoral brasileiro com um ponto por vistoria,
-                    colorido conforme o parecer.">
-          <p>Onde cada vistoria aconteceu, pelo GPS das fotos.</p>
-        </figure>
-        <figure class="tela">
-          <img src="painel-nao-conformidades.png" loading="lazy"
-               alt="Barras horizontais com os itens que mais aparecem como não
-                    conformes.">
-          <p>O que mais reprova na sua região.</p>
-        </figure>
-        <figure class="tela">
-          <img src="painel-material.png" loading="lazy"
-               alt="Gráfico de rosca com a divisão da frota por material do
-                    casco: madeira, fibra e aço.">
-          <p>A frota que você vistoria, por material de casco.</p>
-        </figure>
-      </div>
-
-      <p style="margin-top:26px">
-        <a class="botao" href="painel-demonstracao.html">Abrir o painel de demonstração</a>
-      </p>
-      <p class="legenda">
-        O painel acima é interativo e abre direto no navegador, sem cadastro —
-        passe o mouse, dê zoom, filtre por estado. Os números são inventados.
-      </p>
-      <p class="legenda">
-        Telas do painel, com dados de exemplo. As contas são conservadoras de
-        propósito: a taxa de aprovação sai só sobre as vistorias já concluídas, e
-        as pendentes aparecem ao lado — número que esconde o que falta julgar
-        parece mais firme do que é.
-      </p>
-    </section>
-
-    <section id="demonstracao">
-      <p class="rotulo">Experimente</p>
-      <h2>Instale e faça uma vistoria agora, no seu celular.</h2>
-      <div class="estreito">
-        <p>
-          A demonstração é o aplicativo de campo de verdade, não um vídeo nem
-          uma simulação: você abre uma vistoria, preenche o checklist,
-          fotografa e vê cada foto ser registrada com posição, horário e
-          impressão digital. <strong>Ponha o telefone em modo avião antes, se
-          quiser</strong> — é assim que ele foi feito para trabalhar.
-        </p>
-      </div>
-
-      <div class="demo">
-        <div class="demo-acao">
-          <a class="botao" href="https://baliza-production-5559.up.railway.app/demo/apk">
-            Baixar para Android
-          </a>
-          <p class="demo-meta">
-            21 MB · Android 6 ou superior
-          </p>
-        </div>
-        <div class="demo-nota">
-          <h3>O que a demonstração faz</h3>
-          <ul>
-            <li>Abre vistoria, armador e embarcação</li>
-            <li>Checklist completo, com C, NC e N.A.</li>
-            <li>Câmera por item, com posição e horário</li>
-            <li>Funciona sem nenhum sinal</li>
-          </ul>
-        </div>
-        <div class="demo-nota">
-          <h3>O que fica de fora</h3>
-          <ul>
-            <li>Sincronização — nada sai do aparelho</li>
-            <li>Análise das fotos pela IA</li>
-            <li>Emissão do laudo em PDF</li>
-            <li>Painel de gestão</li>
-          </ul>
-          <p class="demo-rodape">
-            Essas etapas dependem de servidor. O laudo e o painel você vê
-            acima, nesta página.
-          </p>
-        </div>
-      </div>
-
-      <div class="demo-avisos">
-        <p>
-          <strong>Nenhum dado seu sai do telefone.</strong> A demonstração não
-          tem login, não conversa com servidor nenhum e não envia foto a lugar
-          algum. Para removê-la, desinstale como qualquer aplicativo — ela sai
-          inteira, com o que você tiver criado.
-        </p>
-        <p>
-          O Android vai avisar que o arquivo veio de fora da Play Store e pedir
-          sua autorização. Isso é esperado num aplicativo distribuído
-          diretamente; a demonstração ainda não está publicada na loja.
-        </p>
-        <p>
-          Na lista de permissões você verá <strong>acesso à internet</strong>,
-          além de câmera e localização. Ela vem das bibliotecas que o
-          aplicativo completo usa para sincronizar e fica no pacote mesmo sem
-          uso — a demonstração não abre conexão alguma. Se preferir não
-          confiar na nossa palavra, use o modo avião: tudo funciona igual.
-        </p>
-        <p>
-          Ela se instala <strong>ao lado</strong> do aplicativo real, sem
-          conflito — se depois você virar cliente, recebe o aplicativo completo
-          sem precisar desinstalar nada. O que você criou na demonstração fica
-          nela: seus registros de verdade começam limpos, como devem começar.
-        </p>
       </div>
     </section>
 
@@ -1268,27 +1213,44 @@
         <summary>Preciso de internet no barco?</summary>
         <p>
           Não, em momento nenhum da vistoria. Só o primeiro login pede rede, uma
-          única vez. Depois disso o aplicativo funciona offline pelo tempo que
-          for, e os dados sobem sozinhos quando aparecer sinal.
+          única vez. Depois disso o aplicativo funciona sem sinal pelo tempo que
+          for, e os dados sobem sozinhos quando a rede aparecer.
         </p>
       </details>
 
       <details>
-        <summary>A IA pode aprovar ou reprovar um barco?</summary>
+        <summary>Dá para fazer tudo no celular?</summary>
         <p>
-          Não. Ela sugere o que vê nas fotos, com grau de confiança, e o palpite
-          fica pendente até você confirmar, corrigir ou descartar. Enquanto
-          houver palpite sem revisão, o sistema não emite o relatório. O parecer
-          é sempre seu, sob ART.
+          A coleta é inteira no celular. Concluir o parecer e emitir o laudo é no
+          backoffice, no computador: é lá que o documento é gerado, assinado e
+          guardado. Uma vistoria começada no barco termina no backoffice sem você
+          digitar nada de novo.
+        </p>
+      </details>
+
+      <details>
+        <summary>E se o celular falhar em campo?</summary>
+        <p>
+          Você anota no papel, como sempre fez, e lança a vistoria inteira pelo
+          backoffice depois. O sistema aceita as duas formas.
+        </p>
+      </details>
+
+      <details>
+        <summary>A IA pode aprovar ou reprovar uma embarcação?</summary>
+        <p>
+          Não. Ela lê as fotos e ajuda a escrever a descrição delas. Nada do que
+          ela produz entra no checklist nem no parecer, e nada dela aparece no
+          laudo. A decisão é sua, sob ART.
         </p>
       </details>
 
       <details>
         <summary>E se a foto ficar sem GPS?</summary>
         <p>
-          A foto é guardada do mesmo jeito, com o motivo registrado, e o
-          relatório declara que aquela não tem coordenada. Nenhuma posição é
-          inventada para preencher o campo.
+          A foto é guardada do mesmo jeito, com o motivo registrado, e o laudo
+          informa que aquela não tem coordenada. Nenhuma posição é inventada para
+          preencher o campo.
         </p>
       </details>
 
@@ -1296,26 +1258,17 @@
         <summary>Outros vistoriadores enxergam os meus dados?</summary>
         <p>
           Não. Cada vistoriador credenciado vê apenas o que é dele, e essa
-          separação é feita no banco de dados — não só na tela. O aplicativo do
+          separação é feita no banco de dados, não só na tela. O aplicativo do
           celular também não carrega nenhuma chave de servidor.
         </p>
       </details>
 
       <details>
-        <summary>As minhas fotos vão treinar alguma IA?</summary>
+        <summary>Posso corrigir um laudo já emitido?</summary>
         <p>
-          Há uma trava no sistema para que foto de vistoria real não seja enviada
-          a provedor de IA que use imagens em treinamento. O padrão é recusar;
-          liberar exige configuração explícita.
-        </p>
-      </details>
-
-      <details>
-        <summary>Posso corrigir um relatório já emitido?</summary>
-        <p>
-          O relatório emitido não é alterado, e isso é proposital. A correção
-          gera uma versão nova, com a anterior preservada — as duas ficam
-          registradas.
+          O laudo emitido não é alterado. A correção gera uma versão nova e a
+          anterior é preservada: as duas ficam registradas, com o motivo da
+          correção.
         </p>
       </details>
 
@@ -1324,16 +1277,25 @@
         <p>
           Para assinar, sim: serve a conta gov.br nível prata ou ouro, que é
           gratuita, ou um certificado ICP-Brasil (e-CPF). Para fazer a vistoria e
-          emitir o relatório, não é necessário.
+          emitir o laudo, não é necessário.
+        </p>
+      </details>
+
+      <details>
+        <summary>Se eu parar de usar, perco os meus dados?</summary>
+        <p>
+          Não. O backoffice gera uma cópia de segurança com os seus dados, para
+          você guardar no seu próprio computador, quando quiser.
         </p>
       </details>
     </section>
 
     <div class="contato">
-      <h2>Quer ver funcionando?</h2>
+      <h2>Quer ver funcionando com os seus dados?</h2>
       <p>
-        Mostro o caminho inteiro: a captura no celular sem internet, o relatório
-        saindo em PDF e a assinatura sendo conferida.
+        Mostro o caminho inteiro: a coleta no celular sem internet, a vistoria
+        chegando ao backoffice, o laudo saindo em PDF e a assinatura sendo
+        conferida.
       </p>
       <a class="botao" href="licenca.html">Licenciar o Baliza</a>
       <a class="secundario" href="https://wa.me/5573991051624">Falar no WhatsApp</a>
@@ -1397,3 +1359,6 @@
     }
   });
 </script>
+
+</body>
+</html>
