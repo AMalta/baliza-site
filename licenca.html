@@ -171,7 +171,6 @@
      corrida com quatro informacoes dentro — o aviso pelo WhatsApp, a conferencia
      manual, o e-mail e a senha. Quem acabou de pagar quer saber "e agora?", e
      essa pergunta se responde em lista numerada, nao em texto. */
-  .depois { font-size: 17px; margin: 26px 0 10px; }
 
   .passos-pix {
     margin: 0;
@@ -209,6 +208,25 @@
   .topicos strong { color: var(--tinta); }
   .topicos.sim::marker, .topicos.sim li::marker { color: var(--conforme); }
   .topicos.nao li::marker { color: var(--tinta-3); }
+
+  /* O boleto e emitido A MAO, fora do sistema — nao ha emissor integrado, e
+     boleto nao se monta localmente como o codigo Pix. A pagina diz isso e diz
+     o custo: ate tres dias uteis de compensacao contra o mesmo dia no Pix.
+     Prometer boleto automatico aqui seria vender o que nao existe. */
+  .boleto {
+    border: 1px solid var(--linha);
+    border-radius: 12px;
+    padding: 22px 24px;
+    margin: 32px 0 0;
+  }
+
+  .boleto p {
+    font-size: 15px;
+    color: var(--tinta-2);
+    margin: 0 0 10px;
+  }
+
+  .boleto p:last-child { margin-bottom: 0; }
 </style>
 </head>
 <body>
@@ -271,6 +289,44 @@
       </button>
       <p class="aviso" id="aviso" role="status"></p>
     </form>
+
+    <h2>O que acontece depois do pagamento</h2>
+    <ol class="passos-pix">
+      <li>
+        <strong>Você me avisa pelo
+        <a href="https://wa.me/5573991051624">WhatsApp</a></strong>, com o
+        identificador que aparece na tela do pagamento.
+      </li>
+      <li>
+        <strong>Eu confiro o recebimento</strong> e crio o seu acesso. A
+        confirmação não é automática — costuma sair no mesmo dia útil.
+      </li>
+      <li>
+        <strong>Na conversa peço os seus dados de credenciamento</strong>: CPF
+        ou CNPJ, certificado do MPA e registro do responsável técnico. Eles
+        saem impressos no laudo, e por isso não se digitam num formulário de
+        pagamento.
+      </li>
+      <li>
+        <strong>Você recebe um e-mail</strong> com o link para definir a senha,
+        e já entra no backoffice e no aplicativo.
+      </li>
+    </ol>
+
+    <div class="boleto">
+      <h2 class="lista-titulo">Prefere boleto bancário?</h2>
+      <p>
+        Dá para pagar por boleto —
+        <a href="https://wa.me/5573991051624">me chame no WhatsApp</a> com a
+        periodicidade que você quer e os seus dados, que eu emito e envio por
+        e-mail.
+      </p>
+      <p>
+        O boleto ainda não é gerado por esta página: é emitido à mão, e
+        <strong>a compensação leva até três dias úteis</strong> — só depois
+        dela o acesso é criado. Por Pix, o acesso costuma sair no mesmo dia.
+      </p>
+    </div>
   </div>
 
   <div id="pagar" hidden>
@@ -286,28 +342,11 @@
       <button class="principal" id="copiar" type="button">Copiar código</button>
       <p class="aviso" id="aviso2" role="status"></p>
 
-      <h2 class="depois">Depois de pagar</h2>
-      <ol class="passos-pix">
-        <li>
-          <strong>Me avise pelo
-          <a href="https://wa.me/5573991051624">WhatsApp</a></strong>, com o
-          identificador acima.
-        </li>
-        <li>
-          <strong>Eu confiro o recebimento</strong> e crio o seu acesso. A
-          confirmação não é automática.
-        </li>
-        <li>
-          <strong>Você recebe um e-mail</strong> com o link para definir a
-          senha.
-        </li>
-      </ol>
-
       <p class="nota">
-        Na conversa vou pedir os seus dados de credenciamento — CPF ou CNPJ,
-        certificado do MPA e registro do responsável técnico. Eles saem
-        impressos no laudo, e por isso não se digitam num formulário de
-        pagamento.
+        <strong>Pagou?</strong> Me avise pelo
+        <a href="https://wa.me/5573991051624">WhatsApp</a> com o identificador
+        acima. Eu confiro o recebimento, peço os seus dados de credenciamento
+        na conversa e você recebe por e-mail o link para definir a senha.
       </p>
     </div>
   </div>

@@ -1,0 +1,384 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Criar o seu acesso — Baliza</title>
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<style>
+  :root {
+    --ground: #ffffff; --ground-2: #f3f6f7; --surface: #ffffff;
+    --tinta: #0b1b2b; --tinta-2: #3e5568; --tinta-3: #6a8091;
+    --linha: #d8dee2; --sinal: #d9531e;
+    --halo-1: rgba(217, 83, 30, 0.26);
+    --halo-2: rgba(217, 83, 30, 0.14);
+    --halo-3: rgba(217, 83, 30, 0.06);
+    --sinal-escuro: #a83c12; --conforme: #0f6b4f; --erro: #b3402a;
+    --sans: Archivo, ui-sans-serif, system-ui, sans-serif;
+    --serif: "Source Serif 4", Georgia, serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #07141d; --ground-2: #0c1e29; --surface: #0e2331;
+      --tinta: #e9f0f4; --tinta-2: #a9bfcc; --tinta-3: #7d95a3;
+      --linha: #1e3948; --sinal: #ff7a4d;
+      --halo-1: rgba(255, 122, 77, 0.30);
+      --halo-2: rgba(255, 122, 77, 0.16);
+      --halo-3: rgba(255, 122, 77, 0.07);
+      --sinal-escuro: #ffa384; --conforme: #55c79d; --erro: #e8765c;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--ground); color: var(--tinta);
+    font-family: var(--serif); font-size: 17px; line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  main { max-width: 720px; margin: 0 auto; padding: 40px 24px 80px; }
+
+  .marca {
+    font-family: var(--sans); font-weight: 700;
+    font-size: clamp(28px, 5.4vw, 40px);
+    letter-spacing: 0.01em; line-height: 1.1;
+    text-align: center; margin-bottom: 6px;
+  }
+  .marca .descritor {
+    font-weight: 600; font-size: 0.52em; color: var(--tinta-3);
+    text-transform: uppercase; letter-spacing: 0.07em;
+  }
+  .marca em {
+    font-style: normal; color: var(--sinal);
+    position: relative; display: inline-block; line-height: 1;
+  }
+  .marca em::before {
+    content: ""; position: absolute; left: 50%; top: 0.02em;
+    width: 0.21em; height: 0.21em; transform: translateX(-50%);
+    border-radius: 50%; background: var(--sinal);
+    box-shadow:
+      0 0 0 0.10em var(--halo-1),
+      0 0 0 0.24em var(--halo-2),
+      0 0 0 0.42em var(--halo-3),
+      0 0 0.70em 0.14em var(--halo-1);
+  }
+
+  h1 {
+    font-family: var(--sans); font-size: clamp(26px, 4.6vw, 34px);
+    font-weight: 700; margin: 28px 0 10px;
+  }
+  h2 {
+    font-family: var(--sans); font-size: 18px; font-weight: 700;
+    margin: 34px 0 4px;
+  }
+  p { margin: 0 0 16px; color: var(--tinta-2); }
+  .nota { font-size: 15px; color: var(--tinta-3); margin: 4px 0 18px; }
+
+  label {
+    display: block; font-family: var(--sans); font-size: 13px;
+    font-weight: 600; color: var(--tinta-2); margin: 14px 0 4px;
+  }
+  input, select {
+    width: 100%; font: inherit; font-size: 16px; padding: 11px 12px;
+    border: 1px solid var(--linha); border-radius: 8px;
+    background: var(--surface); color: var(--tinta);
+  }
+  input:focus, select:focus { outline: 2px solid var(--sinal); outline-offset: 1px; }
+  .par {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0 18px;
+  }
+
+  button {
+    margin-top: 26px; font-family: var(--sans); font-weight: 600;
+    font-size: 16px; color: #fff; background: var(--sinal);
+    border: none; padding: 13px 26px; border-radius: 8px; cursor: pointer;
+    width: 100%;
+  }
+  button:hover { background: var(--sinal-escuro); }
+  button[disabled] { opacity: 0.6; cursor: default; }
+
+  .aviso {
+    font-family: var(--sans); font-size: 15px; margin: 14px 0 0;
+    min-height: 1.3em;
+  }
+  .aviso.ruim { color: var(--erro); }
+  .aviso.bom { color: var(--conforme); }
+
+  .caixa {
+    border: 1px solid var(--linha); border-radius: 12px;
+    padding: 22px 24px; margin-top: 26px;
+  }
+  .caixa p:last-child { margin-bottom: 0; }
+  a { color: var(--sinal); }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+
+<main>
+  <div class="marca" aria-label="Baliza Vistoria">Bal<em aria-hidden="true">ı</em>za <span class="descritor">Vistoria</span></div>
+
+  <div id="carregando">
+    <p style="text-align:center;margin-top:24px">Conferindo o seu convite…</p>
+  </div>
+
+  <div id="invalido" hidden>
+    <h1>Não consegui abrir este cadastro</h1>
+    <p id="motivo"></p>
+    <div class="caixa">
+      <p>
+        Se o link chegou por e-mail e já passou do prazo, ou se você já criou o
+        acesso, me chame no
+        <a href="https://wa.me/5573991051624">WhatsApp</a> que eu envio outro.
+      </p>
+    </div>
+  </div>
+
+  <div id="formulario" hidden>
+    <h1>Criar o seu acesso</h1>
+    <p id="quem"></p>
+    <p class="nota">
+      Os dados abaixo saem <strong>impressos no laudo</strong>. Por isso é você
+      quem os digita, olhando os seus documentos — e não eu, de ouvido.
+    </p>
+
+    <form id="form">
+      <h2>A entidade credenciada</h2>
+      <p class="nota">
+        Quem tem o certificado do MPA: você mesmo, se for pessoa física, ou a
+        sua empresa.
+      </p>
+
+      <label for="tipo_pessoa">Tipo</label>
+      <select id="tipo_pessoa" name="tipo_pessoa">
+        <option value="fisica">Pessoa física</option>
+        <option value="juridica">Pessoa jurídica</option>
+      </select>
+
+      <label for="nome_razao">Nome ou razão social</label>
+      <input id="nome_razao" name="nome_razao" required autocomplete="organization">
+
+      <div class="par">
+        <div>
+          <label for="cpf_cnpj">CPF ou CNPJ</label>
+          <input id="cpf_cnpj" name="cpf_cnpj" required inputmode="numeric">
+        </div>
+        <div>
+          <label for="cert_mpa">Certificado do MPA</label>
+          <input id="cert_mpa" name="cert_mpa" required>
+        </div>
+      </div>
+
+      <h2>O responsável técnico</h2>
+      <p class="nota">
+        Quem assina o laudo sob ART/DHT. Numa pessoa física, costuma ser você
+        mesmo.
+      </p>
+
+      <div class="par">
+        <div>
+          <label for="responsavel_nome">Nome</label>
+          <input id="responsavel_nome" name="responsavel_nome" required autocomplete="name">
+        </div>
+        <div>
+          <label for="responsavel_cpf">CPF</label>
+          <input id="responsavel_cpf" name="responsavel_cpf" required inputmode="numeric">
+        </div>
+      </div>
+
+      <div class="par">
+        <div>
+          <label for="conselho">Conselho</label>
+          <input id="conselho" name="conselho" required placeholder="CREA, CAU…">
+        </div>
+        <div>
+          <label for="registro">Registro no conselho</label>
+          <input id="registro" name="registro" required>
+        </div>
+      </div>
+
+      <label for="art">ART/DHT</label>
+      <input id="art" name="art" required>
+
+      <h2>O seu acesso</h2>
+      <div class="par">
+        <div>
+          <label for="nome_usuario">Seu nome</label>
+          <input id="nome_usuario" name="nome_usuario" required autocomplete="name">
+        </div>
+        <div>
+          <label for="senha">Senha (mínimo 8 caracteres)</label>
+          <input id="senha" name="senha" type="password" required minlength="8"
+                 autocomplete="new-password">
+        </div>
+      </div>
+
+      <button type="submit" id="enviar">Criar acesso</button>
+      <p class="aviso" id="aviso" role="status"></p>
+    </form>
+  </div>
+
+  <div id="pronto" hidden>
+    <h1>Acesso criado</h1>
+    <p>
+      Já dá para entrar no backoffice com o seu e-mail e a senha que você
+      acabou de definir.
+    </p>
+    <div class="caixa">
+      <p>
+        <a href="https://painel.balizavistoria.com.br">Abrir o backoffice</a> ·
+        <a href="manual.html">Ver o manual</a>
+      </p>
+      <p class="nota">
+        O aplicativo de campo se baixa depois, dentro do backoffice, na aba do
+        aplicativo. O primeiro login nele pede internet uma única vez.
+      </p>
+    </div>
+  </div>
+</main>
+
+<script type="module">
+import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+// Mesma mecânica de `definir-senha.html`, que já foi depurada: o link do
+// convite volta com os tokens no FRAGMENTO (#access_token=...), que é o fluxo
+// implícito. `detectSessionInUrl: false` porque a sessão é aberta à mão logo
+// abaixo — tratar os dois formatos explicitamente é mais longo, mas quando
+// falha dá para ver ONDE falhou.
+const supabase = createClient(
+  "https://xgshcptvphyscltezqda.supabase.co",
+  "sb_publishable_JiBZmqd-C49Nx-aTVWdSgw_38FbSpEJ",
+  { auth: { detectSessionInUrl: false, persistSession: false } },
+);
+
+const API = "https://baliza-production-5559.up.railway.app";
+const $ = (id) => document.getElementById(id);
+const mostrar = (qual) => {
+  for (const secao of ["carregando", "formulario", "invalido", "pronto"]) {
+    $(secao).hidden = secao !== qual;
+  }
+};
+
+function recusar(motivo) {
+  $("motivo").textContent = motivo;
+  mostrar("invalido");
+}
+
+function motivoDoErro() {
+  const frag = new URLSearchParams(location.hash.slice(1));
+  const busca = new URLSearchParams(location.search);
+  const codigo = frag.get("error_code") || busca.get("error_code");
+  const desc = frag.get("error_description") || busca.get("error_description");
+  if (codigo === "otp_expired") return "O prazo deste link terminou.";
+  if (desc) return decodeURIComponent(desc.replace(/\+/g, " "));
+  return null;
+}
+
+let sessao = null;
+
+async function abrirSessao() {
+  const frag = new URLSearchParams(location.hash.slice(1));
+  const busca = new URLSearchParams(location.search);
+
+  if (frag.get("access_token") && frag.get("refresh_token")) {
+    const { data, error } = await supabase.auth.setSession({
+      access_token: frag.get("access_token"),
+      refresh_token: frag.get("refresh_token"),
+    });
+    if (error) return recusar(`O link não foi aceito: ${error.message}`);
+    return data.session;
+  }
+  if (busca.get("code")) {
+    const { data, error } = await supabase.auth.exchangeCodeForSession(busca.get("code"));
+    if (error) return recusar(`O link não foi aceito: ${error.message}`);
+    return data.session;
+  }
+
+  // Chegou sem token: alguém digitou o endereço, ou o link já foi usado.
+  // Dizer O QUE chegou evita o diagnóstico às cegas.
+  const veio = [...frag.keys(), ...busca.keys()];
+  recusar(veio.length
+    ? `O endereço trouxe ${veio.join(", ")}, mas não um token de acesso.`
+    : "O endereço não trouxe token nenhum. Use o link que chegou por e-mail.");
+  return null;
+}
+
+async function iniciar() {
+  const erro = motivoDoErro();
+  if (erro) return recusar(erro);
+
+  sessao = await abrirSessao();
+  if (!sessao) return;
+
+  // O núcleo é quem diz se este convite pode virar cadastro — e diz ANTES de
+  // a pessoa preencher onze campos.
+  let situacao;
+  try {
+    const r = await fetch(API + "/cadastro/situacao", {
+      headers: { Authorization: "Bearer " + sessao.access_token },
+    });
+    situacao = await r.json();
+    if (!r.ok) return recusar(situacao.detail || "Não consegui conferir o convite.");
+  } catch (e) {
+    return recusar("Não consegui falar com o servidor agora. Tente de novo em instantes.");
+  }
+
+  if (!situacao.pode) return recusar(situacao.motivo);
+
+  $("quem").textContent = `Você está criando o acesso de ${situacao.email}.`;
+  // O que a pessoa já digitou na compra não se digita de novo.
+  if (situacao.nome) {
+    $("nome_razao").value = situacao.nome;
+    $("responsavel_nome").value = situacao.nome;
+    $("nome_usuario").value = situacao.nome;
+  }
+  if (situacao.cpf_cnpj) $("cpf_cnpj").value = situacao.cpf_cnpj;
+  mostrar("formulario");
+}
+
+$("form").addEventListener("submit", async (evento) => {
+  evento.preventDefault();
+  const aviso = $("aviso");
+  const botao = $("enviar");
+  const dados = Object.fromEntries(new FormData(evento.target).entries());
+  const senha = dados.senha;
+  delete dados.senha;
+
+  botao.disabled = true;
+  aviso.className = "aviso";
+  aviso.textContent = "Criando…";
+
+  try {
+    // A SENHA PRIMEIRO, e por um motivo: se o cadastro fosse criado e a senha
+    // falhasse, a pessoa ficaria com tenant e sem como entrar. Na ordem
+    // inversa, uma falha do cadastro deixa só uma senha definida — e o link
+    // de recuperação continua resolvendo.
+    const { error: erroSenha } = await supabase.auth.updateUser({ password: senha });
+    if (erroSenha) throw new Error("Não consegui definir a senha: " + erroSenha.message);
+
+    const r = await fetch(API + "/cadastro", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + sessao.access_token,
+      },
+      body: JSON.stringify(dados),
+    });
+    const resposta = await r.json();
+    if (!r.ok) throw new Error(resposta.detail || "O cadastro foi recusado.");
+
+    mostrar("pronto");
+  } catch (e) {
+    aviso.className = "aviso ruim";
+    aviso.textContent = e.message;
+    botao.disabled = false;
+  }
+});
+
+iniciar();
+</script>
+
+</body>
+</html>
