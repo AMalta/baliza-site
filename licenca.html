@@ -50,7 +50,7 @@
     font-family: var(--sans); font-size: clamp(28px, 5vw, 40px); font-weight: 700;
     letter-spacing: -0.02em; line-height: 1.1; margin: 0 0 14px; text-wrap: balance;
   }
-  .chamada { font-size: 19px; color: var(--tinta-2); max-width: 58ch; margin: 0 0 8px; }
+  .chamada { font-size: 19px; color: var(--tinta-2); margin: 0 0 8px; }
   h2 { font-family: var(--sans); font-size: 22px; margin: 40px 0 14px; }
   .planos {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
@@ -119,7 +119,7 @@
     color: var(--tinta-2);
   }
   .nota {
-    font-size: 15px; color: var(--tinta-2); max-width: 62ch;
+    font-size: 15px; color: var(--tinta-2);
     margin: 16px auto 0; text-align: left;
   }
   .aviso { font-family: var(--sans); font-size: 14px; margin-top: 14px; min-height: 1.2em; }
@@ -189,13 +189,11 @@
      a pagina o inseria com `textContent`, que achata quebra de linha e imprime
      o "▎" como caractere. Dava um paragrafo enorme e ilegivel.
      A lista e conteudo de VENDA, nao configuracao de operacao: o lugar dela e
-     aqui. No banco fica so uma frase, que o operador ajusta sem mexer em HTML. */
-  .inclui {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 30px;
-    margin: 28px 0 36px;
-  }
+     aqui. No banco fica so uma frase, que o operador ajusta sem mexer em HTML.
+
+     A lista do que NAO esta incluido saiu a pedido. O que ela dizia sobre o
+     certificado digital continua respondido na pagina inicial, nas duvidas
+     frequentes. */
 
   .lista-titulo { font-size: 17px; margin: 0 0 12px; }
 
@@ -230,37 +228,24 @@
       conferência da assinatura eletrônica e painel de gestão.
     </p>
 
-    <div class="inclui">
-      <div>
-        <h2 class="lista-titulo">Está incluído</h2>
-        <ul class="topicos sim">
-          <li><strong>O aplicativo de campo</strong> para Android, que funciona
-            sem internet nenhuma.</li>
-          <li><strong>Fotos que provam</strong>: cada uma guarda o lugar, a data,
-            a hora e um código que denuncia se o arquivo for trocado.</li>
-          <li><strong>O backoffice no navegador</strong> para revisar as fotos na
-            tela grande, corrigir marcações e acompanhar os seus números.</li>
-          <li><strong>A emissão do laudo em PDF</strong>, com as evidências
-            anexadas. Laudo emitido é imutável: correção gera nova versão.</li>
-          <li><strong>A conferência da assinatura eletrônica</strong> — que ela
-            cobre o documento inteiro e é do responsável técnico da vistoria.</li>
-          <li><strong>Sua equipe sem custo por usuário</strong>: a licença é por
-            vistoriador.</li>
-          <li><strong>Atualizações e suporte por e-mail</strong> durante a
-            vigência.</li>
-        </ul>
-      </div>
-      <div>
-        <h2 class="lista-titulo">Não está incluído</h2>
-        <ul class="topicos nao">
-          <li><strong>O certificado digital</strong>, que você adquire da
-            autoridade certificadora que preferir.</li>
-          <li><strong>A ART/DHT</strong> e as taxas do seu conselho.</li>
-          <li><strong>O protocolo no MPA</strong>: o sistema entrega o PDF
-            pronto para protocolar, mas o envio é seu.</li>
-        </ul>
-      </div>
-    </div>
+    <h2 class="lista-titulo">Está incluído</h2>
+    <ul class="topicos sim">
+      <li><strong>O aplicativo de campo</strong> para Android, que funciona sem
+        internet nenhuma.</li>
+      <li><strong>Fotos que provam</strong>: cada uma guarda o lugar, a data, a
+        hora e um código que denuncia se o arquivo for trocado.</li>
+      <li><strong>O backoffice no navegador</strong> para revisar as fotos na
+        tela grande, corrigir marcações e acompanhar os seus números.</li>
+      <li><strong>A emissão do laudo em PDF</strong>, com as evidências
+        anexadas. Laudo emitido é imutável: correção gera nova versão, e a
+        anterior fica preservada.</li>
+      <li><strong>A conferência da assinatura eletrônica</strong> — que ela
+        cobre o documento inteiro e é do responsável técnico da vistoria.</li>
+      <li><strong>Sua equipe sem custo por usuário</strong>: a licença é por
+        vistoriador.</li>
+      <li><strong>Atualizações e suporte por e-mail</strong> durante a
+        vigência.</li>
+    </ul>
 
     <h2>Escolha a periodicidade</h2>
     <div class="planos" id="planos">
@@ -329,7 +314,7 @@
 </main>
 
 <footer>
-  <div style="max-width:880px;margin:0 auto;padding:0 24px">
+  <div style="max-width:1080px;margin:0 auto;padding:0 24px">
     <p>
       <strong>Baliza</strong> — apoio à vistoria de embarcação pesqueira
       conforme a Portaria MPA nº 397/2024. A responsabilidade técnica pelo
