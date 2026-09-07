@@ -92,13 +92,17 @@
     font-family: var(--sans);
   }
 
+  /* O rotulo de secao vale para as OITO secoes, e nao so para "O problema —
+     sem o Baliza": um rotulo maior no meio de sete iguais leria como erro, e
+     nao como enfase. De 12px para 15px, com o espacamento fechando um pouco
+     — caixa alta grande com 0,16em de espaco vira letreiro. */
   .rotulo {
-    font-size: 12px;
+    font-size: 15px;
     font-weight: 700;
-    letter-spacing: 0.16em;
+    letter-spacing: 0.13em;
     text-transform: uppercase;
     color: var(--sinal);
-    margin: 0 0 14px;
+    margin: 0 0 16px;
   }
 
   header { border-bottom: 1px solid var(--linha); }
