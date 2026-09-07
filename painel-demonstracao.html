@@ -13,7 +13,10 @@
   :root {
     --ground: #ffffff; --ground-2: #f3f6f7; --surface: #ffffff;
     --tinta: #0b1b2b; --tinta-2: #3e5568; --tinta-3: #6a8091;
-    --linha: #d8dee2; --sinal: #d9531e; --conforme: #0f6b4f;
+    --linha: #d8dee2; --sinal: #d9531e;
+ --halo-1: rgba(217, 83, 30, 0.26);
+ --halo-2: rgba(217, 83, 30, 0.14);
+ --halo-3: rgba(217, 83, 30, 0.06); --conforme: #0f6b4f;
     --reprova: #b3402a; --pendente: #d9a441;
     --sans: Archivo, ui-sans-serif, system-ui, sans-serif;
     --serif: "Source Serif 4", Georgia, serif;
@@ -22,7 +25,10 @@
     :root:not([data-theme="light"]) {
       --ground: #07141d; --ground-2: #0c1e29; --surface: #0e2331;
       --tinta: #e9f0f4; --tinta-2: #a9bfcc; --tinta-3: #7d95a3;
-      --linha: #1e3948; --sinal: #ff7a4d; --conforme: #55c79d;
+      --linha: #1e3948; --sinal: #ff7a4d;
+ --halo-1: rgba(255, 122, 77, 0.30);
+ --halo-2: rgba(255, 122, 77, 0.16);
+ --halo-3: rgba(255, 122, 77, 0.07); --conforme: #55c79d;
       --reprova: #e8765c; --pendente: #e0aa4a;
     }
   }
@@ -37,9 +43,11 @@
     max-width: 1080px; margin: 0 auto; padding: 16px 24px;
     display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
   }
-  .marca { font-family: var(--sans); font-weight: 700; font-size: 18px; }
-  .marca em { font-style: normal; color: var(--sinal); }
-  .barra span { font-size: 14px; color: var(--tinta-3); }
+  .marca { font-family: var(--sans); font-weight: 700; font-size: clamp(28px, 5.4vw, 40px);
+           letter-spacing: -0.015em; line-height: 1.1; }
+  /* `:not(.marca)` porque `.barra span` vence `.marca` na especificidade
+     e engolia o tamanho da marca. */
+  .barra span:not(.marca) { font-size: 14px; color: var(--tinta-3); }
   .barra a { margin-left: auto; font-size: 14px; color: var(--sinal); }
   main { max-width: 1080px; margin: 0 auto; padding: 28px 24px 72px; }
   h1 {
@@ -162,13 +170,49 @@
   }
   .falta strong { font-family: var(--sans); font-size: 14px; }
   .falta ul { margin: 8px 0 0; padding-left: 20px; color: var(--tinta-2); }
+
+  /* A MARCA, igual a da pagina inicial. "Baliza" e o nome; "VISTORIA" e o
+     descritor, em caixa alta e recuado. O "i" nao tem pingo (U+0131) — a luz
+     e desenhada aqui, e a haste da letra vira o poste da baliza. */
+  .marca .descritor {
+    font-weight: 600;
+    font-size: 0.52em;
+    color: var(--tinta-3);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+  }
+
+  .marca em {
+    font-style: normal;
+    color: var(--sinal);
+    position: relative;
+    display: inline-block;
+    line-height: 1;
+  }
+
+  .marca em::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0.02em;
+    width: 0.21em;
+    height: 0.21em;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: var(--sinal);
+    box-shadow:
+      0 0 0 0.10em var(--halo-1),
+      0 0 0 0.24em var(--halo-2),
+      0 0 0 0.42em var(--halo-3),
+      0 0 0.70em 0.14em var(--halo-1);
+  }
 </style>
 </head>
 <body>
 
 <header>
   <div class="barra">
-    <span class="marca">Bal<em>i</em>za</span>
+    <span class="marca" aria-label="Baliza Vistoria">Bal<em aria-hidden="true">ı</em>za <span class="descritor">Vistoria</span></span>
     <span>Backoffice</span>
     <a href="index.html">← voltar ao site</a>
   </div>

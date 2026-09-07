@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Baliza — Vistoria de Embarcação Pesqueira</title>
-<meta name="description" content="Da vistoria no píer até o laudo assinado, o caminho pode ser um acúmulo de anotações, fotos mal identificadas e horas de trabalho no computador. Com o Baliza você coleta os dados com o aplicativo de campo e gera o laudo final no backoffice.">
+<meta name="description" content="Da vistoria até o laudo assinado, o caminho pode ser um acúmulo de anotações, fotos mal identificadas e horas de trabalho no computador. Com o Baliza você coleta os dados com o aplicativo de campo e gera o laudo final no backoffice.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
@@ -22,6 +22,9 @@
     --linha-forte: #b6c2c9;
 
     --sinal: #d9531e;
+    --halo-1: rgba(217, 83, 30, 0.26);
+    --halo-2: rgba(217, 83, 30, 0.14);
+    --halo-3: rgba(217, 83, 30, 0.06);
     --sinal-escuro: #a83c12;
     --conforme: #0f6b4f;
 
@@ -41,6 +44,12 @@
       --linha: #1e3948;
       --linha-forte: #2d4f61;
       --sinal: #ff7a4d;
+    --halo-1: rgba(255, 122, 77, 0.30);
+    --halo-2: rgba(255, 122, 77, 0.16);
+    --halo-3: rgba(255, 122, 77, 0.07);
+      --halo-1: rgba(255, 122, 77, 0.30);
+      --halo-2: rgba(255, 122, 77, 0.16);
+      --halo-3: rgba(255, 122, 77, 0.07);
       --sinal-escuro: #ffa384;
       --conforme: #55c79d;
     }
@@ -74,8 +83,10 @@
   }
 
   .faixa { padding: 0 24px; }
-  .interno { max-width: 960px; margin: 0 auto; }
-  .estreito { max-width: 660px; }
+  .interno { max-width: 1280px; margin: 0 auto; }
+  /* Sem teto proprio: o paragrafo de secao usa a coluna inteira. A
+     classe fica porque o HTML a usa em varios lugares. */
+  .estreito { max-width: none; }
 
   h1, h2, h3, .rotulo, .selo, figcaption, .legenda, summary, .marca {
     font-family: var(--sans);
@@ -95,13 +106,24 @@
   .barra {
     display: flex;
     align-items: baseline;
-    gap: 12px;
-    padding: 18px 0;
+    gap: 14px;
+    padding: 26px 0 24px;
   }
 
-  .marca { font-weight: 700; font-size: 19px; letter-spacing: -0.01em; }
-  .marca em { font-style: normal; color: var(--sinal); }
-  .barra span { font-size: 14px; color: var(--tinta-3); }
+  /* A marca e o unico texto do cabecalho: cresce para ocupar o lugar que o
+     subtitulo deixou, e "Vistoria" entra no mesmo formato de "Baliza". */
+  .marca {
+    font-weight: 700;
+    font-size: clamp(34px, 7vw, 56px);
+    /* De -0.025em para 0.01em: o nome respira, e a luz do "i" deixa de
+       encostar no "l" e no "z" ao se espalhar. */
+    letter-spacing: 0.01em;
+    line-height: 1;
+  }
+  /* A BARRA DA INICIAL TEM SO A MARCA. A regra `.barra span` que vivia aqui
+     ficava com 14px e, por ter especificidade maior que `.marca` (classe +
+     elemento contra classe), vencia qualquer tamanho posto la — a marca nao
+     crescia por mais que o numero mudasse. */
 
   .abertura { padding: 64px 0 40px; }
 
@@ -112,13 +134,13 @@
     letter-spacing: -0.025em;
     margin: 0 0 20px;
     text-wrap: balance;
-    max-width: 17ch;
+    max-width: none;
   }
 
   .chamada {
     font-size: clamp(18px, 2.4vw, 21px);
     color: var(--tinta-2);
-    max-width: 56ch;
+    max-width: none;
     margin: 0 0 26px;
   }
 
@@ -160,7 +182,7 @@
     font-size: 14px;
     color: var(--tinta-3);
     margin-top: 14px;
-    max-width: 62ch;
+    max-width: none;
   }
 
   section { padding: 60px 0; border-top: 1px solid var(--linha); }
@@ -172,7 +194,7 @@
     line-height: 1.15;
     margin: 0 0 18px;
     text-wrap: balance;
-    max-width: 20ch;
+    max-width: none;
   }
 
   h3 { font-size: 19px; font-weight: 600; margin: 0 0 8px; }
@@ -298,7 +320,7 @@
     font-size: 14px;
     color: var(--tinta-3);
     margin-top: 16px;
-    max-width: 66ch;
+    max-width: none;
   }
 
   /* ---------- demonstração ---------- */
@@ -366,7 +388,7 @@
     margin: 14px 0 0;
     color: var(--tinta-2);
     font-size: 16px;
-    max-width: 62ch;
+    max-width: none;
   }
 
   .contato {
@@ -378,7 +400,7 @@
   }
 
   .contato h2 { color: var(--ground); margin-bottom: 12px; }
-  .contato p { color: var(--ground); opacity: 0.85; max-width: 52ch; }
+  .contato p { color: var(--ground); opacity: 0.85; }
 
   .botao {
     display: inline-block;
@@ -480,7 +502,7 @@
     color: var(--tinta-3);
   }
 
-  footer p { max-width: 70ch; margin-bottom: 10px; }
+  footer p { margin-bottom: 10px; }
 
   a { color: var(--sinal); }
   a:focus-visible, summary:focus-visible {
@@ -649,13 +671,94 @@
   }
 
   .antes-titulo + .rastro { margin-top: 12px; }
+  /* O selo das portarias fecha a abertura: quem vistoria precisa saber DE QUE
+     norma o documento sai, e essa e a primeira pergunta de quem e credenciado.
+     Como paragrafo, e nao `span`, para poder quebrar em duas linhas sem virar
+     uma pilula gigante em tela estreita. */
+  /* CENTRADO NA COLUNA, e nao so o texto dentro dele: `margin: auto` nas
+     laterais e o que centra a pilula; `text-align` sozinho centraria as
+     linhas dentro de uma pilula ainda encostada a esquerda. `display: block`
+     e preciso porque `.selo` e `inline-block`, e margem automatica nao centra
+     elemento em linha. */
+  .conformidade {
+    display: block;
+    width: fit-content;
+    margin: 26px auto 0;
+    max-width: 62ch;
+    line-height: 1.6;
+    text-align: center;
+  }
+
+  /* O nome do programa em laranja: e por ele que o vistoriador reconhece a
+     norma. O numero da portaria identifica; a sigla e o que ele procura. */
+  .programa {
+    color: var(--sinal);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+  /* ---------- a marca ----------
+     DUAS PALAVRAS, DOIS PAPEIS. "Baliza" e o nome; "Vistoria" diz do que se
+     trata. Com o mesmo peso as duas competiam e o conjunto lia como duas
+     palavras soltas. O descritor recua em peso, tamanho e cor.
+
+     A LUZ NO LUGAR DO PINGO. A letra usa o "i" SEM PINGO (U+0131) e o pingo e
+     desenhado aqui: um circulo laranja maior que o original, com dois aneis
+     de halo. A haste da letra vira o poste, e o nome passa a conter uma
+     baliza acesa.
+
+     `aria-label` no conjunto porque o texto visivel tem um `ı` no lugar do
+     `i` — sem ele, um leitor de tela diria "Balıza". */
+  .marca .descritor {
+    /* CAIXA ALTA para todas as letras terem a mesma altura — sem hastes
+       subindo nem descendo, a palavra vira um bloco regular ao lado do nome.
+       O tamanho cai de 0,68 para 0,52em porque maiuscula ocupa a altura toda
+       e, no mesmo corpo, pareceria maior que "Baliza". */
+    font-weight: 600;
+    font-size: 0.52em;
+    color: var(--tinta-3);
+    text-transform: uppercase;
+    /* Fecha de 0.14 para 0.07em: com o nome mais aberto, o descritor
+       espacado demais parecia uma terceira palavra solta. */
+    letter-spacing: 0.07em;
+  }
+
+  .marca em {
+    font-style: normal;
+    color: var(--sinal);
+    position: relative;
+    display: inline-block;
+    line-height: 1;
+  }
+
+  .marca em::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0.02em;
+    width: 0.21em;
+    height: 0.21em;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: var(--sinal);
+    /* A LUZ SE ESPALHA EM QUATRO CAMADAS. Os tres primeiros sao aneis
+       solidos, cada um mais fraco e mais largo — e o que da a forma de
+       lampada acesa. O quarto tem DESFOQUE, e e ele que faz a luz parecer
+       vazar em vez de terminar num circulo: sem ele o halo lê como alvo de
+       tiro, com anéis nítidos.
+       Tudo em `em`, entao o brilho cresce com a marca em vez de virar um
+       pontinho perdido nos 56px da pagina inicial. */
+    box-shadow:
+      0 0 0 0.10em var(--halo-1),
+      0 0 0 0.24em var(--halo-2),
+      0 0 0 0.42em var(--halo-3),
+      0 0 0.70em 0.14em var(--halo-1);
+  }
 </style>
 </head>
 <body>
 <header class="faixa">
   <div class="interno barra">
-    <span class="marca">Bal<em>i</em>za</span>
-    <span>Vistoria de embarcação pesqueira</span>
+    <span class="marca" aria-label="Baliza Vistoria">Bal<em aria-hidden="true">ı</em>za <span class="descritor">Vistoria</span></span>
   </div>
 </header>
 
@@ -663,20 +766,23 @@
   <div class="interno">
 
     <div class="abertura">
-      <p class="rotulo">Para quem vistoria barco de pesca</p>
-      <h1>O caminho da vistoria ao laudo, sem desvio.</h1>
+      <h1>O caminho completo da vistoria ao laudo.</h1>
       <p class="chamada">
-        Da vistoria no píer até o laudo assinado, o caminho pode ser um acúmulo
-        de anotações, fotos mal identificadas e horas de trabalho estressante no
+        Da vistoria até o laudo assinado, o caminho pode ser um acúmulo de
+        anotações, fotos mal identificadas e horas de trabalho estressante no
         computador.
       </p>
       <p class="chamada resposta">
-        <strong>Com o Baliza</strong> você coleta todos os dados — características
-        e fotos — com o aplicativo de campo, e gera o relatório final com o
-        backoffice, no seu computador.
+        <strong>Com o Baliza</strong> você coleta tudo pelo aplicativo de campo —
+        características, fotos e a assinatura do proprietário — e o backoffice
+        monta o laudo a partir disso, no seu computador. Nada é digitado duas
+        vezes, e cada foto já chega ligada ao item que documenta.
       </p>
-      <a class="botao" href="#experimentar">Experimentar de graça</a>
-      <a class="secundario-claro" href="#o-caminho">Ver o caminho inteiro →</a>
+      <p class="selo conformidade">
+        Vistoria de embarcação de pesca em conformidade com a Portaria MPA
+        nº 397/2024 <span class="programa">PROPESC</span> e com a Portaria
+        SAP/MAPA nº 1.239/2022 <span class="programa">RGP</span>
+      </p>
     </div>
 
     <section id="o-caminho">

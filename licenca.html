@@ -12,7 +12,10 @@
   :root {
     --ground: #ffffff; --ground-2: #f3f6f7; --surface: #ffffff;
     --tinta: #0b1b2b; --tinta-2: #3e5568; --tinta-3: #6a8091;
-    --linha: #d8dee2; --sinal: #d9531e; --sinal-escuro: #a83c12;
+    --linha: #d8dee2; --sinal: #d9531e;
+ --halo-1: rgba(217, 83, 30, 0.26);
+ --halo-2: rgba(217, 83, 30, 0.14);
+ --halo-3: rgba(217, 83, 30, 0.06); --sinal-escuro: #a83c12;
     --conforme: #0f6b4f;
     --sans: Archivo, ui-sans-serif, system-ui, sans-serif;
     --serif: "Source Serif 4", Georgia, serif;
@@ -21,7 +24,10 @@
     :root:not([data-theme="light"]) {
       --ground: #07141d; --ground-2: #0c1e29; --surface: #0e2331;
       --tinta: #e9f0f4; --tinta-2: #a9bfcc; --tinta-3: #7d95a3;
-      --linha: #1e3948; --sinal: #ff7a4d; --sinal-escuro: #ffa384;
+      --linha: #1e3948; --sinal: #ff7a4d;
+ --halo-1: rgba(255, 122, 77, 0.30);
+ --halo-2: rgba(255, 122, 77, 0.16);
+ --halo-3: rgba(255, 122, 77, 0.07); --sinal-escuro: #ffa384;
       --conforme: #55c79d;
     }
   }
@@ -33,13 +39,13 @@
   }
   header { border-bottom: 1px solid var(--linha); }
   .barra {
-    max-width: 880px; margin: 0 auto; padding: 16px 24px;
+    max-width: 1080px; margin: 0 auto; padding: 16px 24px;
     display: flex; align-items: baseline; gap: 12px;
   }
-  .marca { font-family: var(--sans); font-weight: 700; font-size: 19px; }
-  .marca em { font-style: normal; color: var(--sinal); }
+  .marca { font-family: var(--sans); font-weight: 700; font-size: clamp(28px, 5.4vw, 40px);
+           letter-spacing: -0.015em; line-height: 1.1; }
   .barra a { margin-left: auto; font-size: 14px; color: var(--sinal); }
-  main { max-width: 880px; margin: 0 auto; padding: 44px 24px 80px; }
+  main { max-width: 1080px; margin: 0 auto; padding: 44px 24px 80px; }
   h1 {
     font-family: var(--sans); font-size: clamp(28px, 5vw, 40px); font-weight: 700;
     letter-spacing: -0.02em; line-height: 1.1; margin: 0 0 14px; text-wrap: balance;
@@ -124,13 +130,49 @@
     border-top: 1px solid var(--linha); margin-top: 56px; padding: 24px 0 0;
     font-size: 14px; color: var(--tinta-3);
   }
+
+  /* A MARCA, igual a da pagina inicial. "Baliza" e o nome; "VISTORIA" e o
+     descritor, em caixa alta e recuado. O "i" nao tem pingo (U+0131) — a luz
+     e desenhada aqui, e a haste da letra vira o poste da baliza. */
+  .marca .descritor {
+    font-weight: 600;
+    font-size: 0.52em;
+    color: var(--tinta-3);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+  }
+
+  .marca em {
+    font-style: normal;
+    color: var(--sinal);
+    position: relative;
+    display: inline-block;
+    line-height: 1;
+  }
+
+  .marca em::before {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0.02em;
+    width: 0.21em;
+    height: 0.21em;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: var(--sinal);
+    box-shadow:
+      0 0 0 0.10em var(--halo-1),
+      0 0 0 0.24em var(--halo-2),
+      0 0 0 0.42em var(--halo-3),
+      0 0 0.70em 0.14em var(--halo-1);
+  }
 </style>
 </head>
 <body>
 
 <header>
   <div class="barra">
-    <span class="marca">Bal<em>i</em>za</span>
+    <span class="marca" aria-label="Baliza Vistoria">Bal<em aria-hidden="true">ı</em>za <span class="descritor">Vistoria</span></span>
     <a href="index.html">← voltar ao site</a>
   </div>
 </header>
