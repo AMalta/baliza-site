@@ -166,6 +166,51 @@
       0 0 0 0.42em var(--halo-3),
       0 0 0.70em 0.14em var(--halo-1);
   }
+
+  /* O QUE ACONTECE DEPOIS DO PIX, EM PASSOS. Eram dois paragrafos de prosa
+     corrida com quatro informacoes dentro — o aviso pelo WhatsApp, a conferencia
+     manual, o e-mail e a senha. Quem acabou de pagar quer saber "e agora?", e
+     essa pergunta se responde em lista numerada, nao em texto. */
+  .depois { font-size: 17px; margin: 26px 0 10px; }
+
+  .passos-pix {
+    margin: 0;
+    padding-left: 22px;
+    font-size: 15px;
+    color: var(--tinta-2);
+  }
+
+  .passos-pix li { margin-bottom: 9px; }
+  .passos-pix li:last-child { margin-bottom: 0; }
+  .passos-pix strong { color: var(--tinta); }
+
+  /* O QUE ENTRA E O QUE NAO ENTRA, EM TOPICOS. Isto vinha do banco como um
+     texto unico de 1.500 caracteres, com "▎" fazendo as vezes de marcador — e
+     a pagina o inseria com `textContent`, que achata quebra de linha e imprime
+     o "▎" como caractere. Dava um paragrafo enorme e ilegivel.
+     A lista e conteudo de VENDA, nao configuracao de operacao: o lugar dela e
+     aqui. No banco fica so uma frase, que o operador ajusta sem mexer em HTML. */
+  .inclui {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 30px;
+    margin: 28px 0 36px;
+  }
+
+  .lista-titulo { font-size: 17px; margin: 0 0 12px; }
+
+  .topicos {
+    margin: 0;
+    padding-left: 20px;
+    font-size: 15px;
+    color: var(--tinta-2);
+  }
+
+  .topicos li { margin-bottom: 10px; }
+  .topicos li:last-child { margin-bottom: 0; }
+  .topicos strong { color: var(--tinta); }
+  .topicos.sim::marker, .topicos.sim li::marker { color: var(--conforme); }
+  .topicos.nao li::marker { color: var(--tinta-3); }
 </style>
 </head>
 <body>
@@ -184,6 +229,38 @@
       O sistema completo: aplicativo de campo offline, emissão do laudo em PDF,
       conferência da assinatura eletrônica e painel de gestão.
     </p>
+
+    <div class="inclui">
+      <div>
+        <h2 class="lista-titulo">Está incluído</h2>
+        <ul class="topicos sim">
+          <li><strong>O aplicativo de campo</strong> para Android, que funciona
+            sem internet nenhuma.</li>
+          <li><strong>Fotos que provam</strong>: cada uma guarda o lugar, a data,
+            a hora e um código que denuncia se o arquivo for trocado.</li>
+          <li><strong>O backoffice no navegador</strong> para revisar as fotos na
+            tela grande, corrigir marcações e acompanhar os seus números.</li>
+          <li><strong>A emissão do laudo em PDF</strong>, com as evidências
+            anexadas. Laudo emitido é imutável: correção gera nova versão.</li>
+          <li><strong>A conferência da assinatura eletrônica</strong> — que ela
+            cobre o documento inteiro e é do responsável técnico da vistoria.</li>
+          <li><strong>Sua equipe sem custo por usuário</strong>: a licença é por
+            vistoriador.</li>
+          <li><strong>Atualizações e suporte por e-mail</strong> durante a
+            vigência.</li>
+        </ul>
+      </div>
+      <div>
+        <h2 class="lista-titulo">Não está incluído</h2>
+        <ul class="topicos nao">
+          <li><strong>O certificado digital</strong>, que você adquire da
+            autoridade certificadora que preferir.</li>
+          <li><strong>A ART/DHT</strong> e as taxas do seu conselho.</li>
+          <li><strong>O protocolo no MPA</strong>: o sistema entrega o PDF
+            pronto para protocolar, mas o envio é seu.</li>
+        </ul>
+      </div>
+    </div>
 
     <h2>Escolha a periodicidade</h2>
     <div class="planos" id="planos">
@@ -224,17 +301,28 @@
       <button class="principal" id="copiar" type="button">Copiar código</button>
       <p class="aviso" id="aviso2" role="status"></p>
 
+      <h2 class="depois">Depois de pagar</h2>
+      <ol class="passos-pix">
+        <li>
+          <strong>Me avise pelo
+          <a href="https://wa.me/5573991051624">WhatsApp</a></strong>, com o
+          identificador acima.
+        </li>
+        <li>
+          <strong>Eu confiro o recebimento</strong> e crio o seu acesso. A
+          confirmação não é automática.
+        </li>
+        <li>
+          <strong>Você recebe um e-mail</strong> com o link para definir a
+          senha.
+        </li>
+      </ol>
+
       <p class="nota">
-        <strong>Depois de pagar</strong>, me avise pelo
-        <a href="https://wa.me/5573991051624">WhatsApp</a> com o identificador
-        acima. A confirmação não é automática: eu confiro o recebimento e crio
-        o seu acesso, e você recebe por e-mail um link para definir a senha.
-      </p>
-      <p class="nota">
-        O acesso é criado com os seus dados de credenciamento — CPF ou CNPJ,
-        certificado do MPA e o registro do responsável técnico. Vou pedi-los
-        na conversa: são campos que saem impressos no laudo, e não se digitam
-        num formulário de pagamento.
+        Na conversa vou pedir os seus dados de credenciamento — CPF ou CNPJ,
+        certificado do MPA e registro do responsável técnico. Eles saem
+        impressos no laudo, e por isso não se digitam num formulário de
+        pagamento.
       </p>
     </div>
   </div>
