@@ -494,9 +494,20 @@ async function carregarPlanos() {
 
     // O do meio já vem escolhido: é o mais comum, e a página com o segundo
     // passo vazio parece quebrada.
+    //
+    // FORA DO TRY DE CIMA, e é o que importa aqui: os cartões JÁ ESTÃO
+    // pintados neste ponto. Se a pré-seleção falhasse dentro do try, o catch
+    // apagaria três cartões corretos e escreveria "não consegui carregar os
+    // preços" por causa de uma conveniência. Falhar aqui deixa a página
+    // pedindo que a pessoa escolha — que é o que ela faria de qualquer jeito.
     const inicial = grade[Math.min(1, grade.length - 1)];
-    document.querySelector(`.tamanho[data-plano="${inicial.plano}"]`).click();
+    const botao = document.querySelector(
+      `.tamanho[data-plano="${inicial.plano}"]`);
+    if (botao) botao.click();
   } catch (erro) {
+    // So chega aqui quem falhou ANTES de pintar: a busca, o JSON, a leitura
+    // da grade. Depois de pintado, nada mais roda dentro do try — e essa
+    // ordem e deliberada, porque este catch apaga a tela.
     $("tamanhos").innerHTML =
       '<p class="chamada">Não consegui carregar os preços agora. ' +
       'Fale pelo <a href="https://wa.me/5573991051624">WhatsApp</a>.</p>';
