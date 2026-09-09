@@ -421,6 +421,38 @@
 
   .botao:hover { background: var(--sinal-escuro); }
 
+  /* DOIS BOTOES, e a diferenca visual e proposital. Comprar e a acao
+     principal, entao vai preenchido. Testar e vazado: quem ainda nao decidiu
+     precisa que o caminho de conhecer esteja visivel, mas nao competindo em
+     peso com o de comprar. Dois botoes identicos fariam a pessoa parar para
+     escolher entre eles, que e o oposto do que se quer no topo da pagina. */
+  .acoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-top: 32px;
+  }
+
+  .acoes .botao { margin-top: 0; }
+
+  .botao.vazado {
+    background: transparent;
+    color: var(--sinal);
+    box-shadow: inset 0 0 0 2px var(--sinal);
+  }
+
+  .botao.vazado:hover {
+    background: var(--sinal);
+    color: var(--ground);
+  }
+
+  .acoes-nota {
+    font-family: var(--sans);
+    font-size: 14px;
+    color: var(--tinta-3);
+    margin: 12px 0 0;
+  }
+
   .secundario {
     display: inline-block;
     margin: 18px 0 0 18px;
@@ -788,6 +820,12 @@
         nº 397/2024 <span class="programa">PROPESC</span> e com a Portaria
         SAP/MAPA nº 1.239/2022 <span class="programa">RGP</span>
       </p>
+
+      <div class="acoes">
+        <a class="botao" href="licenca.html">Adquirir o Baliza</a>
+        <a class="botao vazado" href="#experimentar">Testar o Baliza</a>
+      </div>
+      <p class="acoes-nota">Testar não pede cadastro nem cartão.</p>
     </div>
 
     <section id="o-caminho">
