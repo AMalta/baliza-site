@@ -247,24 +247,39 @@
   .topicos.sim::marker, .topicos.sim li::marker { color: var(--conforme); }
   .topicos.nao li::marker { color: var(--tinta-3); }
 
-  /* TRES FORMAS DE PAGAR, e so uma e automatica. O Pix se monta aqui porque o
-     BR Code e funcao deterministica da chave, do valor e do txid. Cartao e
-     boleto sao emitidos A MAO, fora do sistema — e a pagina diz isso, com o
-     custo de cada um em dias. Desenhar os tres iguais sugeriria que os tres
-     funcionam igual, e a pessoa escolheria cartao esperando tela de cartao. */
+  /* DUAS FORMAS, e as duas sao automaticas desde 09/09/2026. O pagamento
+     passa pelo gateway, que confirma por webhook e libera o cadastro sem
+     ninguem atender. Boleto foi tirado a pedido: leva ate tres dias uteis
+     para compensar, e o que se vende aqui e o acesso em minutos. O suporte a
+     ele continua no nucleo — voltar a oferecer e acrescentar um cartao. */
   .formas {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    /* Duas formas, entao duas colunas. `auto-fit` com tres deixaria uma
+       sozinha na segunda linha quando a tela apertasse. */
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    max-width: 720px;
     gap: 16px;
     margin: 20px 0 8px;
   }
   .forma {
-    border: 1px solid var(--linha);
+    /* `font: inherit; color: inherit` porque agora e <button>: sem eles o
+       texto usa a cor padrao do navegador e some no tema escuro. Foi
+       exatamente o defeito dos cartoes de plano em 09/09/2026. */
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    border: 2px solid var(--linha);
     border-radius: 12px;
     padding: 20px;
     background: var(--surface);
+    cursor: pointer;
+    transition: border-color .15s, transform .15s;
   }
-  .forma.destaque { border-color: var(--sinal); border-width: 2px; }
+  .forma:hover { border-color: var(--tinta-3); }
+  .forma[aria-pressed="true"] {
+    border-color: var(--sinal);
+    transform: translateY(-2px);
+  }
   .forma h3 {
     font-family: var(--sans); font-size: 16px; margin: 0 0 2px;
     display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
@@ -329,34 +344,29 @@
     </div>
 
     <h2>Como pagar</h2>
-    <p class="chamada">Três formas. O Pix sai por esta página; cartão e boleto
-      eu emito e envio — é falar comigo.</p>
+    <p class="chamada">Nas duas o acesso é liberado assim que o pagamento é
+      confirmado — em minutos, sem esperar ninguém atender.</p>
 
-    <div class="formas">
-      <div class="forma destaque">
-        <h3>Pix <span class="prazo">acesso no mesmo dia</span></h3>
-        <p>Preencha os dados abaixo e a página gera o código na hora. Depois
-          é só me avisar que pagou, para eu conferir e liberar.</p>
-      </div>
+    <div class="formas" id="formas">
+      <button type="button" class="forma" aria-pressed="false" data-forma="pix">
+        <h3>Pix <span class="prazo">acesso em minutos</span></h3>
+        <p>Você paga pelo aplicativo do seu banco. A confirmação chega na
+          hora, e o e-mail de cadastro sai em seguida.</p>
+      </button>
 
-      <div class="forma">
-        <h3>Cartão de crédito <span class="prazo">acesso no mesmo dia</span></h3>
-        <p>Dá para parcelar. Eu gero o link de pagamento e mando —
-          <a href="https://wa.me/5573991051624?text=Ol%C3%A1%21%20Quero%20a%20licen%C3%A7a%20do%20Baliza%20e%20prefiro%20pagar%20com%20cart%C3%A3o%20de%20cr%C3%A9dito.">me chame no WhatsApp</a> com o plano e o prazo que
-          você quer. Ainda não sai por esta página.</p>
-      </div>
-
-      <div class="forma">
-        <h3>Boleto <span class="prazo lento">até 3 dias úteis</span></h3>
-        <p>Emitido à mão e enviado por e-mail —
-          <a href="https://wa.me/5573991051624?text=Ol%C3%A1%21%20Quero%20a%20licen%C3%A7a%20do%20Baliza%20e%20prefiro%20pagar%20por%20boleto%20banc%C3%A1rio.">me chame no WhatsApp</a>. O acesso só é criado
-          depois da compensação, que leva até três dias úteis.</p>
-      </div>
+      <button type="button" class="forma" aria-pressed="false" data-forma="cartao">
+        <h3>Cartão de crédito <span class="prazo">acesso em minutos</span></h3>
+        <p>Dá para parcelar. A confirmação é imediata, e o e-mail de cadastro
+          sai em seguida.</p>
+      </button>
     </div>
 
-    <h2>Pagar por Pix</h2>
-    <p class="chamada">Se você escolheu cartão ou boleto, não precisa preencher
-      nada aqui — é só me chamar.</p>
+    <div id="area-parcelas" hidden>
+      <label for="parcelas">Em quantas vezes?</label>
+      <select id="parcelas"></select>
+    </div>
+
+    <h2>Seus dados</h2>
     <form id="form">
       <label for="nome">Nome ou razão social</label>
       <input id="nome" name="nome" required autocomplete="name">
@@ -373,22 +383,19 @@
       <input id="telefone" name="telefone" autocomplete="tel">
 
       <button type="submit" class="principal" id="enviar">
-        Gerar pagamento por Pix
+        Ir para o pagamento
       </button>
       <p class="aviso" id="aviso" role="status"></p>
     </form>
 
     <h2>O que acontece depois do pagamento</h2>
+    <p class="chamada">Nada depende de eu estar disponível. O sistema recebe a
+      confirmação do banco e segue sozinho.</p>
     <ol class="passos-pix">
       <li>
-        <strong>Você me avisa pelo
-        <a href="https://wa.me/5573991051624">WhatsApp</a></strong>. No Pix,
-        mande o identificador que aparece na tela. No cartão e no boleto não
-        precisa: eu emiti, então já sei qual é o seu.
-      </li>
-      <li>
-        <strong>Eu confiro o recebimento</strong> e libero o seu cadastro. A
-        confirmação não é automática — costuma sair no mesmo dia útil.
+        <strong>O pagamento é confirmado automaticamente.</strong> No Pix e no
+        cartão isso leva segundos — você não precisa me avisar, nem mandar
+        comprovante.
       </li>
       <li>
         <strong>Você recebe um e-mail</strong> de
@@ -402,6 +409,11 @@
         responsável técnico com a ART. É você quem tem esses documentos, então
         é você quem os digita — eu não os transcrevo de uma conversa, onde um
         dígito trocado viraria laudo com número errado.
+      </li>
+      <li>
+        <strong>Pronto.</strong> Você entra no painel e já pode baixar o
+        aplicativo. Qualquer coisa fora do previsto,
+        <a href="https://wa.me/5573991051624">me chame no WhatsApp</a>.
       </li>
     </ol>
 
@@ -449,7 +461,30 @@ const $ = (id) => document.getElementById(id);
 // que respondem a perguntas diferentes.
 let escolhido = null;   // periodicidade
 let tamanho = null;     // plano
+let forma = "pix";      // pix | cartao
+let valorEscolhido = 0; // total do prazo selecionado, para montar as parcelas
 let grade = [];
+
+//: Teto de parcelas. O servico APARA pelo que estiver configurado nele — este
+//: numero aqui e so o que a tela oferece, e mandar 12 daqui nao contrataria a
+//: taxa de 12. Duplicado de proposito: a pagina precisa montar o seletor sem
+//: uma ida ao servidor so para isso.
+const MAX_PARCELAS = 6;
+
+function marcarForma(alvo) {
+  forma = alvo;
+  document.querySelectorAll(".forma").forEach((b) =>
+    b.setAttribute("aria-pressed", String(b.dataset.forma === alvo)));
+  // O seletor de parcelas so existe no cartao: Pix parcelado nao existe, e
+  // mostrar o campo desabilitado sugeriria que existe.
+  $("area-parcelas").hidden = alvo !== "cartao";
+  // REMONTA AS PARCELAS AQUI TAMBEM, e nao so ao escolher o prazo: quem
+  // clicava em cartao antes de escolher o prazo via um seletor VAZIO, que
+  // parece defeito. Sem prazo escolhido ele diz o que falta, em vez de ficar
+  // em branco.
+  if (alvo === "cartao") montarParcelas(valorEscolhido);
+  $("aviso").textContent = "";
+}
 
 const reais = (v) =>
   v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
@@ -476,13 +511,34 @@ function pintarPrazos() {
 
   document.querySelectorAll(".plano").forEach((b) => {
     b.addEventListener("click", () => {
+      const p = plano.precos.find((x) => x.periodicidade === b.dataset.periodo);
       document.querySelectorAll(".plano").forEach((o) =>
         o.setAttribute("aria-pressed", "false"));
       b.setAttribute("aria-pressed", "true");
       escolhido = b.dataset.periodo;
+      valorEscolhido = p.valor;
+      montarParcelas(p.valor);
       $("aviso").textContent = "";
     });
   });
+}
+
+function montarParcelas(total) {
+  if (!total) {
+    $("parcelas").innerHTML =
+      '<option value="1">escolha o prazo acima</option>';
+    return;
+  }
+  const opcoes = [];
+  for (let n = 1; n <= MAX_PARCELAS; n++) {
+    // Sem juros: o valor da parcela é a divisão exata. A taxa do gateway sai
+    // do nosso lado, e por isso não aparece para quem paga.
+    const rotulo = n === 1
+      ? `à vista — ${reais(total)}`
+      : `${n}x de ${reais(total / n)} — ${reais(total)}`;
+    opcoes.push(`<option value="${n}">${rotulo}</option>`);
+  }
+  $("parcelas").innerHTML = opcoes.join("");
 }
 
 async function carregarPlanos() {
@@ -544,6 +600,13 @@ async function carregarPlanos() {
       });
     });
 
+    // As parcelas dependem do preço do plano, então são remontadas a cada
+    // troca — "6x de R$ 33,17" só faz sentido com o valor ao lado.
+    document.querySelectorAll(".forma").forEach((b) => {
+      b.addEventListener("click", () => marcarForma(b.dataset.forma));
+    });
+    marcarForma("pix");
+
     // O do meio já vem escolhido: é o mais comum, e a página com o segundo
     // passo vazio parece quebrada.
     //
@@ -589,6 +652,8 @@ $("form").addEventListener("submit", async (evento) => {
     cpf_cnpj: $("cpf_cnpj").value,
     periodicidade: escolhido,
     plano: tamanho,
+    forma: forma,
+    parcelas: forma === "cartao" ? Number($("parcelas").value || 1) : 1,
   };
 
   try {
@@ -598,8 +663,21 @@ $("form").addEventListener("submit", async (evento) => {
       body: JSON.stringify(corpo),
     });
     if (!r.ok) throw new Error((await r.json()).detail || r.status);
-    const { cobranca_id } = await r.json();
+    const { cobranca_id, url_pagamento } = await r.json();
 
+    // CAMINHO NORMAL: o gateway montou a cobrança e devolveu onde pagar.
+    // Manda-se a pessoa para lá — e é de lá que sai a confirmação que libera
+    // o acesso sozinho.
+    if (url_pagamento) {
+      aviso.textContent = "Abrindo o pagamento…";
+      window.location.href = url_pagamento;
+      return;
+    }
+
+    // RESERVA: o gateway não respondeu e a forma é Pix. A cobrança já existe
+    // do nosso lado, então a página cai no código Pix montado localmente —
+    // com confirmação manual, que é como funcionava antes. Perder a venda
+    // porque um fornecedor está fora seria pior que confirmar à mão.
     const c = await (await fetch(API + "/licenca/cobranca/" + cobranca_id)).json();
     $("valor").textContent = reais(c.valor);
     $("txid").textContent = c.txid;
