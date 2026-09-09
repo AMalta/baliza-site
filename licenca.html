@@ -52,6 +52,33 @@
   }
   .chamada { font-size: 19px; color: var(--tinta-2); margin: 0 0 8px; }
   h2 { font-family: var(--sans); font-size: 22px; margin: 40px 0 14px; }
+  .tamanhos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 12px;
+    margin: 18px 0 32px;
+  }
+  .tamanho {
+    text-align: left;
+    padding: 18px 16px;
+    border: 1px solid var(--borda);
+    border-radius: 12px;
+    background: var(--fundo-2);
+    cursor: pointer;
+    transition: border-color .15s, transform .15s;
+  }
+  .tamanho:hover { border-color: var(--tinta-3); }
+  .tamanho[aria-pressed="true"] {
+    border-color: var(--sinal);
+    transform: translateY(-2px);
+  }
+  .tamanho .nome {
+    font-weight: 700; font-size: 17px; letter-spacing: .01em;
+  }
+  .tamanho .quanto {
+    color: var(--sinal); font-size: 15px; margin-top: 4px; font-weight: 600;
+  }
+  .tamanho .desde { color: var(--tinta-3); font-size: 13px; margin-top: 8px; }
   .planos {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
     gap: 16px; margin: 24px 0;
@@ -265,9 +292,18 @@
         vigência.</li>
     </ul>
 
-    <h2>Escolha a periodicidade</h2>
-    <div class="planos" id="planos">
+    <h2>Escolha o tamanho</h2>
+    <p class="chamada" id="ajuda-tamanho">O que muda entre eles é quantas
+      vistorias você emite por mês. Tudo o mais é igual nos três.</p>
+    <div class="tamanhos" id="tamanhos">
       <p class="chamada">Carregando…</p>
+    </div>
+
+    <h2>Escolha o prazo</h2>
+    <p class="chamada">Prazo maior sai mais barato por mês. A licença não
+      renova sozinha — eu aviso antes de vencer.</p>
+    <div class="planos" id="planos">
+      <p class="chamada">Escolha o tamanho acima primeiro.</p>
     </div>
 
     <h2>Seus dados</h2>
@@ -367,53 +403,104 @@
 <script>
 const API = "https://baliza-production-5559.up.railway.app";
 const $ = (id) => document.getElementById(id);
-let escolhido = null;
+// DOIS PASSOS: primeiro o tamanho (quantas vistorias por mês), depois o
+// prazo. Nesta ordem porque o tamanho é a decisão de verdade — o prazo é só
+// desconto. Mostrar doze preços de uma vez faria a pessoa comparar valores
+// que respondem a perguntas diferentes.
+let escolhido = null;   // periodicidade
+let tamanho = null;     // plano
+let grade = [];
 
 const reais = (v) =>
   v.toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+
+function pintarPrazos() {
+  const plano = grade.find((p) => p.plano === tamanho);
+  if (!plano) return;
+
+  // A economia é comparada DENTRO do mesmo tamanho: comparar o anual do
+  // Iniciante com o mensal do Corporativo diria que mudar de plano é
+  // desconto, o que não é verdade.
+  const caro = Math.max(...plano.precos.map((p) => p.por_mes));
+
+  $("planos").innerHTML = plano.precos.map((p) => {
+    const economia = Math.round(100 * (1 - p.por_mes / caro));
+    return `<button type="button" class="plano" aria-pressed="false"
+               data-periodo="${p.periodicidade}">
+      <div class="periodo">${p.periodicidade}</div>
+      <div class="preco">${reais(p.valor)}</div>
+      <div class="mes">${reais(p.por_mes)} por mês</div>
+      ${economia > 0 ? `<span class="economia">economia de ${economia}%</span>` : ""}
+    </button>`;
+  }).join("");
+
+  document.querySelectorAll(".plano").forEach((b) => {
+    b.addEventListener("click", () => {
+      document.querySelectorAll(".plano").forEach((o) =>
+        o.setAttribute("aria-pressed", "false"));
+      b.setAttribute("aria-pressed", "true");
+      escolhido = b.dataset.periodo;
+      $("aviso").textContent = "";
+    });
+  });
+}
 
 async function carregarPlanos() {
   try {
     const r = await fetch(API + "/licenca/planos");
     const dados = await r.json();
     if (dados.descricao) $("descricao").textContent = dados.descricao;
+    // `grade` e a forma nova; `dados.planos` e a antiga, mantida na API para
+    // nao quebrar pagina em cache. Ler as duas faz esta pagina continuar
+    // funcionando mesmo que ela chegue ao navegador antes de a API subir.
+    grade = dados.grade || [];
 
-    if (!dados.planos.length) {
-      $("planos").innerHTML =
+    if (!grade.length) {
+      $("tamanhos").innerHTML =
         '<p class="chamada">Os preços ainda não estão publicados. ' +
         'Fale pelo <a href="https://wa.me/5573991051624">WhatsApp</a>.</p>';
+      $("planos").innerHTML = "";
       $("enviar").disabled = true;
       return;
     }
 
-    // O plano mais longo costuma ser o melhor negócio; mostrar a economia
-    // evita que o visitante tenha que fazer a conta de cabeça.
-    const caro = Math.max(...dados.planos.map((p) => p.por_mes));
-
-    $("planos").innerHTML = dados.planos.map((p) => {
-      const economia = Math.round(100 * (1 - p.por_mes / caro));
-      return `<button type="button" class="plano" aria-pressed="false"
-                 data-periodo="${p.periodicidade}">
-        <div class="periodo">${p.periodicidade}</div>
-        <div class="preco">${reais(p.valor)}</div>
-        <div class="mes">${reais(p.por_mes)} por mês</div>
-        ${economia > 0 ? `<span class="economia">economia de ${economia}%</span>` : ""}
+    $("tamanhos").innerHTML = grade.map((p) => {
+      const barato = Math.min(...p.precos.map((x) => x.por_mes));
+      const quantas = p.ilimitado
+        ? "vistorias ilimitadas"
+        : `até ${p.vistorias_por_mes} vistorias por mês`;
+      return `<button type="button" class="tamanho" aria-pressed="false"
+                 data-plano="${p.plano}">
+        <div class="nome">${p.nome}</div>
+        <div class="quanto">${quantas}</div>
+        <div class="desde">a partir de ${reais(barato)} por mês</div>
       </button>`;
     }).join("");
 
-    document.querySelectorAll(".plano").forEach((b) => {
+    document.querySelectorAll(".tamanho").forEach((b) => {
       b.addEventListener("click", () => {
-        document.querySelectorAll(".plano").forEach((o) =>
+        document.querySelectorAll(".tamanho").forEach((o) =>
           o.setAttribute("aria-pressed", "false"));
         b.setAttribute("aria-pressed", "true");
-        escolhido = b.dataset.periodo;
+        tamanho = b.dataset.plano;
+        // Trocar de tamanho zera o prazo: os preços mudaram, e manter a
+        // seleção anterior marcada mostraria um botão aceso sobre um valor
+        // que já não é aquele.
+        escolhido = null;
+        pintarPrazos();
         $("aviso").textContent = "";
       });
     });
+
+    // O do meio já vem escolhido: é o mais comum, e a página com o segundo
+    // passo vazio parece quebrada.
+    const inicial = grade[Math.min(1, grade.length - 1)];
+    document.querySelector(`.tamanho[data-plano="${inicial.plano}"]`).click();
   } catch (erro) {
-    $("planos").innerHTML =
+    $("tamanhos").innerHTML =
       '<p class="chamada">Não consegui carregar os preços agora. ' +
       'Fale pelo <a href="https://wa.me/5573991051624">WhatsApp</a>.</p>';
+    $("planos").innerHTML = "";
   }
 }
 
@@ -423,7 +510,7 @@ $("form").addEventListener("submit", async (evento) => {
 
   if (!escolhido) {
     aviso.className = "aviso erro";
-    aviso.textContent = "Escolha uma periodicidade acima.";
+    aviso.textContent = "Escolha o prazo acima.";
     return;
   }
 
@@ -438,6 +525,7 @@ $("form").addEventListener("submit", async (evento) => {
     telefone: $("telefone").value,
     cpf_cnpj: $("cpf_cnpj").value,
     periodicidade: escolhido,
+    plano: tamanho,
   };
 
   try {
