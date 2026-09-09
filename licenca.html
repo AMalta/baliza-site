@@ -367,20 +367,19 @@
     </div>
 
     <h2>Seus dados</h2>
+    <p class="chamada">Só o necessário para emitir a cobrança e achar o seu
+      pagamento. Os dados que saem impressos no laudo você preenche depois.</p>
     <form id="form">
       <label for="nome">Nome ou razão social</label>
       <input id="nome" name="nome" required autocomplete="name">
 
       <label for="cpf_cnpj">CPF ou CNPJ de quem paga</label>
       <input id="cpf_cnpj" name="cpf_cnpj" required inputmode="numeric">
-      <p class="dica">Para o recibo. O documento que sai impresso no laudo
-        você preenche depois, no cadastro — pode até ser outro.</p>
 
       <label for="email">E-mail</label>
       <input id="email" name="email" type="email" required autocomplete="email">
-
-      <label for="telefone">Telefone</label>
-      <input id="telefone" name="telefone" autocomplete="tel">
+      <p class="dica">É para cá que vai o link do cadastro, assim que o
+        pagamento for confirmado.</p>
 
       <button type="submit" class="principal" id="enviar">
         Ir para o pagamento
@@ -389,31 +388,19 @@
     </form>
 
     <h2>O que acontece depois do pagamento</h2>
-    <p class="chamada">Nada depende de eu estar disponível. O sistema recebe a
-      confirmação do banco e segue sozinho.</p>
     <ol class="passos-pix">
       <li>
-        <strong>O pagamento é confirmado automaticamente.</strong> No Pix e no
-        cartão isso leva segundos — você não precisa me avisar, nem mandar
-        comprovante.
+        <strong>O pagamento é confirmado sozinho</strong>, em minutos. Você não
+        precisa me avisar nem mandar comprovante.
       </li>
       <li>
-        <strong>Você recebe um e-mail</strong> de
-        <em>contato@mail.balizavistoria.com.br</em>, com o link do cadastro.
-        Se não achar, olhe no spam — é um remetente novo para a sua caixa, e
-        da primeira vez costuma cair lá.
+        <strong>Chega um e-mail</strong> de
+        <em>contato@mail.balizavistoria.com.br</em> com o link do cadastro.
+        Se não achar, olhe no spam.
       </li>
       <li>
-        <strong>Você mesmo preenche os dados que saem no laudo</strong>: razão
-        social, CPF ou CNPJ, número do certificado do MPA e o registro do
-        responsável técnico com a ART. É você quem tem esses documentos, então
-        é você quem os digita — eu não os transcrevo de uma conversa, onde um
-        dígito trocado viraria laudo com número errado.
-      </li>
-      <li>
-        <strong>Pronto.</strong> Você entra no painel e já pode baixar o
-        aplicativo. Qualquer coisa fora do previsto,
-        <a href="https://wa.me/5573991051624">me chame no WhatsApp</a>.
+        <strong>Você preenche os dados do laudo</strong> — certificado do MPA,
+        registro do responsável técnico e ART — e já entra no painel.
       </li>
     </ol>
 
@@ -463,6 +450,7 @@ let escolhido = null;   // periodicidade
 let tamanho = null;     // plano
 let forma = "pix";      // pix | cartao
 let valorEscolhido = 0; // total do prazo selecionado, para montar as parcelas
+let mesesEscolhidos = 0; // quantos meses a licença cobre — limita as parcelas
 let grade = [];
 
 //: Teto de parcelas. O servico APARA pelo que estiver configurado nele — este
@@ -482,7 +470,7 @@ function marcarForma(alvo) {
   // clicava em cartao antes de escolher o prazo via um seletor VAZIO, que
   // parece defeito. Sem prazo escolhido ele diz o que falta, em vez de ficar
   // em branco.
-  if (alvo === "cartao") montarParcelas(valorEscolhido);
+  if (alvo === "cartao") montarParcelas(valorEscolhido, mesesEscolhidos);
   $("aviso").textContent = "";
 }
 
@@ -517,20 +505,26 @@ function pintarPrazos() {
       b.setAttribute("aria-pressed", "true");
       escolhido = b.dataset.periodo;
       valorEscolhido = p.valor;
-      montarParcelas(p.valor);
+      mesesEscolhidos = p.meses;
+      montarParcelas(p.valor, p.meses);
       $("aviso").textContent = "";
     });
   });
 }
 
-function montarParcelas(total) {
+function montarParcelas(total, meses) {
   if (!total) {
     $("parcelas").innerHTML =
       '<option value="1">escolha o prazo acima</option>';
     return;
   }
+  // NUNCA MAIS PARCELAS QUE MESES DE LICENÇA. Seis vezes num plano mensal
+  // faria pagar por seis meses uma licença que cobre um — a última parcela
+  // cairia cinco meses depois de ela ter vencido. O serviço apara igual;
+  // aqui é só para não oferecer o que não se pode contratar.
+  const teto = Math.min(MAX_PARCELAS, meses || 1);
   const opcoes = [];
-  for (let n = 1; n <= MAX_PARCELAS; n++) {
+  for (let n = 1; n <= teto; n++) {
     // Sem juros: o valor da parcela é a divisão exata. A taxa do gateway sai
     // do nosso lado, e por isso não aparece para quem paga.
     const rotulo = n === 1
@@ -648,7 +642,6 @@ $("form").addEventListener("submit", async (evento) => {
   const corpo = {
     nome: $("nome").value,
     email: $("email").value,
-    telefone: $("telefone").value,
     cpf_cnpj: $("cpf_cnpj").value,
     periodicidade: escolhido,
     plano: tamanho,
