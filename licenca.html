@@ -247,24 +247,35 @@
   .topicos.sim::marker, .topicos.sim li::marker { color: var(--conforme); }
   .topicos.nao li::marker { color: var(--tinta-3); }
 
-  /* O boleto e emitido A MAO, fora do sistema — nao ha emissor integrado, e
-     boleto nao se monta localmente como o codigo Pix. A pagina diz isso e diz
-     o custo: ate tres dias uteis de compensacao contra o mesmo dia no Pix.
-     Prometer boleto automatico aqui seria vender o que nao existe. */
-  .boleto {
+  /* TRES FORMAS DE PAGAR, e so uma e automatica. O Pix se monta aqui porque o
+     BR Code e funcao deterministica da chave, do valor e do txid. Cartao e
+     boleto sao emitidos A MAO, fora do sistema — e a pagina diz isso, com o
+     custo de cada um em dias. Desenhar os tres iguais sugeriria que os tres
+     funcionam igual, e a pessoa escolheria cartao esperando tela de cartao. */
+  .formas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin: 20px 0 8px;
+  }
+  .forma {
     border: 1px solid var(--linha);
     border-radius: 12px;
-    padding: 22px 24px;
-    margin: 32px 0 0;
+    padding: 20px;
+    background: var(--surface);
   }
-
-  .boleto p {
-    font-size: 15px;
-    color: var(--tinta-2);
-    margin: 0 0 10px;
+  .forma.destaque { border-color: var(--sinal); border-width: 2px; }
+  .forma h3 {
+    font-family: var(--sans); font-size: 16px; margin: 0 0 2px;
+    display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap;
   }
-
-  .boleto p:last-child { margin-bottom: 0; }
+  .forma .prazo {
+    font-family: var(--sans); font-size: 12px; font-weight: 600;
+    letter-spacing: .04em; text-transform: uppercase; color: var(--conforme);
+  }
+  .forma .prazo.lento { color: var(--tinta-3); }
+  .forma p { font-size: 15px; color: var(--tinta-2); margin: 10px 0 0; }
+  .forma a { color: var(--sinal); }
 </style>
 </head>
 <body>
@@ -317,7 +328,35 @@
       <p class="chamada">Escolha o tamanho acima primeiro.</p>
     </div>
 
-    <h2>Seus dados</h2>
+    <h2>Como pagar</h2>
+    <p class="chamada">Três formas. O Pix sai por esta página; cartão e boleto
+      eu emito e envio — é falar comigo.</p>
+
+    <div class="formas">
+      <div class="forma destaque">
+        <h3>Pix <span class="prazo">acesso no mesmo dia</span></h3>
+        <p>Preencha os dados abaixo e a página gera o código na hora. Depois
+          é só me avisar que pagou, para eu conferir e liberar.</p>
+      </div>
+
+      <div class="forma">
+        <h3>Cartão de crédito <span class="prazo">acesso no mesmo dia</span></h3>
+        <p>Dá para parcelar. Eu gero o link de pagamento e mando —
+          <a href="https://wa.me/5573991051624?text=Ol%C3%A1%21%20Quero%20a%20licen%C3%A7a%20do%20Baliza%20e%20prefiro%20pagar%20com%20cart%C3%A3o%20de%20cr%C3%A9dito.">me chame no WhatsApp</a> com o plano e o prazo que
+          você quer. Ainda não sai por esta página.</p>
+      </div>
+
+      <div class="forma">
+        <h3>Boleto <span class="prazo lento">até 3 dias úteis</span></h3>
+        <p>Emitido à mão e enviado por e-mail —
+          <a href="https://wa.me/5573991051624?text=Ol%C3%A1%21%20Quero%20a%20licen%C3%A7a%20do%20Baliza%20e%20prefiro%20pagar%20por%20boleto%20banc%C3%A1rio.">me chame no WhatsApp</a>. O acesso só é criado
+          depois da compensação, que leva até três dias úteis.</p>
+      </div>
+    </div>
+
+    <h2>Pagar por Pix</h2>
+    <p class="chamada">Se você escolheu cartão ou boleto, não precisa preencher
+      nada aqui — é só me chamar.</p>
     <form id="form">
       <label for="nome">Nome ou razão social</label>
       <input id="nome" name="nome" required autocomplete="name">
@@ -343,8 +382,9 @@
     <ol class="passos-pix">
       <li>
         <strong>Você me avisa pelo
-        <a href="https://wa.me/5573991051624">WhatsApp</a></strong>, com o
-        identificador que aparece na tela do pagamento.
+        <a href="https://wa.me/5573991051624">WhatsApp</a></strong>. No Pix,
+        mande o identificador que aparece na tela. No cartão e no boleto não
+        precisa: eu emiti, então já sei qual é o seu.
       </li>
       <li>
         <strong>Eu confiro o recebimento</strong> e libero o seu cadastro. A
@@ -365,20 +405,6 @@
       </li>
     </ol>
 
-    <div class="boleto">
-      <h2 class="lista-titulo">Prefere boleto bancário?</h2>
-      <p>
-        Dá para pagar por boleto —
-        <a href="https://wa.me/5573991051624">me chame no WhatsApp</a> com a
-        periodicidade que você quer e os seus dados, que eu emito e envio por
-        e-mail.
-      </p>
-      <p>
-        O boleto ainda não é gerado por esta página: é emitido à mão, e
-        <strong>a compensação leva até três dias úteis</strong> — só depois
-        dela o acesso é criado. Por Pix, o acesso costuma sair no mesmo dia.
-      </p>
-    </div>
   </div>
 
   <div id="pagar" hidden>
