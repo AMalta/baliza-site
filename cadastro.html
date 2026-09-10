@@ -338,6 +338,13 @@ async function iniciar() {
   mostrar("formulario");
 }
 
+function senhaJaEraEssa(erro) {
+  // Confere o CÓDIGO antes da mensagem: a mensagem é texto em inglês do
+  // Supabase e pode mudar de redação sem aviso; o código é contrato.
+  if (erro.code === "same_password") return true;
+  return /different from the old password/i.test(erro.message || "");
+}
+
 $("form").addEventListener("submit", async (evento) => {
   evento.preventDefault();
   const aviso = $("aviso");
@@ -355,8 +362,21 @@ $("form").addEventListener("submit", async (evento) => {
     // falhasse, a pessoa ficaria com tenant e sem como entrar. Na ordem
     // inversa, uma falha do cadastro deixa só uma senha definida — e o link
     // de recuperação continua resolvendo.
+    //
+    // "MESMA SENHA" NÃO É ERRO, e não prever isso quebrou o cadastro de
+    // verdade em 10/09/2026. Se a primeira tentativa definiu a senha e o
+    // cadastro falhou depois, a segunda tentativa manda a MESMA senha — e o
+    // Supabase recusa com "New password should be different from the old
+    // password". O fluxo parava aí, com uma mensagem sobre senha quando o
+    // problema era outro, e a pessoa ficava sem saída: a senha certa já
+    // estava lá, e era justamente por isso que não dava para seguir.
+    //
+    // A recusa por senha repetida significa que a senha JÁ É a desejada.
+    // Segue-se em frente.
     const { error: erroSenha } = await supabase.auth.updateUser({ password: senha });
-    if (erroSenha) throw new Error("Não consegui definir a senha: " + erroSenha.message);
+    if (erroSenha && !senhaJaEraEssa(erroSenha)) {
+      throw new Error("Não consegui definir a senha: " + erroSenha.message);
+    }
 
     const r = await fetch(API + "/cadastro", {
       method: "POST",
