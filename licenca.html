@@ -52,6 +52,7 @@
   }
   .chamada { font-size: 19px; color: var(--tinta-2); margin: 0 0 8px; }
   h2 { font-family: var(--sans); font-size: 22px; margin: 40px 0 14px; }
+  .chamada.menor { font-size: 15px; color: var(--tinta-3); }
   .tamanhos {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
@@ -332,6 +333,8 @@
     <h2>Escolha o tamanho</h2>
     <p class="chamada" id="ajuda-tamanho">O que muda entre eles é quantas
       vistorias você emite por mês. Tudo o mais é igual nos três.</p>
+    <p class="chamada menor">A contagem reinicia no dia 1º de cada mês, e o
+      que não for usado não acumula para o mês seguinte.</p>
     <div class="tamanhos" id="tamanhos">
       <p class="chamada">Carregando…</p>
     </div>
